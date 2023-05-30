@@ -1,8 +1,9 @@
 import { useState } from "react";
+
 import "./header.css";
+
 import Deposito from "./component/deposito/Deposito";
 import Mercaderia from "./component/mercaderia/Mercaderia";
-import Precio from "./component/precios/precios";
 import Home from "./component/home/Home";
 
 window.document.title = 'Digrutt admin';
@@ -18,7 +19,7 @@ function App() {
   const getContent = () => {
     if (page === "deposito") return <Deposito />;
     else if (page === "mercaderia") return <Mercaderia />;
-    else if (page === "precios") return <Precio />;
+    else if (page === "precios") return <h1>Precios</h1>;
     else return <Home />;
   };
 
