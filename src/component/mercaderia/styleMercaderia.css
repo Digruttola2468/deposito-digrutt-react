@@ -1,0 +1,100 @@
+
+.sectionMercaderia-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*filtro tabla Mercaderia*/
+
+.filterTableMercaderia {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+    width: 360px;
+}
+
+.filterTableMercaderia div{
+    min-width: 100px;
+}
+
+/**/
+
+.inputSearchTableMercaderia {
+    position: relative;
+    margin-top: 20px;
+}
+.inputSearchTableMercaderia input{
+    border: solid 1px var(--gis-oscuro);
+    outline: none;
+    color: var(--gis-oscuro);
+    background-color: var(--white);
+    padding: 8px;
+    
+    border-radius: 10px;
+}
+.inputSearchTableMercaderia button{
+    position: absolute;
+    background-color: var(--white);
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 7px;
+
+    transform: translateX(-35px) translateY(2px);
+}
+.inputSearchTableMercaderia button:hover{
+    color: var(--gis-oscuro);
+}
+
+/*-------------TABLA MERCADERIA-------------*/
+
+.tableMercaderia {
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+    border: solid 1px var(--gis-oscuro);
+    margin-top: 20px;
+}
+
+.tableMercaderia th, td {
+    padding: 15px 5px;
+}
+
+.tableMercaderia thead {
+    background-color: var(--gis-oscuro);
+    color: var(--white);
+    border-bottom: solid 5px var(--celeste-oscuro);
+}
+
+
+.tableMercaderia .bodyTableMercaderia tr:hover {
+    background-color: var(--celeste-claro);
+    cursor: pointer;
+}
+
+.divExportTable {
+    margin-top: 15px;
+}
+
+/*-------------EXPORTAR TABLA-------------*/
+
+.divExportTable button {
+    color: white;
+    background-color: var(--celeste-claro);
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.divExportTable button:hover {
+    background-color: var(--celeste-oscuro);
+}
+
+@media (max-width: 470px) {
+    
+}

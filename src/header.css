@@ -1,0 +1,29 @@
+:root {
+    --gis-oscuro: #484848;
+    --celeste-oscuro: #006465;
+    --celeste-claro: #0f928c;
+    --celeste: #00c9d2;
+    --verde: #beee3b;
+    --white: #fff;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--celeste-oscuro);
+    
+}
+
+.nav-container ul{
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-container li{
+    margin-left: 5px;
+    
+}
+
+.nav-container ul a {
+    color: var(--white);
+}
