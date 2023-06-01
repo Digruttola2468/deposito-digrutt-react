@@ -1,0 +1,38 @@
+
+.tableMercaderia {
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+    border: solid 1px var(--gis-oscuro);
+    margin-top: 20px;
+}
+
+
+.tableMercaderia th, td {
+    padding: 15px 5px;
+}
+
+.tableMercaderia thead {
+    background-color: var(--gis-oscuro);
+    color: var(--white);
+    border-bottom: solid 5px var(--celeste-oscuro);
+}
+
+
+.tableMercaderia .bodyTableMercaderia tr:hover {
+    background-color: var(--celeste-claro);
+    cursor: pointer;
+}
+
+.divExportTable {
+    margin-top: 15px;
+}
+
+@media (max-width: 400px) {
+    .tableMercaderia {
+        width: 350px;  
+        display: block;
+        overflow-x: scroll;
+        white-space: nowrap;
+    }
+}

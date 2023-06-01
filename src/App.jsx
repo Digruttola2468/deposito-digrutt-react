@@ -9,6 +9,7 @@ import Home from "./component/home/Home";
 window.document.title = 'Digrutt admin';
 
 function App() {
+  
   const [page, setPage] = useState(() => {
     const { pathname } = window.location;
     const page = pathname.slice(1);
@@ -44,7 +45,7 @@ function App() {
             </a>
           </li>
           <li>
-            <a href="/precios" onClick={toPage("precios")}>
+            <a href="/precios" onClick={toPage("  precios")}>
               Precios
             </a>
           </li>

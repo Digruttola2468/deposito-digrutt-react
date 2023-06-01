@@ -1,40 +1,26 @@
 
+.sectionContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
 .sectionMercaderia-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/*filtro tabla Mercaderia*/
-
-.filterTableMercaderia {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 20px;
-    width: 360px;
-}
-
-.filterTableMercaderia div{
-    min-width: 100px;
-}
-
-/**/
+/*INPUT SEARCH*/
 
 .inputSearchTableMercaderia {
     position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
     margin-top: 20px;
-}
-.inputSearchTableMercaderia input{
-    border: solid 1px var(--gis-oscuro);
-    outline: none;
-    color: var(--gis-oscuro);
-    background-color: var(--white);
-    padding: 8px;
-    
-    border-radius: 10px;
-}
-.inputSearchTableMercaderia button{
+}   
+.inputSearchTableMercaderia .buttonsearch{
     position: absolute;
     background-color: var(--white);
     border-radius: 5px;
@@ -43,40 +29,10 @@
     cursor: pointer;
     padding: 7px;
 
-    transform: translateX(-35px) translateY(2px);
+    transform: translateX(165px) translateY(-1px);
 }
-.inputSearchTableMercaderia button:hover{
+.inputSearchTableMercaderia .buttonsearch:hover{
     color: var(--gis-oscuro);
-}
-
-/*-------------TABLA MERCADERIA-------------*/
-
-.tableMercaderia {
-    text-align: center;
-    border-collapse: collapse;
-    width: 100%;
-    border: solid 1px var(--gis-oscuro);
-    margin-top: 20px;
-}
-
-.tableMercaderia th, td {
-    padding: 15px 5px;
-}
-
-.tableMercaderia thead {
-    background-color: var(--gis-oscuro);
-    color: var(--white);
-    border-bottom: solid 5px var(--celeste-oscuro);
-}
-
-
-.tableMercaderia .bodyTableMercaderia tr:hover {
-    background-color: var(--celeste-claro);
-    cursor: pointer;
-}
-
-.divExportTable {
-    margin-top: 15px;
 }
 
 /*-------------EXPORTAR TABLA-------------*/
@@ -91,10 +47,39 @@
     cursor: pointer;
     margin-left: 10px;
 }
-.divExportTable button:hover {
-    background-color: var(--celeste-oscuro);
+
+.divTable {
+    width: 100%;
 }
 
-@media (max-width: 470px) {
-    
+.searchCodProducto {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.searchCodProducto button{
+    margin-left: 10px;
+}
+
+/*.divExportTable button:hover {
+    background-color: var(--celeste-oscuro);
+}*/
+
+ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.excel:hover {
+    color: #1e6c41;
+}
+.pdf:hover {
+    color: #f20f00;
+}
+
+@media (max-width: 600px) {
+    .sectionContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
 }
