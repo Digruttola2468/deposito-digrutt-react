@@ -76,10 +76,20 @@ ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
 .pdf:hover {
     color: #f20f00;
 }
+.update:hover {
+    color: #1976d2;
+}
+
+.infoItemTable {
+    padding-top: 90px;
+}
 
 @media (max-width: 600px) {
     .sectionContainer {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr;
+    }
+    .infoItemTable {
+        padding-top: 10px;
     }
 }
