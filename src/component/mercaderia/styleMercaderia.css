@@ -84,6 +84,28 @@ ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
     padding-top: 90px;
 }
 
+.inputListCodProductos {
+    border: none;
+    border-radius: 4px;
+    outline: 1px solid #c4c4c4;
+    padding: 14px;
+}
+.inputListCodProductos:hover {
+    outline: 1px solid black;
+}
+.inputListCodProductos:focus {
+    outline: 2px solid #1976d2;
+}
+
+
+.labelListProductos{
+    margin: 8px;
+}
+
+.css-1xhypcz-MuiStack-root {
+    padding-top: 0px;
+}
+
 @media (max-width: 600px) {
     .sectionContainer {
         grid-template-columns: 1fr;

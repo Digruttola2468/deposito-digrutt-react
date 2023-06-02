@@ -6,18 +6,12 @@ import InputMui from "./inputMui/InputMui";
 import IconButtonMui from "./IconButtonMui/Button";
 import Pagination from "@mui/material/Pagination";
 
-import {
-  FaTrash,
-  FaPen,
-  FaFileExcel,
-  FaFilePdf,
-  FaTable,
-} from "react-icons/fa";
+import { FaTrash, FaPen, FaFileExcel, FaFilePdf } from "react-icons/fa";
 
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
-import { responsiveFontSizes, styled } from "@mui/material";
+import { styled } from "@mui/material";
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -25,16 +19,10 @@ import CardContent from "@mui/material/CardContent";
 
 import TextField from "@mui/material/TextField";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-
-import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
   getMercaderiaInput,
@@ -51,7 +39,7 @@ function Mercaderia() {
   const [open, setOpen] = React.useState(false);
   const [index, setIndex] = React.useState(0);
   const [codigo, setCodigo] = React.useState("");
-  const [fecha, setFecha] = React.useState("");
+  const [fecha, setFecha] = React.useState();
 
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
@@ -180,12 +168,10 @@ function Mercaderia() {
                 variant="outlined"
                 sx={{ margin: 1, width: 300 }}
               />
-              <LocalizationProvider dateAdapter={AdapterDayjs} >
-                <DatePicker sx={{ margin: 1, width: 300 }}
-                  label="Fecha"
-                  value={fecha}
-                  onChange={(newDate) => setFecha(newDate)}
-                />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]}>
+                  <DatePicker label="Fecha" value={fecha} onChange={() => setFecha(fecha)} format="DD/MM/YYYY" sx={{ margin: 1, width: 300 }}/>
+                </DemoContainer>
               </LocalizationProvider>
               <TextField
                 id="outlined-basic"
@@ -193,20 +179,25 @@ function Mercaderia() {
                 variant="outlined"
                 sx={{ margin: 1, width: 300 }}
               />
-              <FormControl sx={{ width: 300, margin: 1 }}>
-                <InputLabel id="demo-simple-select-label">
-                  Cod Producto
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={codigo}
-                  label="Cod. producto"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={"alcohol236"}>alcohol236</MenuItem>
-                </Select>
-              </FormControl>
+              <label className="labelListProductos">
+                <input
+                  type="text"
+                  list="codigoProductos"
+                  className="inputListCodProductos"
+                  placeholder="Cod Producto"
+                />
+              </label>
+
+              <datalist id="codigoProductos">
+                <option value="bobina237"></option>
+                <option value="aditivo051"></option>
+                <option value="arandela334"></option>
+                <option value="cubre320"></option>
+                <option value="bolsa229"></option>
+                <option value="perilla079"></option>
+                <option value="perilla084"></option>
+                <option value="vaso302"></option>
+              </datalist>
             </CardContent>
             <CardActions>
               <Button variant="outlined">Agregar</Button>
