@@ -8,17 +8,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 
 import TextField from "@mui/material/TextField";
-
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import { TableInventario } from "../mercaderia/table/Table";
 
 function Deposito() {
-  const [fecha, setFecha] = React.useState();
-
   return (
     <>
       <TableInventario

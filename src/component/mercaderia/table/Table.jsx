@@ -26,26 +26,24 @@ const StyledButton = styled(Button)({
 
 const SectionSearch = () => {
   return (
-    <section className="sectionMercaderia-container">
-      <div className="inputSearchTableMercaderia">
-        <div className="searchCodProducto">
-          <InputMui title="Buscar Cod Producto" />
-          <StyledButton variant="text">Buscar</StyledButton>
-        </div>
-        <div className="searchCodProducto">
-          <IconButtonMui
-            title={"export excel"}
-            callback={() => {}}
-            classf="excel"
-          >
-            <FaFileExcel />
-          </IconButtonMui>
-          <IconButtonMui title={"export pdf"} callback={() => {}} classf="pdf">
-            <FaFilePdf />
-          </IconButtonMui>
-        </div>
+    <div className="inputSearchTableMercaderia">
+      <div className="searchCodProducto">
+        <InputMui title="Buscar Cod Producto" />
+        <StyledButton variant="text">Buscar</StyledButton>
       </div>
-    </section>
+      <div className="searchCodProducto">
+        <IconButtonMui
+          title={"export excel"}
+          callback={() => {}}
+          classf="excel"
+        >
+          <FaFileExcel />
+        </IconButtonMui>
+        <IconButtonMui title={"export pdf"} callback={() => {}} classf="pdf">
+          <FaFilePdf />
+        </IconButtonMui>
+      </div>
+    </div>
   );
 };
 
@@ -99,26 +97,33 @@ const InformacionItemMercaderia = ({ api, index }) => {
               <CardContent>
                 <div key={elem.id}>
                   <h2>{elem.nombre}</h2>
-                  <p><b>Descripcion</b>: {elem.descripcion}</p>
-                  <p><b>Fecha</b>: {elem.fecha}</p>
-                  <p><b>Cantidad</b>: {elem.stock}</p>
-                  <p><b>Proveedor</b>: {elem.proveedor}</p>
-                  
+                  <p>
+                    <b>Descripcion</b>: {elem.descripcion}
+                  </p>
+                  <p>
+                    <b>Fecha</b>: {elem.fecha}
+                  </p>
+                  <p>
+                    <b>Cantidad</b>: {elem.stock}
+                  </p>
+                  <p>
+                    <b>Proveedor</b>: {elem.proveedor}
+                  </p>
                 </div>
               </CardContent>
               <CardActions>
                 <IconButtonMui
-                  title={"eliminar"}
+                  title="eliminar"
                   callback={() => {}}
-                  classf={"pdf"}
+                  classf="pdf"
                   size="small"
                 >
                   <FaTrash />
                 </IconButtonMui>
                 <IconButtonMui
-                  title={"actualizar"}
+                  title="actualizar"
                   callback={() => {}}
-                  classf={"update"}
+                  classf="update"
                   size="small"
                 >
                   <FaPen />
@@ -165,7 +170,7 @@ export function TableInventario({ apiUrl }) {
           <thead>
             <tr>
               <th>id</th>
-              <th>nombre</th>
+              <th>nombre</th>   
               <th>descripcion</th>
               <th>Stock Actual</th>
             </tr>
@@ -210,7 +215,6 @@ export function TableInventario({ apiUrl }) {
     </div>
   );
 }
-
 
 export function TableMercaderia({ apiUrl }) {
   const LIMIT = 10;

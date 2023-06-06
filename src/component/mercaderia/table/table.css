@@ -1,3 +1,8 @@
+.sectionMercaderia-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr ;
+}
 
 .tableMercaderia {
     text-align: center;
@@ -6,7 +11,6 @@
     border: solid 1px var(--gis-oscuro);
     margin-top: 20px;
 }
-
 
 .tableMercaderia th, td {
     padding: 15px 5px;
@@ -28,6 +32,73 @@
     margin-top: 15px;
 }
 
+/*INPUT SEARCH*/
+
+.inputSearchTableMercaderia {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 20px;
+}   
+.inputSearchTableMercaderia .buttonsearch{
+    position: absolute;
+    background-color: var(--white);
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 7px;
+
+    transform: translateX(165px) translateY(-1px);
+}
+.inputSearchTableMercaderia .buttonsearch:hover{
+    color: var(--gis-oscuro);
+}
+
+.excel:hover {
+    color: #1e6c41;
+}
+.pdf:hover {
+    color: #f20f00;
+}
+.update:hover {
+    color: #1976d2;
+}
+
+/*-------------EXPORTAR TABLA-------------*/
+
+.divExportTable button {
+    color: white;
+    background-color: var(--celeste-claro);
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.divTable {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.searchCodProducto {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+.searchCodProducto button{
+    margin-left: 10px;
+}
+
+ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
+    justify-content: center;
+    margin-top: 20px;
+}
+
 @media (max-width: 520px) {
     .tableMercaderia {
         width: 350px;
@@ -38,3 +109,9 @@
     }
 }
 
+@media (max-width: 700px) {
+    .divTable {
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr;
+    }
+}

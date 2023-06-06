@@ -1,7 +1,7 @@
 import "./styleMercaderia.css";
 import * as React from "react";
 
-import {TableMercaderia} from "./table/Table";
+import { TableMercaderia } from "./table/Table";
 
 import Button from "@mui/material/Button";
 
@@ -21,7 +21,9 @@ function Mercaderia() {
 
   return (
     <section className="sectionContainer">
-      <TableMercaderia apiUrl={"https://deposito-digrutt.up.railway.app/mercaderia/entrada"} />
+      <TableMercaderia
+        apiUrl={"https://deposito-digrutt.up.railway.app/mercaderia/entrada"}
+      />
       <section className="infoItemTable">
         <div>
           <Card sx={{ marginLeft: 1, marginTop: 1 }}>
@@ -59,15 +61,15 @@ function Mercaderia() {
                 />
               </label>
 
-              <datalist id="codigoProductos" >
-                <option value="bobina237"></option>
-                <option value="aditivo051"></option>
+              <datalist id="codigoProductos">
+                <option value="bobina237"></option>  
+                <option value="aditivo051"></option> 
                 <option value="arandela334"></option>
                 <option value="cubre320"></option>
-                <option value="bolsa229"></option>
+                <option value="bolsa229"></option>  
                 <option value="perilla079"></option>
                 <option value="perilla084"></option>
-                <option value="vaso302"></option>
+                <option value="vaso302"></option>    
               </datalist>
             </CardContent>
             <CardActions>
