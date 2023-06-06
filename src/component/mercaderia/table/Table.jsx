@@ -88,6 +88,49 @@ const InformacionItem = ({ api, index }) => {
   );
 };
 
+const InformacionItemMercaderia = ({ api, index }) => {
+  return (
+    <div>
+      {api
+        .filter((elem) => elem.id == index)
+        .map((elem) => {
+          return (
+            <Card sx={{ marginLeft: 1 }}>
+              <CardContent>
+                <div key={elem.id}>
+                  <h2>{elem.nombre}</h2>
+                  <p><b>Descripcion</b>: {elem.descripcion}</p>
+                  <p><b>Fecha</b>: {elem.fecha}</p>
+                  <p><b>Cantidad</b>: {elem.stock}</p>
+                  <p><b>Proveedor</b>: {elem.proveedor}</p>
+                  
+                </div>
+              </CardContent>
+              <CardActions>
+                <IconButtonMui
+                  title={"eliminar"}
+                  callback={() => {}}
+                  classf={"pdf"}
+                  size="small"
+                >
+                  <FaTrash />
+                </IconButtonMui>
+                <IconButtonMui
+                  title={"actualizar"}
+                  callback={() => {}}
+                  classf={"update"}
+                  size="small"
+                >
+                  <FaPen />
+                </IconButtonMui>
+              </CardActions>
+            </Card>
+          );
+        })}
+    </div>
+  );
+};
+
 export function TableInventario({ apiUrl }) {
   const LIMIT = 5;
   const [api, setApi] = React.useState([]);
@@ -98,7 +141,7 @@ export function TableInventario({ apiUrl }) {
   const handleOpen = () => setOpen(true);
 
   const [start, setStart] = React.useState(0);
-  const [end, setEnd] = React.useState(5);
+  const [end, setEnd] = React.useState(LIMIT);
 
   const [index, setIndex] = React.useState(0);
 
@@ -179,7 +222,7 @@ export function TableMercaderia({ apiUrl }) {
   const handleOpen = () => setOpen(true);
 
   const [start, setStart] = React.useState(0);
-  const [end, setEnd] = React.useState(5);
+  const [end, setEnd] = React.useState(LIMIT);
 
   const [index, setIndex] = React.useState(0);
 
@@ -237,7 +280,7 @@ export function TableMercaderia({ apiUrl }) {
         />
       </div>
       <div style={{ marginTop: 20 }}>
-        <InformacionItem api={api} index={index} />
+        <InformacionItemMercaderia api={api} index={index} />
       </div>
 
       <Backdrop
