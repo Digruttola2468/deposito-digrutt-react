@@ -107,7 +107,7 @@ function Mercaderia() {
                   onChange={(evt) => setcodProducto(evt.target.value)}
                   placeholder="Cod Producto"
                 />
-                <p className="css-1wc848c-MuiFormHelperText-root">Required</p>
+                <p className="required">Required</p>
               </label>
 
               <datalist id="codigoProductos">

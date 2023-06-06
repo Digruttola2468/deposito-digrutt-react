@@ -27,9 +27,11 @@ function Deposito() {
               sx={{ margin: 1, width: 300 }}
             />
             <TextField
-              id="outlined-basic"
+              id="outlined-multiline-static"
               label="Descripcion"
               variant="outlined"
+              multiline
+              maxRows={4}
               sx={{ margin: 1, width: 300 }}
             />
             <TextField
