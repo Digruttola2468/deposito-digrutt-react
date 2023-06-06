@@ -33,22 +33,22 @@ function App() {
       <nav className="nav-container">
         <ul>
           <li>
-            <a href="/mercaderia" onClick={toPage("mercaderia")}>
+            <a href="/deposito-digrutt-react/mercaderia" onClick={toPage("mercaderia")}>
               Mercaderia
             </a>
           </li>
           <li>
-            <a href="/deposito" onClick={toPage("deposito")}>
+            <a href="/deposito-digrutt-react/deposito" onClick={toPage("deposito")}>
               Inventario
             </a>
           </li>
           <li>
-            <a href="/precios" onClick={toPage("  precios")}>
+            <a href="/deposito-digrutt-react/precios" onClick={toPage("precios")}>
               Precios
             </a>
           </li>
           <li>
-            <a href="/" onClick={toPage("")}>
+            <a href="/deposito-digrutt-react/" onClick={toPage("")}>
               Home
             </a>
           </li>

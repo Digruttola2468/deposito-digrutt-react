@@ -170,7 +170,7 @@ export function TableInventario({ apiUrl }) {
           <thead>
             <tr>
               <th>id</th>
-              <th>nombre</th>   
+              <th>nombre</th>
               <th>descripcion</th>
               <th>Stock Actual</th>
             </tr>

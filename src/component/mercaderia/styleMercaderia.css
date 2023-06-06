@@ -1,8 +1,7 @@
 
 .sectionContainer {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 2fr;
+    display: flex;
+    flex-direction: column;
 }
 
 .infoItemTable {
