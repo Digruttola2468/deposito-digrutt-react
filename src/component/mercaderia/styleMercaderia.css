@@ -1,13 +1,14 @@
 
 .sectionContainer {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr;
 }
 
 .sectionMercaderia-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr ;
 }
 
 /*INPUT SEARCH*/
@@ -49,7 +50,8 @@
 }
 
 .divTable {
-    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
 }
 
 .searchCodProducto {
@@ -81,7 +83,7 @@ ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
 }
 
 .infoItemTable {
-    padding-top: 90px;
+    padding-top: 20px;
 }
 
 .inputListCodProductos {
@@ -107,11 +109,14 @@ ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
 }
 
 @media (max-width: 600px) {
-    .sectionContainer {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
-    }
     .infoItemTable {
         padding-top: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+    .divTable {
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr;
     }
 }

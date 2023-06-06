@@ -1,12 +1,11 @@
 import { useState } from "react";
 
 import "./header.css";
+import logo from './assets/logo.png'
 
 import Deposito from "./component/deposito/Deposito";
 import Mercaderia from "./component/mercaderia/Mercaderia";
 import Home from "./component/home/Home";
-
-window.document.title = 'Digrutt admin';
 
 function App() {
   
@@ -16,7 +15,6 @@ function App() {
     return page;
   });
 
-  
   const getContent = () => {
     if (page === "deposito") return <Deposito />;
     else if (page === "mercaderia") return <Mercaderia />;
@@ -41,7 +39,7 @@ function App() {
           </li>
           <li>
             <a href="/deposito" onClick={toPage("deposito")}>
-              Deposito
+              Inventario
             </a>
           </li>
           <li>

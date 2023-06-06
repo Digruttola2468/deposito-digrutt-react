@@ -28,11 +28,13 @@
     margin-top: 15px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 520px) {
     .tableMercaderia {
-        width: 350px;  
+        width: 330px;
         display: block;
         overflow-x: scroll;
         white-space: nowrap;
+        font-size: 14px;
     }
 }
+
