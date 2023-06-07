@@ -44,7 +44,22 @@ export function MercaderiaContextProvider(props) {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log("Update Api", result);
+
+        const newUserForeignInfo = [...api];
+        let index = newUserForeignInfo.findIndex(elem => elem.id == result.id);
+
+        const filter = inventarioNombres.filter(
+          (elem) => elem.id == result.idinventario
+        );
+
+        newUserForeignInfo.splice(index, 1, {
+          ...result,
+          nombre: filter[0].nombre,
+          descripcion: filter[0].descripcion,
+        });
+
+        setApi(newUserForeignInfo); 
+
         toast.success("Se actualizo Correctamente");
       })
       .catch((error) => console.log("error", error));
