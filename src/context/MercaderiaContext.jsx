@@ -20,6 +20,13 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.error(error));
   }, []);
 
+  const getEntradaApi = () => {
+    fetch("https://deposito-digrutt.up.railway.app/mercaderia/entrada")
+      .then((result) => result.json())
+      .then((result) => setApi(result))
+      .catch((error) => console.error(error));
+  };
+
   const updateApi = (id, json) => {
     const raw = JSON.stringify(json);
 
@@ -30,13 +37,16 @@ export function MercaderiaContextProvider(props) {
       },
       body: raw,
     };
-    
+
     fetch(
       `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => {console.log("Update Api", result);toast.success("Se actualizo Correctamente");})
+      .then((result) => {
+        console.log("Update Api", result);
+        toast.success("Se actualizo Correctamente");
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -95,8 +105,9 @@ export function MercaderiaContextProvider(props) {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => console.log("search", result))
+      .then((result) => setApi(result))
       .catch((error) => console.log("error", error));
+    
   };
 
   return (
@@ -107,6 +118,7 @@ export function MercaderiaContextProvider(props) {
         createApi,
         updateApi,
         deleteApi,
+        getEntradaApi,
         searchByCodProductoApi,
       }}
     >
