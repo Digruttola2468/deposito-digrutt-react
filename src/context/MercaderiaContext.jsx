@@ -30,13 +30,13 @@ export function MercaderiaContextProvider(props) {
       },
       body: raw,
     };
-
+    
     fetch(
       `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => console.log("Update Api", result))
+      .then((result) => {console.log("Update Api", result);toast.success("Se actualizo Correctamente");})
       .catch((error) => console.log("error", error));
   };
 

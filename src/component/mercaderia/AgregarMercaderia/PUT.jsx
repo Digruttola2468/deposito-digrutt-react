@@ -1,4 +1,4 @@
-import { useState, useContext,useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import Button from "@mui/material/Button";
 
@@ -7,6 +7,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 
 import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -15,29 +16,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
-
-import AutoCompleteField from "../AutoComplete/AutoCompl";
-
-/*
-<label className="labelListProductos">
-          <input
-            type="text"
-            list="codigoProductos"
-            className="inputListCodProductos"
-            value={codProducto}
-            onChange={(evt) => setcodProducto(evt.target.value)}
-            placeholder="Cod Producto"
-          />
-          <p className="required">Required</p>
-        </label>
-
-        <datalist id="codigoProductos">
-          {inventarioNombres.map((elem) => {
-            return <option value={elem.nombre} key={elem.id}></option>;
-          })}
-        </datalist>
-*/ 
-
 export default function PutMercaderia() {
   const { createApi, inventarioNombres } = useContext(MercaderiaContext);
 
@@ -45,31 +23,28 @@ export default function PutMercaderia() {
   //1 - Salida
   const [idcategoria, setIdCategoria] = useState(2);
 
-
-  const [value, setValue] = useState();
-
-  useEffect(() => {
-    console.log(value);
-  });
-
-
   const [factura, setFactura] = useState("");
-  const [codProducto, setcodProducto] = useState("");
+  const [codProducto, setcodProducto] = useState();
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
+
+  const [inputValue, setInputValue] = useState("");
 
   const empty = () => {
     setFactura("");
     setFecha();
     setStock("");
+    setInputValue("");
     setcodProducto("");
   };
 
   const handleClickPost = () => {
-    const filter = inventarioNombres.filter((elem) => elem.nombre == codProducto);
+    const filter = inventarioNombres.filter(
+      (elem) => elem.nombre == codProducto.nombre
+    );
     createApi({
       fecha,
-      factura,
+      proveedor: factura,
       stock,
       idinventario: filter[0].id,
       idcategoria,
@@ -81,12 +56,32 @@ export default function PutMercaderia() {
     <Card sx={{ marginLeft: 1, marginTop: 1 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column" }}>
         <h2>Nueva Mercaderia</h2>
-        <AutoCompleteField value={value} setValue={setValue}/>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={inventarioNombres}
+          getOptionLabel={(elem) => elem.nombre}
+          sx={{ width: 300, marginLeft: 1 }}
+          value={codProducto || null}
+          onChange={(evt, newValue) => setcodProducto(newValue)}
+          inputValue={inputValue}
+          onInputChange={(_, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              helperText="Required"
+              value={"Hola"}
+              label="Cod Producto"
+            />
+          )}
+        />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
               label="Fecha"
-              value={fecha}
+              value={fecha || null}
               onChange={(evt) => {
                 setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
               }}
@@ -105,6 +100,7 @@ export default function PutMercaderia() {
           id="outlined-basic"
           label="Cantidad"
           value={stock}
+          type="number"
           onChange={(evt) => setStock(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}

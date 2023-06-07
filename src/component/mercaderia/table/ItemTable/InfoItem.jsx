@@ -12,6 +12,9 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 
+import Autocomplete from "@mui/material/Autocomplete";
+
+
 //COMPONENT OWN
 import IconButtonMui from "../../IconButtonMui/Button";
 
@@ -21,14 +24,18 @@ import { MercaderiaContext } from "../../../../context/MercaderiaContext";
 //REACT ICONS
 import { FaTrash, FaPen } from "react-icons/fa";
 
+import AutoCompleteField from "../../AutoComplete/AutoCompl";
+
 export default function InfoItem({ index }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openActualizar, setOpenActualizar] = useState(false);
 
   const [apiOne, setapiOne] = useState([]);
 
+  const [inputValue, setInputValue] = useState("");
+
   const [factura, setFactura] = useState("");
-  const [codProducto, setcodProducto] = useState("");
+  const [codProducto, setcodProducto] = useState();
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
@@ -42,10 +49,10 @@ export default function InfoItem({ index }) {
 
   const handleUpdate = () => {
     const filter = inventarioNombres.filter(
-      (elem) => elem.nombre == codProducto
+      (elem) => elem.nombre == codProducto.nombre
     );
     updateApi(apiOne.id, {
-      factura,
+      proveedor: factura,
       idinventario: filter[0].id,
       stock,
       fecha,
@@ -65,7 +72,7 @@ export default function InfoItem({ index }) {
   const handleOpenUpdate = () => {
     setFactura(apiOne.proveedor);
     setFecha(apiOne.fecha);
-    setcodProducto(apiOne.nombre);
+    setcodProducto({ nombre: apiOne.nombre, id: apiOne.idinventario });
     setStock(apiOne.stock);
     setOpenActualizar(true);
   };
@@ -88,9 +95,9 @@ export default function InfoItem({ index }) {
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
-            <Card sx={{ marginLeft: 1 }}>
+            <Card key={elem.id} sx={{ marginLeft: 1 }}>
               <CardContent>
-                <div key={elem.id}>
+                <div>
                   <h2>{elem.nombre}</h2>
                   <p>
                     <b>Descripcion</b>: {elem.descripcion}
@@ -154,23 +161,26 @@ export default function InfoItem({ index }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">Actualizar Mercaderia</DialogTitle>
-        <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
-          <label className="labelListProductos">
-            <input
-              type="text"
-              list="codigoProductos"
-              className="inputListCodProductos"
-              value={codProducto}
-              onChange={(evt) => setcodProducto(evt.target.value)}
-              placeholder="Cod Producto"
-            />
-          </label>
-
-          <datalist id="codigoProductos">
-            {inventarioNombres.map((elem) => {
-              return <option value={elem.nombre} key={elem.id}></option>;
-            })}
-          </datalist>
+        <DialogContent
+          sx={{ display: "flex", flexDirection: "column", padding: 3 }}
+        >
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={inventarioNombres}
+            getOptionLabel={(elem) => elem.nombre}
+            sx={{ width: 300, marginLeft: 1,marginTop: 2 }}
+            value={codProducto || null}
+            onChange={(evt, newValue) => setcodProducto(newValue)}
+            
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                value={"Hola"}
+                label="Cod Producto"
+              />
+            )}
+          />
           <TextField
             sx={{ marginTop: 1, marginLeft: 1 }}
             label="Cantidad"
