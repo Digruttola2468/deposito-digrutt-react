@@ -32,7 +32,8 @@ export default function InfoItem({ index }) {
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
-  const { api, deleteApi, updateApi, inventarioNombres} = useContext(MercaderiaContext);
+  const { api, deleteApi, updateApi, inventarioNombres } =
+    useContext(MercaderiaContext);
 
   const handleDelete = () => {
     deleteApi(apiOne.id);
@@ -40,7 +41,9 @@ export default function InfoItem({ index }) {
   };
 
   const handleUpdate = () => {
-    const filter = inventarioNombres.filter((elem) => elem.nombre == codProducto);
+    const filter = inventarioNombres.filter(
+      (elem) => elem.nombre == codProducto
+    );
     updateApi(apiOne.id, {
       factura,
       idinventario: filter[0].id,
@@ -150,8 +153,8 @@ export default function InfoItem({ index }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Eliminar Mercaderia</DialogTitle>
-        <DialogContent>
+        <DialogTitle id="alert-dialog-title">Actualizar Mercaderia</DialogTitle>
+        <DialogContent sx={{ display: "flex", flexDirection: "column" }}>
           <label className="labelListProductos">
             <input
               type="text"
@@ -169,16 +172,22 @@ export default function InfoItem({ index }) {
             })}
           </datalist>
           <TextField
+            sx={{ marginTop: 1, marginLeft: 1 }}
+            label="Cantidad"
             placeholder="Cantidad"
             value={stock}
             onChange={(evt) => setStock(evt.target.value)}
           />
           <TextField
+            sx={{ marginTop: 1, marginLeft: 1 }}
+            label="Fecha"
             placeholder="Fecha"
             value={fecha}
             onChange={(evt) => setFecha(evt.target.value)}
           />
           <TextField
+            sx={{ marginTop: 2, marginLeft: 1 }}
+            label="Factura"
             placeholder="Factura"
             value={factura}
             onChange={(evt) => setFactura(evt.target.value)}

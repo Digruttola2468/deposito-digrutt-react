@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext,useEffect } from "react";
 
 import Button from "@mui/material/Button";
 
@@ -15,12 +15,43 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
+
+import AutoCompleteField from "../AutoComplete/AutoCompl";
+
+/*
+<label className="labelListProductos">
+          <input
+            type="text"
+            list="codigoProductos"
+            className="inputListCodProductos"
+            value={codProducto}
+            onChange={(evt) => setcodProducto(evt.target.value)}
+            placeholder="Cod Producto"
+          />
+          <p className="required">Required</p>
+        </label>
+
+        <datalist id="codigoProductos">
+          {inventarioNombres.map((elem) => {
+            return <option value={elem.nombre} key={elem.id}></option>;
+          })}
+        </datalist>
+*/ 
+
 export default function PutMercaderia() {
   const { createApi, inventarioNombres } = useContext(MercaderiaContext);
 
   //2 - Entrada
   //1 - Salida
   const [idcategoria, setIdCategoria] = useState(2);
+
+
+  const [value, setValue] = useState();
+
+  useEffect(() => {
+    console.log(value);
+  });
+
 
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState("");
@@ -50,23 +81,7 @@ export default function PutMercaderia() {
     <Card sx={{ marginLeft: 1, marginTop: 1 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column" }}>
         <h2>Nueva Mercaderia</h2>
-        <label className="labelListProductos">
-          <input
-            type="text"
-            list="codigoProductos"
-            className="inputListCodProductos"
-            value={codProducto}
-            onChange={(evt) => setcodProducto(evt.target.value)}
-            placeholder="Cod Producto"
-          />
-          <p className="required">Required</p>
-        </label>
-
-        <datalist id="codigoProductos">
-          {inventarioNombres.map((elem) => {
-            return <option value={elem.nombre} key={elem.id}></option>;
-          })}
-        </datalist>
+        <AutoCompleteField value={value} setValue={setValue}/>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
