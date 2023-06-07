@@ -89,7 +89,7 @@
 .searchCodProducto {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
 }
 .searchCodProducto button{
     margin-left: 10px;
