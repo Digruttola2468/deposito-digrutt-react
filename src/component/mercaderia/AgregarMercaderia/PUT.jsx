@@ -50,14 +50,23 @@ export default function PutMercaderia() {
     <Card sx={{ marginLeft: 1, marginTop: 1 }}>
       <CardContent sx={{ display: "flex", flexDirection: "column" }}>
         <h2>Nueva Mercaderia</h2>
-        <TextField
-          id="outlined-basic"
-          label="N° Factura"
-          value={factura}
-          onChange={(evt) => setFactura(evt.target.value)}
-          variant="outlined"
-          sx={{ margin: 1, width: 300 }}
-        />
+        <label className="labelListProductos">
+          <input
+            type="text"
+            list="codigoProductos"
+            className="inputListCodProductos"
+            value={codProducto}
+            onChange={(evt) => setcodProducto(evt.target.value)}
+            placeholder="Cod Producto"
+          />
+          <p className="required">Required</p>
+        </label>
+
+        <datalist id="codigoProductos">
+          {inventarioNombres.map((elem) => {
+            return <option value={elem.nombre} key={elem.id}></option>;
+          })}
+        </datalist>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
@@ -85,23 +94,14 @@ export default function PutMercaderia() {
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
-        <label className="labelListProductos">
-          <input
-            type="text"
-            list="codigoProductos"
-            className="inputListCodProductos"
-            value={codProducto}
-            onChange={(evt) => setcodProducto(evt.target.value)}
-            placeholder="Cod Producto"
-          />
-          <p className="required">Required</p>
-        </label>
-
-        <datalist id="codigoProductos">
-          {inventarioNombres.map((elem) => {
-            return <option value={elem.nombre} key={elem.id}></option>;
-          })}
-        </datalist>
+        <TextField
+          id="outlined-basic"
+          label="N° Factura"
+          value={factura}
+          onChange={(evt) => setFactura(evt.target.value)}
+          variant="outlined"
+          sx={{ margin: 1, width: 300 }}
+        />
       </CardContent>
       <CardActions>
         <Button variant="outlined" onClick={handleClickPost}>
