@@ -92,26 +92,15 @@ export default function Mercaderia() {
             Buscar
           </StyledButton>
         </div>
-        <div className="searchCodProducto">
-          <IconButtonMui
-            title={"export excel"}
-            callback={() => {}}
-            classf="excel"
-          >
-            <FaFileExcel />
-          </IconButtonMui>
-          <IconButtonMui title={"export pdf"} callback={() => {}} classf="pdf">
-            <FaFilePdf />
-          </IconButtonMui>
-        </div>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography>Salida</Typography>
+        
+        <Stack direction="row" alignItems="center" > 
+          <Typography className="parrafoSalidaSwitch">Salida</Typography>
           <Switch
             checked={checked}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
           />
-          <Typography>Entrada</Typography>
+          <Typography className="parrafoEntradaSwitch">Entrada</Typography>
         </Stack>
       </div>
         <TableMercaderia />

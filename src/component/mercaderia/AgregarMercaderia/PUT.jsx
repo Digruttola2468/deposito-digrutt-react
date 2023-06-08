@@ -9,6 +9,11 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,21 +24,21 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 export default function PutMercaderia({ isTableEntrada }) {
   const { createApi, inventarioNombres } = useContext(MercaderiaContext);
 
-  //2 - Entrada
-  //1 - Salida
-  const [idcategoria, setIdCategoria] = useState(2);
-
-  useEffect(() => {
-    if (isTableEntrada) setIdCategoria(2);
-    else setIdCategoria(1);
-  });
-
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
   const [inputValue, setInputValue] = useState("");
+
+  //2 - Entrada
+  //1 - Salida
+  const [idcategoria, setIdCategoria] = useState();
+
+  useEffect(() => {
+    if (isTableEntrada) setIdCategoria(2);
+    else setIdCategoria(1);
+  });
 
   const empty = () => {
     setFactura("");
@@ -66,7 +71,7 @@ export default function PutMercaderia({ isTableEntrada }) {
           id="combo-box-demo"
           options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
-          sx={{ width: 300, marginLeft: 1 }}
+          sx={{ width: 300, margin: 1 }}
           value={codProducto || null}
           onChange={(evt, newValue) => setcodProducto(newValue)}
           inputValue={inputValue}

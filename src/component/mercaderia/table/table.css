@@ -39,7 +39,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-around;
+    justify-content: center;
     margin-top: 20px;
 }   
 .inputSearchTableMercaderia .buttonsearch{
@@ -90,6 +90,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: 10px;
 }
 .searchCodProducto button{
     margin-left: 10px;
