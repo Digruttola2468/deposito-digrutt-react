@@ -27,6 +27,13 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.error(error));
   };
 
+  const getSalidaApi = () => {
+    fetch("https://deposito-digrutt.up.railway.app/mercaderia/salida")
+      .then((result) => result.json())
+      .then((result) => setApi(result))
+      .catch((error) => console.error(error));
+  };
+
   const updateApi = (id, json) => {
     const raw = JSON.stringify(json);
 
@@ -44,9 +51,10 @@ export function MercaderiaContextProvider(props) {
     )
       .then((response) => response.json())
       .then((result) => {
-
         const newUserForeignInfo = [...api];
-        let index = newUserForeignInfo.findIndex(elem => elem.id == result.id);
+        let index = newUserForeignInfo.findIndex(
+          (elem) => elem.id == result.id
+        );
 
         const filter = inventarioNombres.filter(
           (elem) => elem.id == result.idinventario
@@ -58,7 +66,7 @@ export function MercaderiaContextProvider(props) {
           descripcion: filter[0].descripcion,
         });
 
-        setApi(newUserForeignInfo); 
+        setApi(newUserForeignInfo);
 
         toast.success("Se actualizo Correctamente");
       })
@@ -110,7 +118,7 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.error("Error:", error));
   };
 
-  const searchByCodProductoApi = (search) => {
+  const searchEntradaApi = (search) => {
     var requestOptions = {
       method: "GET",
     };
@@ -120,9 +128,28 @@ export function MercaderiaContextProvider(props) {
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => setApi(result))
-      .catch((error) => console.log("error", error));
-    
+      .then((result) => {
+        if (result.message) return toast.error(result.message);
+        setApi(result);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const searchSalidaApi = (search) => {
+    var requestOptions = {
+      method: "GET",
+    };
+
+    fetch(
+      `https://deposito-digrutt.up.railway.app/mercaderia/salida/${search}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.message) return toast.error(result.message);
+        setApi(result);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -134,7 +161,9 @@ export function MercaderiaContextProvider(props) {
         updateApi,
         deleteApi,
         getEntradaApi,
-        searchByCodProductoApi,
+        getSalidaApi,
+        searchSalidaApi,
+        searchEntradaApi,
       }}
     >
       {props.children}

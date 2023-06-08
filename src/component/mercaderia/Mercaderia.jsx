@@ -13,6 +13,10 @@ import { styled } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import Switch from "@mui/material/Switch";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
 const StyledButton = styled(Button)({
   background: "#fff",
   color: "#00c9d2",
@@ -20,27 +24,46 @@ const StyledButton = styled(Button)({
 });
 
 export default function Mercaderia() {
-  const { searchByCodProductoApi, inventarioNombres,getEntradaApi } =
-    useContext(MercaderiaContext);
+  const {
+    searchEntradaApi,
+    inventarioNombres,
+    getEntradaApi,
+    getSalidaApi,
+    setEntrada,
+    searchSalidaApi,
+  } = useContext(MercaderiaContext);
 
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
 
-  const [condicional,setCondicional] = useState(false)
+  const [condicional, setCondicional] = useState(false);
+
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event) => {
+    let result = event.target.checked;
+    setChecked(result);
+
+    if (result) getEntradaApi();
+    else getSalidaApi();
+  };
 
   const handleClickSeach = () => {
-    searchByCodProductoApi(codProducto.nombre);
+    if (checked) searchEntradaApi(codProducto.nombre);
+    else searchSalidaApi(codProducto.nombre);
   };
 
   useEffect(() => {
-    if(codProducto == undefined){
-      if(condicional){
-        getEntradaApi();
+    if (codProducto == undefined) {
+      if (condicional) {
+
+        if (checked) getEntradaApi();
+        else getSalidaApi();
+
         setCondicional(false);
       }
-      
     }
-  })
+  });
 
   return (
     <section className="sectionContainer">
@@ -81,10 +104,19 @@ export default function Mercaderia() {
             <FaFilePdf />
           </IconButtonMui>
         </div>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Typography>Salida</Typography>
+          <Switch
+            checked={checked}
+            onChange={handleChange}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <Typography>Entrada</Typography>
+        </Stack>
       </div>
-      <TableMercaderia />
+        <TableMercaderia />
       <section className="infoItemTable">
-        <PutMercaderia />
+        <PutMercaderia isTableEntrada={checked}/>
       </section>
     </section>
   );

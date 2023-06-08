@@ -16,12 +16,17 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
-export default function PutMercaderia() {
+export default function PutMercaderia({ isTableEntrada }) {
   const { createApi, inventarioNombres } = useContext(MercaderiaContext);
 
   //2 - Entrada
   //1 - Salida
   const [idcategoria, setIdCategoria] = useState(2);
+
+  useEffect(() => {
+    if (isTableEntrada) setIdCategoria(2);
+    else setIdCategoria(1);
+  });
 
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
