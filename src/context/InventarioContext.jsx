@@ -4,8 +4,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const InventarioContext = createContext();
 
+import { useLocalStorage } from 'usehooks-ts'
+
 export function InventarioContextProvider(props) {
-  const [api, setApi] = useState([]);
+  const [api, setApi] = useLocalStorage('inventarioApi',[]);
 
   useEffect(() => {
     fetch("https://deposito-digrutt.up.railway.app/inventario/sumstock")

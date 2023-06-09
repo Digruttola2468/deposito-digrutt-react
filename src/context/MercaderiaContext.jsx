@@ -4,9 +4,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const MercaderiaContext = createContext();
 
+import { useLocalStorage } from 'usehooks-ts'
+
 export function MercaderiaContextProvider(props) {
-  const [api, setApi] = useState([]);
-  const [inventarioNombres, setInventarioNombres] = useState([]);
+  const [api, setApi] = useLocalStorage('mercaderiaApi',[]);
+  const [inventarioNombres, setInventarioNombres] = useLocalStorage('inventarioNombres',[]);
 
   useEffect(() => {
     fetch("https://deposito-digrutt.up.railway.app/mercaderia/entrada")
