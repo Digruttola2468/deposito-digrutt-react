@@ -54,14 +54,14 @@ export default function PutMercaderia({ isTableEntrada }) {
     setcodProducto("");
   };
 
-  const handleClickPost = () => {
+  const handleClickPost = () => {/*
     if (inputValue.length == 0) setInputCodError(true);
 
     if (stock.length == 0) setInputStockError(true);
 
     if (fecha == undefined) setInputFechaError(true);
-
-    /*
+*/
+    
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
@@ -72,7 +72,7 @@ export default function PutMercaderia({ isTableEntrada }) {
       idinventario: filter[0].id,
       idcategoria,
     });
-    */
+    
     empty();
   };
 

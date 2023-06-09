@@ -14,7 +14,6 @@ import CardContent from "@mui/material/CardContent";
 
 import Autocomplete from "@mui/material/Autocomplete";
 
-
 //COMPONENT OWN
 import IconButtonMui from "../../IconButtonMui/Button";
 
@@ -24,18 +23,15 @@ import { MercaderiaContext } from "../../../../context/MercaderiaContext";
 //REACT ICONS
 import { FaTrash, FaPen } from "react-icons/fa";
 
-import AutoCompleteField from "../../AutoComplete/AutoCompl";
-
 export default function InfoItem({ index }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openActualizar, setOpenActualizar] = useState(false);
 
   const [apiOne, setapiOne] = useState([]);
 
-  const [inputValue, setInputValue] = useState("");
-
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
+  const [idcategoria, setIdCategoria] = useState();
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
@@ -51,12 +47,13 @@ export default function InfoItem({ index }) {
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
-    updateApi(apiOne.id, {
+    console.log(api);
+    /*updateApi(apiOne.id, {
       proveedor: factura,
       idinventario: filter[0].id,
       stock,
       fecha,
-    });
+    });*/
     handleCloseUpdate();
   };
 
@@ -167,18 +164,26 @@ export default function InfoItem({ index }) {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
+
+            options={[{nombre: "Entrada", value: 2},{nombre: "Salida", value: 1}]}
+            getOptionLabel={(elem) => elem.nombre}
+            sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
+            value={idcategoria || null}
+            onChange={(evt, newValue) => setIdCategoria(newValue)}
+            renderInput={(params) => (
+              <TextField {...params} label="Categoria" />
+            )}
+          />
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
             options={inventarioNombres}
             getOptionLabel={(elem) => elem.nombre}
-            sx={{ width: 300, marginLeft: 1,marginTop: 2 }}
+            sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
             value={codProducto || null}
             onChange={(evt, newValue) => setcodProducto(newValue)}
-            
             renderInput={(params) => (
-              <TextField
-                {...params}
-                value={"Hola"}
-                label="Cod Producto"
-              />
+              <TextField {...params} value={"Hola"} label="Cod Producto" />
             )}
           />
           <TextField
