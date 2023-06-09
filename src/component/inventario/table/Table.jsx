@@ -2,7 +2,9 @@ import { useContext, useState, useEffect } from "react";
 
 import { InventarioContext } from "../../../context/InventarioContext";
 
+//MUI
 import Pagination from "@mui/material/Pagination";
+import SelectItemInventario from "../selectItemTable/ItemTable";
 
 export default function InventarioTable() {
   const { api } = useContext(InventarioContext);
@@ -39,7 +41,7 @@ export default function InventarioTable() {
             {api.slice(start, end).map((elem) => {
               return (
                 <tr
-                  
+                  key={api.idinventario}
                   onClick={() => setIndex(elem.idinventario)}
                 >
                   <td>{elem.nombre}</td>
@@ -54,15 +56,11 @@ export default function InventarioTable() {
         </table>
         <Pagination
           count={Math.ceil(api.length / LIMIT)}
-          onChange={(evt) => {
-            let valor = evt.target.innerText;
-            setPage(parseInt(valor));
-
-            if (parseInt(valor) > page) setEnd(LIMIT * parseInt(valor));
-            else if (parseInt(valor) < page) setEnd(LIMIT * parseInt(valor));
-          }}
+          onChange={(evt) => setEnd(LIMIT * parseInt(evt.target.innerText))}
         />
       </div>
+      <SelectItemInventario index={index} />
+      
     </div>
   );
 }
