@@ -51,7 +51,6 @@ export function InventarioContextProvider(props) {
     )
       .then((response) => response.json())
       .then((result) => {
-        
         const newUserForeignInfo = [...api];
         let index = newUserForeignInfo.findIndex(
           (elem) => elem.idinventario == result.idinventario
@@ -81,9 +80,43 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.error("Error:", error));
   };
 
+  const orderNombreASC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.nombre > b.nombre) {
+          return 1;
+        }
+        if (a.nombre < b.nombre) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+  };
+  const orderNombreDES = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.nombre < b.nombre) {
+          return 1;
+        }
+        if (a.nombre > b.nombre) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+  };
+
   return (
     <InventarioContext.Provider
-      value={{ api, createApi, updateApi, deleteApi }}
+      value={{
+        api,
+        createApi,
+        updateApi,
+        deleteApi,
+        orderNombreASC,
+        orderNombreDES,
+      }}
     >
       {props.children}
       <ToastContainer />
