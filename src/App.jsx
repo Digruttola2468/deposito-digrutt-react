@@ -1,15 +1,15 @@
 import { useState } from "react";
 
 import "./header.css";
-import logo from './assets/logo.png'
+import logo from "./assets/logo.png";
 
-import Deposito from "./component/deposito/Deposito";
+import Inventario from "./component/inventario/Inventario";
 import Mercaderia from "./component/mercaderia/Mercaderia";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
+import { InventarioContextProvider } from "./context/InventarioContext";
 
 function App() {
-  
   const [page, setPage] = useState(() => {
     const { pathname } = window.location;
     const page = pathname.slice(1);
@@ -17,12 +17,18 @@ function App() {
   });
 
   const getContent = () => {
-    if (page === "deposito") return <Deposito />;
-    else return (
-      <MercaderiaContextProvider>
-        <Mercaderia />
-      </MercaderiaContextProvider>
-    );
+    if (page === "inventario")
+      return (
+        <InventarioContextProvider>
+          <Inventario />
+        </InventarioContextProvider>
+      );
+    else
+      return (
+        <MercaderiaContextProvider>
+          <Mercaderia />
+        </MercaderiaContextProvider>
+      );
   };
 
   const toPage = (page) => (evt) => {
@@ -36,21 +42,25 @@ function App() {
       <nav className="nav-container">
         <ul>
           <li>
-            <a href="/deposito-digrutt-react/mercaderia" onClick={toPage("mercaderia")}>
+            <a
+              href="/mercaderia"
+              onClick={toPage("mercaderia")}
+            >
               Mercaderia
             </a>
           </li>
           <li>
-            <a href="/deposito-digrutt-react/deposito" onClick={toPage("deposito")}>
+            <a
+              href="/inventario"
+              onClick={toPage("inventario")}
+            >
               Inventario
             </a>
           </li>
         </ul>
       </nav>
 
-      <main>
-        {getContent()}
-      </main>
+      <main>{getContent()}</main>
     </>
   );
 }
