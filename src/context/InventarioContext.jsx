@@ -8,11 +8,12 @@ import { useLocalStorage } from "usehooks-ts";
 
 export function InventarioContextProvider(props) {
   const [api, setApi] = useLocalStorage("inventarioApi", []);
+  const [isdone, setDone] = useState(false);
 
   useEffect(() => {
     fetch("https://deposito-digrutt.up.railway.app/inventario/sumstock")
       .then((result) => result.json())
-      .then((result) => setApi(result))
+      .then((result) => {setApi(result); setDone(true)})
       .catch((error) => console.error(error));
   }, []);
 
@@ -116,6 +117,7 @@ export function InventarioContextProvider(props) {
         deleteApi,
         orderNombreASC,
         orderNombreDES,
+        isdone
       }}
     >
       {props.children}

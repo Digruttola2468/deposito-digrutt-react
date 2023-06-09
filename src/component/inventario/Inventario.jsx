@@ -1,14 +1,36 @@
 import "./styleDeposito.css";
-import * as React from "react";
+import { useContext } from "react";
+
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import InventarioTable from "./table/Table";
 import PostInventario from "./NewInventario/PostInventario";
 
+import { InventarioContext } from "../../context/InventarioContext";
+
 function Inventario() {
-    return <>
-        <InventarioTable />
-        <PostInventario />
+  const { isdone } = useContext(InventarioContext);
+
+  return (
+    <>
+      {isdone ? (
+        <>
+          <InventarioTable />
+          <PostInventario />
+        </>
+      ) : (
+        <h1>Cargando</h1>
+      )}
+
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={!isdone}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
+  );
 }
 
 export default Inventario;

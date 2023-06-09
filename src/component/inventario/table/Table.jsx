@@ -60,7 +60,6 @@ export default function InventarioTable() {
         />
       </div>
       <SelectItemInventario index={index} />
-      
     </div>
   );
 }
