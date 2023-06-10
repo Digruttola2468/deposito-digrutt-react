@@ -47,13 +47,12 @@ export default function InfoItem({ index }) {
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
-    console.log(api);
-    /*updateApi(apiOne.id, {
+    updateApi(apiOne.id, {
       proveedor: factura,
       idinventario: filter[0].id,
       stock,
       fecha,
-    });*/
+    });
     handleCloseUpdate();
   };
 

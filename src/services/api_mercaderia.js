@@ -16,17 +16,8 @@ export const getSalida = async () => {
   return await result.json();
 };
 
-//Get Inventario Nombres
-export const getNombresInventario = async () => {
-  const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/inventario/nombres"
-  );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
-  return await result.json();
-};
-
 //New mercaderia
-export const post = async () => {
+export const post = async (json) => {
   const result = await fetch(
     "https://deposito-digrutt.up.railway.app/mercaderia",
     {
@@ -42,18 +33,8 @@ export const post = async () => {
   return await result.json();
 };
 
-//Get one inventario
-export const getOneInventario = async (idInventario) => {
-  const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/inventario/${idInventario}`
-  );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
-
-  return result.json();
-};
-
 //Update mercaderia
-export const update = async () => {
+export const update = async (id, json) => {
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -71,7 +52,7 @@ export const update = async () => {
 };
 
 //Delete Mercaderia
-export const eliminar = async () => {
+export const eliminar = async (id) => {
   const result = await fetch(
     `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
     {
@@ -91,7 +72,6 @@ export const searchEntrada = async (search) => {
     `https://deposito-digrutt.up.railway.app/mercaderia/entrada/${search}`,
     { method: "GET" }
   );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
 };
 
@@ -101,6 +81,5 @@ export const searchSalida = async (search) => {
     `https://deposito-digrutt.up.railway.app/mercaderia/salida/${search}`,
     { method: "GET" }
   );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
 };

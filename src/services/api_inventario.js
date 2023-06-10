@@ -6,6 +6,26 @@ export const get = async () => {
   return await response.json();
 };
 
+//Get one inventario
+export const getOneInventario = async (idInventario) => {
+  const result = await fetch(
+    `https://deposito-digrutt.up.railway.app/inventario/${idInventario}`
+  );
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+
+  return await result.json();
+};
+
+
+//Get Inventario Nombres
+export const getNombresInventario = async () => {
+  const result = await fetch(
+    "https://deposito-digrutt.up.railway.app/inventario/nombres"
+  );
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+  return await result.json();
+};
+
 export const post = async (json) => {
   const requestOptions = {
     method: "POST",

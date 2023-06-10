@@ -14,24 +14,28 @@ import {
   update,
   eliminar,
   getEntrada,
-  getNombresInventario,
-  getOneInventario,
   getSalida,
   post,
   searchEntrada,
   searchSalida,
 } from "../services/api_mercaderia";
 
+import {getOneInventario, getNombresInventario} from "../services/api_inventario";
+
+
 export function MercaderiaContextProvider(props) {
-  const [api, setApi] = useLocalStorage('mercaderiaApi', []);
-  const [inventarioNombres, setInventarioNombres] = useLocalStorage('inventarioNombres',[]);
+  const [api, setApi] = useLocalStorage("mercaderiaApi", []);
+  const [inventarioNombres, setInventarioNombres] = useLocalStorage(
+    "inventarioNombres",
+    []
+  );
 
   useEffect(() => {
     getEntrada()
       .then((result) => setApi(result))
       .catch((error) => console.error(error));
 
-      getNombresInventario()
+    getNombresInventario()
       .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   }, []);
@@ -49,7 +53,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const updateApi = (id, json) => {
-    update()
+    update(id, json)
       .then((result) => {
         const newUserForeignInfo = [...api];
         let index = newUserForeignInfo.findIndex(
@@ -74,7 +78,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const createApi = (json) => {
-    post()
+    post(json)
       .then((data2) => {
         getOneInventario(data2.idinventario)
           .then((data) => {
@@ -94,7 +98,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const deleteApi = (id) => {
-    eliminar()
+    eliminar(id)
       .then((data) => {
         toast.success(data.message);
         setApi(api.filter((elem) => elem.id != id));
@@ -103,7 +107,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const searchEntradaApi = (search) => {
-    searchEntrada()
+    searchEntrada(search)
       .then((result) => {
         if (result.message) return toast.error(result.message);
         setApi(result);
@@ -112,7 +116,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const searchSalidaApi = (search) => {
-    searchSalida()
+    searchSalida(search)
       .then((result) => {
         if (result.message) return toast.error(result.message);
         setApi(result);
