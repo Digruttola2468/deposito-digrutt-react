@@ -1,57 +1,55 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect } from "react";
+
+//toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const MercaderiaContext = createContext();
 
-import { useLocalStorage } from 'usehooks-ts'
+//Hooks
+import { useLocalStorage } from "usehooks-ts";
+
+//API REST
+import {
+  update,
+  eliminar,
+  getEntrada,
+  getNombresInventario,
+  getOneInventario,
+  getSalida,
+  post,
+  searchEntrada,
+  searchSalida,
+} from "../services/api_mercaderia";
 
 export function MercaderiaContextProvider(props) {
-  const [api, setApi] = useLocalStorage('mercaderiaApi',[]);
+  const [api, setApi] = useLocalStorage('mercaderiaApi', []);
   const [inventarioNombres, setInventarioNombres] = useLocalStorage('inventarioNombres',[]);
 
   useEffect(() => {
-    fetch("https://deposito-digrutt.up.railway.app/mercaderia/entrada")
-      .then((result) => result.json())
+    getEntrada()
       .then((result) => setApi(result))
       .catch((error) => console.error(error));
 
-    fetch("https://deposito-digrutt.up.railway.app/inventario/nombres")
-      .then((result) => result.json())
+      getNombresInventario()
       .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   }, []);
 
   const getEntradaApi = () => {
-    fetch("https://deposito-digrutt.up.railway.app/mercaderia/entrada")
-      .then((result) => result.json())
+    getEntrada()
       .then((result) => setApi(result))
       .catch((error) => console.error(error));
   };
 
   const getSalidaApi = () => {
-    fetch("https://deposito-digrutt.up.railway.app/mercaderia/salida")
-      .then((result) => result.json())
+    getSalida()
       .then((result) => setApi(result))
       .catch((error) => console.error(error));
   };
 
   const updateApi = (id, json) => {
-    const raw = JSON.stringify(json);
-
-    const requestOptions = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: raw,
-    };
-
-    fetch(
-      `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
-      requestOptions
-    )
-      .then((response) => response.json())
+    update()
       .then((result) => {
         const newUserForeignInfo = [...api];
         let index = newUserForeignInfo.findIndex(
@@ -76,19 +74,9 @@ export function MercaderiaContextProvider(props) {
   };
 
   const createApi = (json) => {
-    fetch("https://deposito-digrutt.up.railway.app/mercaderia", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(json),
-    })
-      .then((response) => response.json())
+    post()
       .then((data2) => {
-        fetch(
-          `https://deposito-digrutt.up.railway.app/inventario/${data2.idinventario}`
-        )
-          .then((response) => response.json())
+        getOneInventario(data2.idinventario)
           .then((data) => {
             toast.success("Se envio correctamente");
             setApi([
@@ -102,17 +90,11 @@ export function MercaderiaContextProvider(props) {
           })
           .catch((error) => console.error(error));
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => console.error(error));
   };
 
   const deleteApi = (id) => {
-    fetch(`https://deposito-digrutt.up.railway.app/mercaderia/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
+    eliminar()
       .then((data) => {
         toast.success(data.message);
         setApi(api.filter((elem) => elem.id != id));
@@ -121,15 +103,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const searchEntradaApi = (search) => {
-    var requestOptions = {
-      method: "GET",
-    };
-
-    fetch(
-      `https://deposito-digrutt.up.railway.app/mercaderia/entrada/${search}`,
-      requestOptions
-    )
-      .then((response) => response.json())
+    searchEntrada()
       .then((result) => {
         if (result.message) return toast.error(result.message);
         setApi(result);
@@ -138,15 +112,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const searchSalidaApi = (search) => {
-    var requestOptions = {
-      method: "GET",
-    };
-
-    fetch(
-      `https://deposito-digrutt.up.railway.app/mercaderia/salida/${search}`,
-      requestOptions
-    )
-      .then((response) => response.json())
+    searchSalida()
       .then((result) => {
         if (result.message) return toast.error(result.message);
         setApi(result);

@@ -20,7 +20,7 @@ function Inventario() {
           <PostInventario />
         </>
       ) : (
-        <h1>Cargando</h1>
+        <></>
       )}
 
       <Backdrop
