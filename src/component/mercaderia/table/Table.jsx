@@ -14,7 +14,6 @@ export function TableMercaderia() {
   const { api } = React.useContext(MercaderiaContext);
 
   const LIMIT = 10;
-  const [open, setOpen] = React.useState(false);
 
   const [start, setStart] = React.useState(0);
   const [end, setEnd] = React.useState(LIMIT);
@@ -22,9 +21,6 @@ export function TableMercaderia() {
   const [index, setIndex] = React.useState(0);
 
   const [page, setPage] = React.useState(1);
-
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
 
   React.useEffect(() => {
     setStart(end - LIMIT);
@@ -58,29 +54,13 @@ export function TableMercaderia() {
           </tbody>
         </table>
         <Pagination
-          count={Math.ceil([...api].length / LIMIT)}
-          onChange={(evt) => {
-            setPage(parseInt(evt.target.innerText));
-
-            if (parseInt(evt.target.innerText) > page) {
-              setEnd(LIMIT * parseInt(evt.target.innerText));
-            } else if (parseInt(evt.target.innerText) < page) {
-              setEnd(LIMIT * parseInt(evt.target.innerText));
-            }
-          }}
+          count={Math.ceil(api.length / LIMIT)}
+          onChange={(evt) => setEnd(LIMIT * parseInt(evt.target.innerText))}
         />
       </div>
       <div style={{ marginTop: 20 }}>
         <InfoItem index={index} />
       </div>
-
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={open}
-        onClick={handleClose}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </div>
   );
 }
