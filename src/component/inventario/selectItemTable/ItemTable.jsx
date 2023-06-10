@@ -34,12 +34,15 @@ export default function SelectItemInventario({ index }) {
   const [descripcion, setDescripcion] = useState("");
   const [nombre, setNombre] = useState("");
 
-
   const handleUpdate = () => {
-    updateApi(apiOne.id, {
-      nombre,
-      descripcion
-    });
+    updateApi(
+      apiOne.idinventario,
+      {
+        nombre,
+        descripcion,
+      },
+      { Entrada: apiOne.Entrada, Salida: apiOne.Salida }
+    );
     handleCloseUpdate();
   };
 

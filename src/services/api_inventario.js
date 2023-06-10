@@ -57,7 +57,7 @@ export const update = async (id, json) => {
     `https://deposito-digrutt.up.railway.app/inventario/${id}`,
     requestOptions
   );
-  if(!resultado.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  if(!resultado.ok) throw new Error(`HTTP error! status: ${resultado.status}`);
 
   return await resultado.json();
 };

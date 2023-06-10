@@ -34,21 +34,20 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.log("error", error));
   };
 
-  const updateApi = (id, json) => {
-    update
+  const updateApi = (id, json, jsonEntradaSalida) => {
+    update(id, json, jsonEntradaSalida)
       .then((result) => {
         const newUserForeignInfo = [...api];
         let index = newUserForeignInfo.findIndex(
           (elem) => elem.idinventario == result.idinventario
         );
 
-        newUserForeignInfo.splice(index, 1, result);
+        newUserForeignInfo.splice(index, 1, {...result, idinventario: result.id, ...jsonEntradaSalida});
 
         setApi(newUserForeignInfo);
-
         toast.success("Se actualizo Correctamente");
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.error("error", error));
   };
 
   const deleteApi = (id) => {
