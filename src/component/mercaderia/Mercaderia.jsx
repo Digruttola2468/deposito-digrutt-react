@@ -1,7 +1,7 @@
 import "./styleMercaderia.css";
 import { useContext, useEffect, useState } from "react";
 
-import { FaFileExcel, FaFilePdf } from "react-icons/fa";
+import { FaFileExcel } from "react-icons/fa";
 
 import IconButtonMui from "./IconButtonMui/Button";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
@@ -16,6 +16,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+
+//Download
+import axios from "axios";
+import fileDownload from "js-file-download";
 
 const StyledButton = styled(Button)({
   background: "#fff",
@@ -53,10 +57,33 @@ export default function Mercaderia() {
     else searchSalidaApi(codProducto.nombre);
   };
 
+  const handleClickExcel = () => {
+    if (checked) {
+      //Entrada
+      axios({
+        url: "https://deposito-digrutt.up.railway.app/excel/mercaderia/entrada",
+        method: "GET",
+        responseType: "blob",
+      }).then((res) => {
+        console.log(res);
+        fileDownload(res.data, "mercaderiaEntrada.xlsx");
+      });
+    } else {
+      //Salida
+      axios({
+        url: "https://deposito-digrutt.up.railway.app/excel/mercaderia/salida",
+        method: "GET",
+        responseType: "blob",
+      }).then((res) => {
+        console.log(res);
+        fileDownload(res.data, "mercaderiaSalida.xlsx");
+      });
+    }
+  };
+
   useEffect(() => {
     if (codProducto == undefined) {
       if (condicional) {
-
         if (checked) getEntradaApi();
         else getSalidaApi();
 
@@ -91,9 +118,12 @@ export default function Mercaderia() {
           <StyledButton variant="text" onClick={handleClickSeach}>
             Buscar
           </StyledButton>
+          <StyledButton variant="text" onClick={handleClickExcel}>
+            <FaFileExcel /> Excel
+          </StyledButton>
         </div>
-        
-        <Stack direction="row" alignItems="center" > 
+
+        <Stack direction="row" alignItems="center">
           <Typography className="parrafoSalidaSwitch">Salida</Typography>
           <Switch
             checked={checked}
@@ -103,9 +133,9 @@ export default function Mercaderia() {
           <Typography className="parrafoEntradaSwitch">Entrada</Typography>
         </Stack>
       </div>
-        <TableMercaderia />
+      <TableMercaderia />
       <section className="infoItemTable">
-        <PutMercaderia isTableEntrada={checked}/>
+        <PutMercaderia isTableEntrada={checked} />
       </section>
     </section>
   );

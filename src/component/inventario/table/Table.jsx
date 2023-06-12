@@ -6,6 +6,13 @@ import { InventarioContext } from "../../../context/InventarioContext";
 import Pagination from "@mui/material/Pagination";
 import SelectItemInventario from "../selectItemTable/ItemTable";
 
+import Autocomplete from "@mui/material/Autocomplete";
+import Switch from "@mui/material/Switch";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
+
+
 export default function InventarioTable() {
   const { api } = useContext(InventarioContext);
 
@@ -16,11 +23,6 @@ export default function InventarioTable() {
   const [end, setEnd] = useState(LIMIT);
 
   const [index, setIndex] = useState(0);
-
-  const [page, setPage] = useState(1);
-
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
 
   useEffect(() => setStart(end - LIMIT));
 
