@@ -15,21 +15,25 @@ function Inventario() {
 
   return (
     <>
-      <div style={{display: "flex", flexDirection: "row"}}>
-        <Autocomplete
-          disablePortal
-          id="combo-box-demo"
-          sx={{ width: 200, marginLeft: 1 }}
-          renderInput={(params) => (
-            <TextField {...params} value={"Hola"} label="Cod Producto" />
-          )}
-        />
-        <Button variant="text">
-          Buscar
-        </Button>
-      </div>
       {isdone ? (
         <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              sx={{ width: 200, marginLeft: 1 }}
+              renderInput={(params) => (
+                <TextField {...params} value={"Hola"} label="Cod Producto" />
+              )}
+            />
+            <Button variant="text">Buscar</Button>
+          </div>
           <InventarioTable />
           <PostInventario />
         </>

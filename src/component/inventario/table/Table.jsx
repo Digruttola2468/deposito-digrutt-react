@@ -12,19 +12,26 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 
-
 export default function InventarioTable() {
-  const { api } = useContext(InventarioContext);
+  const { api, orderNombreASC, orderNombreDES } = useContext(InventarioContext);
 
   const LIMIT = 10;
-  const [open, setOpen] = useState(false);
 
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(LIMIT);
-
   const [index, setIndex] = useState(0);
 
+  //1: ASC
+  //0: DESC
+  const [order, setOrder] = useState(1);
+
   useEffect(() => setStart(end - LIMIT));
+
+  const handleNombre = () => {
+    if(order) orderNombreASC();
+    else orderNombreDES();
+    setOrder(!order);
+  }
 
   return (
     <div className="divTable">
@@ -32,7 +39,7 @@ export default function InventarioTable() {
         <table className="tableMercaderia">
           <thead>
             <tr>
-              <th>nombre</th>
+              <th onClick={handleNombre} style={{ cursor: "pointer" }} >nombre</th>
               <th>descripcion</th>
               <th>entrada</th>
               <th>salida</th>
