@@ -158,6 +158,7 @@ export default function Mercaderia() {
               key={action.name}
               icon={action.icon}
               tooltipTitle={action.name}
+              tooltipOpen
               onClick={() => setOption(action.name)}
             />
           ))}
