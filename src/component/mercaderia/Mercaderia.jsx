@@ -57,30 +57,6 @@ export default function Mercaderia() {
     else searchSalidaApi(codProducto.nombre);
   };
 
-  const handleClickExcel = () => {
-    if (checked) {
-      //Entrada
-      axios({
-        url: "https://deposito-digrutt.up.railway.app/excel/mercaderia/entrada",
-        method: "GET",
-        responseType: "blob",
-      }).then((res) => {
-        console.log(res);
-        fileDownload(res.data, "mercaderiaEntrada.xlsx");
-      });
-    } else {
-      //Salida
-      axios({
-        url: "https://deposito-digrutt.up.railway.app/excel/mercaderia/salida",
-        method: "GET",
-        responseType: "blob",
-      }).then((res) => {
-        console.log(res);
-        fileDownload(res.data, "mercaderiaSalida.xlsx");
-      });
-    }
-  };
-
   useEffect(() => {
     if (codProducto == undefined) {
       if (condicional) {
@@ -117,9 +93,6 @@ export default function Mercaderia() {
           />
           <StyledButton variant="text" onClick={handleClickSeach}>
             Buscar
-          </StyledButton>
-          <StyledButton variant="text" onClick={handleClickExcel}>
-            <FaFileExcel /> Excel
           </StyledButton>
         </div>
 

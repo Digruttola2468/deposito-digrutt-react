@@ -7,6 +7,8 @@
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
+ @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&display=swap');
+
  :root {
   --gis-oscuro: #484848;
   --celeste-oscuro: #006465;

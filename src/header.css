@@ -1,3 +1,4 @@
+
 :root {
     --gis-oscuro: #484848;
     --celeste-oscuro: #006465;
@@ -7,23 +8,78 @@
     --white: #fff;
 }
 
+h1 {
+    color: var(--white);
+    font-family: 'Bruno Ace SC', cursive;
+    font-size: 40px;
+    letter-spacing: 3px;
+    font-weight: 100;
+}
+
+.barIcon {
+    display: none;
+    color: var(--white);
+}
+
 .nav-container {
+    position: relative;
     display: flex;
     flex-direction: row;
     background-color: var(--celeste-oscuro);
-    
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0px 8px;
 }
 
 .nav-container ul{
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .nav-container li{
     margin-left: 5px;
-    
 }
+
+.ocultar {
+    display: none;
+}
+
 
 .nav-container ul a {
     color: var(--white);
+}
+
+@media (max-width: 570px) {
+    .barIcon {
+        display: block;
+    }
+    .mostrar {
+        transform: translateY(263px);
+    }
+    .nav-container ul{
+        display: block;
+        position: absolute;
+        
+        background-color: var(--celeste-oscuro);
+        flex-direction: column;
+        padding: 0px;
+
+        left: 0px;
+        top: -200px;
+
+        width: 100%;
+        transition: transform 1s;   
+        z-index: 100;
+    }
+    .nav-container li {
+        text-align: center;
+        padding: 12px;
+        
+        margin: 0px;
+    }
+    .nav-container li:hover {
+        background-color: var(--celeste-claro);
+    }
 }

@@ -16,17 +16,6 @@ import fileDownload from "js-file-download";
 function Inventario() {
   const { isdone } = useContext(InventarioContext);
 
-  const handleClickExcel = () => {
-    axios({
-      url: "https://deposito-digrutt.up.railway.app/excel/inventario",
-      method: "GET",
-      responseType: "blob"
-    }).then(res => {
-      console.log(res);
-      fileDownload(res.data, "inventario");
-    })
-  }
-
   return (
     <>
       <div style={{display: "flex", flexDirection: "row"}}>
@@ -40,9 +29,6 @@ function Inventario() {
         />
         <Button variant="text">
           Buscar
-        </Button>
-        <Button variant="text" onClick={handleClickExcel}>
-          Excel
         </Button>
       </div>
       {isdone ? (
