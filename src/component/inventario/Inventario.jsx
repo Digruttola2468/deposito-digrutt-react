@@ -5,7 +5,6 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import InventarioTable from "./table/Table";
-import PostInventario from "./NewInventario/PostInventario";
 
 import { InventarioContext } from "../../context/InventarioContext";
 import { Autocomplete, Button, TextField } from "@mui/material";
@@ -67,7 +66,7 @@ function Inventario() {
             </Button>
           </div>
           <InventarioTable />
-          <PostInventario />
+          
         </>
       ) : (
         <></>

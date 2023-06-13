@@ -15,6 +15,9 @@ import CardContent from "@mui/material/CardContent";
 //COMPONENT OWN
 import IconButtonMui from "../../mercaderia/IconButtonMui/Button";
 
+import PostInventario from "../NewInventario/PostInventario";
+
+
 //Context
 import { InventarioContext } from "../../../context/InventarioContext";
 
@@ -99,7 +102,7 @@ export default function SelectItemInventario({ index }) {
             </Card>
           );
         })}
-
+      <PostInventario />
       <Dialog
         open={openActualizar}
         onClose={handleCloseUpdate}

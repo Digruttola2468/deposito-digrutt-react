@@ -6,6 +6,7 @@ import { InventarioContext } from "../../../context/InventarioContext";
 import Pagination from "@mui/material/Pagination";
 import SelectItemInventario from "../selectItemTable/ItemTable";
 
+
 import Autocomplete from "@mui/material/Autocomplete";
 import Switch from "@mui/material/Switch";
 import Stack from "@mui/material/Stack";
@@ -68,6 +69,7 @@ export default function InventarioTable() {
           onChange={(evt) => setEnd(LIMIT * parseInt(evt.target.innerText))}
         />
       </div>
+      
       <SelectItemInventario index={index} />
     </div>
   );
