@@ -27,7 +27,6 @@ import { useWindowSize } from "usehooks-ts";
 import axios from "axios";
 import fileDownload from "js-file-download";
 
-
 const StyledButton = styled(Button)({
   background: "#fff",
   color: "#00c9d2",
@@ -82,9 +81,13 @@ export default function Mercaderia() {
 
         setCondicional(false);
       }
-      if (option == "Entrada") getEntradaApi();
-      else if (option == "Salida") getSalidaApi();
-      else if (option == "Export") {
+      if (option == "Entrada") {
+        getEntradaApi();
+        setOption("");
+      } else if (option == "Salida") {
+        getSalidaApi();
+        setOption("");
+      } else if (option == "Export") {
         axios({
           url: "https://deposito-digrutt.up.railway.app/excel/mercaderia",
           method: "GET",
