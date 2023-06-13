@@ -14,6 +14,7 @@ import { post, get, update, eliminar } from "../services/api_inventario";
 
 export function InventarioContextProvider(props) {
   const [api, setApi] = useLocalStorage("inventarioApi", []);
+  const [aux, setAux] = useState([]);
   const [isdone, setDone] = useState(false);
 
   useEffect(() => {
@@ -60,8 +61,14 @@ export function InventarioContextProvider(props) {
   };
 
   const searchInventario = (codProducto) => {
-    
+    setAux(api);
+    const filter = api.filter(elem => elem.nombre == codProducto.nombre);
+    setApi(filter);
   };
+
+  const getPrevius = () => {
+    setApi(aux);
+  }
 
   //ORDER BY
   const orderNombreASC = () => {
@@ -103,6 +110,8 @@ export function InventarioContextProvider(props) {
         orderNombreASC,
         orderNombreDES,
         isdone,
+        searchInventario,
+        getPrevius
       }}
     >
       {props.children}
