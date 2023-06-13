@@ -26,7 +26,7 @@ export function InventarioContextProvider(props) {
   }, []);
 
   const createApi = (json) => {
-    post
+    post(json)
       .then((result) => {
         toast.success("Creado Correctamente");
         setApi([...api, result]);
@@ -59,6 +59,11 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.error("Error:", error));
   };
 
+  const searchInventario = (codProducto) => {
+    
+  };
+
+  //ORDER BY
   const orderNombreASC = () => {
     setApi(
       api.sort((a, b) => {
@@ -71,6 +76,7 @@ export function InventarioContextProvider(props) {
         return 0;
       })
     );
+    toast.info("Ordenado Nombre Ascendente");
   };
   const orderNombreDES = () => {
     setApi(
@@ -84,6 +90,7 @@ export function InventarioContextProvider(props) {
         return 0;
       })
     );
+    toast.info("Ordenado Nombre Descendente");
   };
 
   return (
