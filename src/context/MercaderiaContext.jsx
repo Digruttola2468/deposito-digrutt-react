@@ -124,6 +124,92 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.log(error));
   };
 
+  //ORDER BY
+  const orderNombreASC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.nombre > b.nombre) {
+          return 1;
+        }
+        if (a.nombre < b.nombre) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Nombre Ascendente")
+  };
+  const orderNombreDESC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.nombre < b.nombre) {
+          return 1;
+        }
+        if (a.nombre > b.nombre) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Nombre Descendente")
+  };
+  const orderFechaASC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.fecha > b.fecha) {
+          return 1;
+        }
+        if (a.fecha < b.fecha) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Fecha Ascendente")
+  };
+  const orderFechaDESC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.fecha < b.fecha) {
+          return 1;
+        }
+        if (a.fecha > b.fecha) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Fecha Descendente")
+  };
+  const orderCantidadASC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.stock > b.stock) {
+          return 1;
+        }
+        if (a.stock < b.stock) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Stock Ascendente")
+  };
+  const orderCantidadDESC = () => {
+    setApi(
+      api.sort((a, b) => {
+        if (a.stock < b.stock) {
+          return 1;
+        }
+        if (a.stock > b.stock) {
+          return -1;
+        }
+        return 0;
+      })
+    );
+    toast.info("Ordenado Stock Descendente")
+  };
+
   return (
     <MercaderiaContext.Provider
       value={{
@@ -136,6 +222,12 @@ export function MercaderiaContextProvider(props) {
         getSalidaApi,
         searchSalidaApi,
         searchEntradaApi,
+        orderNombreASC,
+        orderNombreDESC,
+        orderFechaASC,
+        orderFechaDESC,
+        orderCantidadASC,
+        orderCantidadDESC
       }}
     >
       {props.children}

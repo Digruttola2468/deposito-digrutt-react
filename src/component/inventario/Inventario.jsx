@@ -10,9 +10,6 @@ import PostInventario from "./NewInventario/PostInventario";
 import { InventarioContext } from "../../context/InventarioContext";
 import { Autocomplete, Button, TextField } from "@mui/material";
 
-import axios, { Axios } from "axios";
-import fileDownload from "js-file-download";
-
 function Inventario() {
   const { isdone } = useContext(InventarioContext);
 

@@ -6,25 +6,48 @@ import InfoItem from "./ItemTable/InfoItem";
 
 import Pagination from "@mui/material/Pagination";
 
-import Backdrop from "@mui/material/Backdrop";
-import CircularProgress from "@mui/material/CircularProgress";
-
 export function TableMercaderia() {
-
-  const { api } = React.useContext(MercaderiaContext);
+  const {
+    api,
+    orderNombreASC,
+    orderNombreDESC,
+    orderFechaASC,
+    orderFechaDESC,
+    orderCantidadASC,
+    orderCantidadDESC,
+  } = React.useContext(MercaderiaContext);
 
   const LIMIT = 10;
 
   const [start, setStart] = React.useState(0);
   const [end, setEnd] = React.useState(LIMIT);
-
   const [index, setIndex] = React.useState(0);
 
-  const [page, setPage] = React.useState(1);
+  //1: ASC
+  //0: DESC
+  const [order, setOrder] = React.useState(1);
 
   React.useEffect(() => {
     setStart(end - LIMIT);
   });
+
+  const handleNombre = () => {
+    if (order) orderNombreASC();
+    else orderNombreDESC();
+    setOrder(!order);
+  };
+
+  const handleFecha = () => {
+    if (order) orderFechaASC();
+    else orderFechaDESC();
+    setOrder(!order);
+  };
+
+  const handleStock = () => {
+    if (order) orderCantidadASC();
+    else orderCantidadDESC();
+    setOrder(!order);
+  };
 
   return (
     <div className="divTable">
@@ -32,17 +55,21 @@ export function TableMercaderia() {
         <table className="tableMercaderia">
           <thead>
             <tr>
-              <th>nombre</th>
+              <th onClick={handleNombre} style={{ cursor: "pointer" }}>
+                nombre
+              </th>
               <th>descripcion</th>
-              <th>cantidad</th>
-              <th>fecha</th>
+              <th onClick={handleStock} style={{ cursor: "pointer" }}>cantidad</th>
+              <th onClick={handleFecha} style={{ cursor: "pointer" }}>
+                fecha
+              </th>
               <th>proveedor</th>
             </tr>
           </thead>
           <tbody className="bodyTableMercaderia">
             {[...api].slice(start, end).map((elem) => {
               return (
-                <tr key={elem.id } onClick={() => setIndex(elem.id)}>
+                <tr key={elem.id} onClick={() => setIndex(elem.id)}>
                   <td>{elem.nombre}</td>
                   <td>{elem.descripcion}</td>
                   <td>{elem.stock}</td>
