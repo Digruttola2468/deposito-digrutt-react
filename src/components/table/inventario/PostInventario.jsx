@@ -1,14 +1,9 @@
 import { useState, useContext } from "react";
+import { InventarioContext } from "../../../context/InventarioContext";
 
-import Button from "@mui/material/Button";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
+import CardPost from "../../card/CardBodyPost";
 
 import TextField from "@mui/material/TextField";
-
-import { InventarioContext } from "../../../context/InventarioContext";
 
 export default function PostInventario() {
   const { createApi } = useContext(InventarioContext);
@@ -25,23 +20,23 @@ export default function PostInventario() {
   };
 
   const handleClickPost = () => {
-    console.log("ACA");
+    console.log("create");
+    /*
     createApi({
       nombre,
       descripcion
     });
+    */
 
     empty();
   };
 
   return (
-    <Card sx={{ marginLeft: 1, marginTop: 1 }}>
-      <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-        <h2>Nuevo Inventario</h2>
-
+    <>
+      <CardPost title="Nuevo Inventario"
+      handlePost={handleClickPost} handleEmpty={empty}>
         <TextField
           error={inputNombreError}
-          id="outlined-basic"
           label="Cod Producto"
           value={nombre}
           onChange={(evt) => {
@@ -53,7 +48,6 @@ export default function PostInventario() {
         />
         <TextField
           error={inputDescripcionError}
-          id="outlined-basic"
           label="Descripcion"
           multiline
           value={descripcion}
@@ -64,15 +58,7 @@ export default function PostInventario() {
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
-      </CardContent>
-      <CardActions>
-        <Button variant="outlined" onClick={handleClickPost}>
-          Agregar
-        </Button>
-        <Button variant="text" onClick={() => empty()}>
-          Clear
-        </Button>
-      </CardActions>
-    </Card>
+      </CardPost>
+    </>
   );
 }

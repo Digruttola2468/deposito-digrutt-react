@@ -1,24 +1,32 @@
 import { useState } from "react";
-
 import "./header.css";
 
-import Inventario from "./component/inventario/Inventario";
+import Inventario from "./pages/Inventario";
 import Mercaderia from "./component/mercaderia/Mercaderia";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
 
+import DialogMenu from "./components/dialog/DialogMenu";
+
+import { FaBars, FaTable, FaFileExport } from "react-icons/fa";
+
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 
-import { CiExport } from "react-icons/ci";
-import { FaBars, FaTable } from "react-icons/fa";
-
-import axios from "axios";
-import fileDownload from "js-file-download";
+const getContent = (page) => {
+  if (page === "inventario")
+    return (
+      <InventarioContextProvider>
+        <Inventario />
+      </InventarioContextProvider>
+    );
+  else
+    return (
+      <MercaderiaContextProvider>
+        <Mercaderia />
+      </MercaderiaContextProvider>
+    );
+};
 
 function App() {
   const [page, setPage] = useState(() => {
@@ -26,27 +34,8 @@ function App() {
     const page = pathname.slice(1);
     return page;
   });
-  const [open, setOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const getContent = () => {
-    if (page === "inventario")
-      return (
-        <InventarioContextProvider>
-          <Inventario />
-        </InventarioContextProvider>
-      );
-    else
-      return (
-        <MercaderiaContextProvider>
-          <Mercaderia />
-        </MercaderiaContextProvider>
-      );
-  };
-
+  //Handle Click
   const toPage = (page) => (evt) => {
     evt.preventDefault();
     window.history.pushState(null, "", `/${page}`);
@@ -58,40 +47,21 @@ function App() {
     ul.classList.toggle("mostrar");
   };
 
-  const handleExportMercaderia = () => {
-    axios({
-      url: "https://deposito-digrutt.up.railway.app/excel/mercaderia",
-      method: "GET",
-      responseType: "blob",
-    }).then((res) => {
-      console.log(res);
-      fileDownload(res.data, "mercaderia.xlsx");
-    });
-  };
-  const handleExportInventario = () => {
-    axios({
-      url: "https://deposito-digrutt.up.railway.app/excel/inventario",
-      method: "GET",
-      responseType: "blob",
-    }).then((res) => {
-      console.log(res);
-      fileDownload(res.data, "inventario.xlsx");
-    });
-  };
-
   return (
     <>
       <nav className="nav-container">
         <h1>Digrutt</h1>
         <ul className="listaAbsolute">
-          <li>
-            <a href="/mercaderia" onClick={toPage("mercaderia")}>
-              <FaTable /> Mercaderia
+          <li onClick={toPage("mercaderia")}>
+            <a style={{cursor: "pointer"}}>
+              <FaTable />
+              Mercaderia
             </a>
           </li>
-          <li>
-            <a href="/inventario" onClick={toPage("inventario")}>
-              <FaTable /> Inventario
+          <li onClick={toPage("inventario")}>
+            <a style={{cursor: "pointer"}}>
+              <FaTable />
+              Inventario
             </a>
           </li>
           <li>
@@ -102,34 +72,15 @@ function App() {
                 setOpen(true);
               }}
             >
-              <CiExport />
               Export
+              <FaFileExport />
             </Button>
           </li>
         </ul>
         <FaBars className="barIcon" onClick={handleClickBar} />
-        <Dialog
-          open={open}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            Exportar tabla en Excel
-          </DialogTitle>
-          <DialogContent>
-            <Button onClick={handleExportMercaderia} autoFocus>
-              Export Mercaderia
-            </Button>
-            <Button onClick={handleExportInventario} autoFocus>
-              Export Inventario
-            </Button>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-          </DialogActions>
-        </Dialog>
+        <DialogMenu />
       </nav>
-      <main>{getContent()}</main>
+      <main>{getContent(page)}</main>
     </>
   );
 }
