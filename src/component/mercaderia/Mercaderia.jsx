@@ -83,9 +83,11 @@ export default function Mercaderia() {
       }
       if (option == "Entrada") {
         getEntradaApi();
+        setChecked(true);
         setOption("");
       } else if (option == "Salida") {
         getSalidaApi();
+        setChecked(false);
         setOption("");
       } else if (option == "Export") {
         axios({
@@ -143,7 +145,11 @@ export default function Mercaderia() {
           <></>
         )}
       </div>
+      
       <TableMercaderia />
+      {
+        checked ? <p style={{margin: 0, textAlign: "center"}}>Entrada</p> : <p style={{margin: 0, textAlign: "center"}}>Salida</p>
+      }
       <section className="infoItemTable">
         <PutMercaderia isTableEntrada={checked} />
       </section>
@@ -166,6 +172,7 @@ export default function Mercaderia() {
       ) : (
         <></>
       )}
+      
     </section>
   );
 }

@@ -31,7 +31,11 @@ export default function InfoItem({ index }) {
 
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
+
+   //2 - Entrada
+  //1 - Salida
   const [idcategoria, setIdCategoria] = useState();
+  
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
@@ -52,8 +56,9 @@ export default function InfoItem({ index }) {
       idinventario: filter[0].id,
       stock,
       fecha,
+      idcategoria
     });
-    handleCloseUpdate();
+    handleCloseUpdate(idcategoria);
   };
 
   //DIALOG
@@ -168,7 +173,7 @@ export default function InfoItem({ index }) {
             getOptionLabel={(elem) => elem.nombre}
             sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
             value={idcategoria || null}
-            onChange={(evt, newValue) => setIdCategoria(newValue)}
+            onChange={(evt, newValue) => {setIdCategoria(newValue.value)}}
             renderInput={(params) => (
               <TextField {...params} label="Categoria" />
             )}
