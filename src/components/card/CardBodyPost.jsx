@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 
 export default function CardPost( {title = "Nuevo", handlePost, handleEmpty , children} ) {
     return (
-      <Card sx={{ marginLeft: 1, marginTop: 1 }}>
+      <Card sx={{ marginLeft: 1, marginTop: 1 }} >
         <CardContent sx={{ display: "flex", flexDirection: "column" }}>
           <h2>{title}</h2>
           {children}

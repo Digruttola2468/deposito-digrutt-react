@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./header.css";
 
 import Inventario from "./pages/Inventario";
-import Mercaderia from "./component/mercaderia/Mercaderia";
+import Mercaderia from "./pages/Mercaderia";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";

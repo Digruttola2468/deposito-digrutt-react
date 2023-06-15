@@ -32,12 +32,14 @@ export default function SearchCodProducto  () {
           disablePortal
           options={api}
           getOptionLabel={(elem) => elem.nombre}
+
           //Al seleccionar
           value={codProducto || null}
           onChange={(evt, newValue) => {
             setCondicional(true);
             setcodProducto(newValue);
           }}
+          
           //Al escribir
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {

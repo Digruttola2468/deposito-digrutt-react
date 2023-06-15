@@ -1,8 +1,6 @@
 import { createContext, useEffect } from "react";
 
-//toastify
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export const MercaderiaContext = createContext();
 
@@ -19,9 +17,10 @@ import {
   searchEntrada,
   searchSalida,
 } from "../services/api_mercaderia";
-
-import {getOneInventario, getNombresInventario} from "../services/api_inventario";
-
+import {
+  getOneInventario,
+  getNombresInventario,
+} from "../services/api_inventario";
 
 export function MercaderiaContextProvider(props) {
   const [api, setApi] = useLocalStorage("mercaderiaApi", []);
@@ -128,86 +127,62 @@ export function MercaderiaContextProvider(props) {
   const orderNombreASC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.nombre > b.nombre) {
-          return 1;
-        }
-        if (a.nombre < b.nombre) {
-          return -1;
-        }
+        if (a.nombre > b.nombre) return 1;
+        if (a.nombre < b.nombre) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Nombre Ascendente")
+    toast.info("Ordenado Nombre Ascendente");
   };
   const orderNombreDESC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.nombre < b.nombre) {
-          return 1;
-        }
-        if (a.nombre > b.nombre) {
-          return -1;
-        }
+        if (a.nombre < b.nombre) return 1;
+        if (a.nombre > b.nombre) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Nombre Descendente")
+    toast.info("Ordenado Nombre Descendente");
   };
   const orderFechaASC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.fecha > b.fecha) {
-          return 1;
-        }
-        if (a.fecha < b.fecha) {
-          return -1;
-        }
+        if (a.fecha > b.fecha) return 1;
+        if (a.fecha < b.fecha) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Fecha Ascendente")
+    toast.info("Ordenado Fecha Ascendente");
   };
   const orderFechaDESC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.fecha < b.fecha) {
-          return 1;
-        }
-        if (a.fecha > b.fecha) {
-          return -1;
-        }
+        if (a.fecha < b.fecha) return 1;
+        if (a.fecha > b.fecha) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Fecha Descendente")
+    toast.info("Ordenado Fecha Descendente");
   };
   const orderCantidadASC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.stock > b.stock) {
-          return 1;
-        }
-        if (a.stock < b.stock) {
-          return -1;
-        }
+        if (a.stock > b.stock) return 1;
+        if (a.stock < b.stock) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Stock Ascendente")
+    toast.info("Ordenado Stock Ascendente");
   };
   const orderCantidadDESC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.stock < b.stock) {
-          return 1;
-        }
-        if (a.stock > b.stock) {
-          return -1;
-        }
+        if (a.stock < b.stock) return 1;
+        if (a.stock > b.stock) return -1;
         return 0;
       })
     );
-    toast.info("Ordenado Stock Descendente")
+    toast.info("Ordenado Stock Descendente");
   };
 
   return (
@@ -227,7 +202,7 @@ export function MercaderiaContextProvider(props) {
         orderFechaASC,
         orderFechaDESC,
         orderCantidadASC,
-        orderCantidadDESC
+        orderCantidadDESC,
       }}
     >
       {props.children}

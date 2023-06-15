@@ -1,18 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 
-import Button from "@mui/material/Button";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -20,9 +9,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
-import { toast } from "react-toastify";
+import CardPost from "../../card/CardBodyPost";
 
-export default function PutMercaderia({ isTableEntrada }) {
+export default function PutMercaderia({ isTableEntrada = true }) {
   const { createApi, inventarioNombres } = useContext(MercaderiaContext);
 
   const [factura, setFactura] = useState("");
@@ -54,14 +43,7 @@ export default function PutMercaderia({ isTableEntrada }) {
     setcodProducto("");
   };
 
-  const handleClickPost = () => {/*
-    if (inputValue.length == 0) setInputCodError(true);
-
-    if (stock.length == 0) setInputStockError(true);
-
-    if (fecha == undefined) setInputFechaError(true);
-*/
-    
+  const handleClickPost = () => {
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
@@ -72,17 +54,19 @@ export default function PutMercaderia({ isTableEntrada }) {
       idinventario: filter[0].id,
       idcategoria,
     });
-    
+
     empty();
   };
 
   return (
-    <Card sx={{ marginLeft: 1, marginTop: 1 }}>
-      <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-        <h2>Nueva Mercaderia</h2>
+    <section className="infoItemTable">
+      <CardPost
+        title="Nueva Mercaderia"
+        handlePost={handleClickPost}
+        handleEmpty={empty}
+      >
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
           options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
           sx={{ width: 300, margin: 1 }}
@@ -128,7 +112,6 @@ export default function PutMercaderia({ isTableEntrada }) {
         <TextField
           error={inputStockError}
           helperText="Required"
-          id="outlined-basic"
           label="Cantidad"
           value={stock}
           type="number"
@@ -140,22 +123,13 @@ export default function PutMercaderia({ isTableEntrada }) {
           sx={{ margin: 1, width: 300 }}
         />
         <TextField
-          id="outlined-basic"
           label="N° Factura"
           value={factura}
           onChange={(evt) => setFactura(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
-      </CardContent>
-      <CardActions>
-        <Button variant="outlined" onClick={handleClickPost}>
-          Agregar
-        </Button>
-        <Button variant="text" onClick={() => empty()}>
-          Clear
-        </Button>
-      </CardActions>
-    </Card>
+      </CardPost>
+    </section>
   );
 }
