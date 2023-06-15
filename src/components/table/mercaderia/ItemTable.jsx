@@ -9,11 +9,41 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import { useReadLocalStorage } from "usehooks-ts";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import DialogDelete from "../../dialog/DialogDelete";
-import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip } from "@mui/material";
+import {
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
+const getDateWithNameMonth = (fechaString) => {
+  const monthNames = [
+    "NaN",
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+  const fecha = fechaString;
+  const newFecha = fecha.split("-").reverse().join("-");
+  const fDate = new Date(newFecha);
+  return `${fDate.getDate()} ${monthNames[(fDate.getMonth() + 1)]} ${fDate.getFullYear()}`;
+};
+
 export default function InfoItem() {
-  const { api, deleteApi, updateApi, inventarioNombres,idCategoria } =
+  const { api, deleteApi, updateApi, inventarioNombres, idCategoria } =
     useContext(MercaderiaContext);
 
   const index = useReadLocalStorage("selectIndexMercaderia");
@@ -32,7 +62,6 @@ export default function InfoItem() {
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
-  
   //Handle
   const handleDelete = () => {
     deleteApi(apiOne.id);
@@ -62,16 +91,14 @@ export default function InfoItem() {
     setFecha(apiOne.fecha);
     setcodProducto({ nombre: apiOne.nombre, id: apiOne.idinventario });
     setStock(apiOne.stock);
-    setIdCategoria(idCategoria);  
+    setIdCategoria(idCategoria);
     setOpenActualizar(true);
   };
 
   const handleCloseUpdate = () => setOpenActualizar(false);
 
   useEffect(() => {
-    api
-      .filter((elem) => elem.id == index)
-      .map((elem) => setapiOne(elem));
+    api.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
   });
 
   return (
@@ -88,7 +115,7 @@ export default function InfoItem() {
                     <b>Descripcion</b>: {elem.descripcion}
                   </p>
                   <p>
-                    <b>Fecha</b>: {elem.fecha}
+                    <b>Fecha</b>: {getDateWithNameMonth(elem.fecha)}
                   </p>
                   <p>
                     <b>Cantidad</b>: {elem.stock}
@@ -135,11 +162,13 @@ export default function InfoItem() {
         close={handleCloseUpdate}
       >
         <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }}>
-          <InputLabel >Categoria</InputLabel>
+          <InputLabel>Categoria</InputLabel>
           <Select
             value={idcategoria}
             label="Categoria"
-            onChange={(evt,value) => {setIdCategoria(value.props.value);}}
+            onChange={(evt, value) => {
+              setIdCategoria(value.props.value);
+            }}
           >
             <MenuItem value={1}>Salida</MenuItem>
             <MenuItem value={2}>Entrada</MenuItem>
@@ -150,7 +179,9 @@ export default function InfoItem() {
           disablePortal
           options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
-          isOptionEqualToValue={(option, value) => option.nombre === value.nombre}
+          isOptionEqualToValue={(option, value) =>
+            option.nombre === value.nombre
+          }
           sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
           value={codProducto || null}
           onChange={(evt, newValue) => setcodProducto(newValue)}
