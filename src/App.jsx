@@ -29,6 +29,8 @@ const getContent = (page) => {
 };
 
 function App() {
+  const [open, setOpen] = useState(false);
+  
   const [page, setPage] = useState(() => {
     const { pathname } = window.location;
     const page = pathname.slice(1);
@@ -73,12 +75,11 @@ function App() {
               }}
             >
               Export
-              <FaFileExport />
             </Button>
           </li>
         </ul>
         <FaBars className="barIcon" onClick={handleClickBar} />
-        <DialogMenu />
+        <DialogMenu show={open} close={setOpen}/>
       </nav>
       <main>{getContent(page)}</main>
     </>

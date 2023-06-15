@@ -9,9 +9,8 @@ import { sendFile } from "../../services/sendFile";
 
 import Button from "@mui/material/Button";
 
-export default function DialogMenu () {
-    const [open, setOpen] = useState(false);
-  
+export default function DialogMenu ({show,close}) {
+    
     const handleExportMercaderia = () =>
       sendFile(
         "https://deposito-digrutt.up.railway.app/excel/mercaderia",
@@ -24,11 +23,11 @@ export default function DialogMenu () {
         "inventario.xlsx"
       );
   
-    const handleClose = () => setOpen(false);
+    const handleClose = () => close(false);
   
     return (
       <Dialog
-        open={open}
+        open={show}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

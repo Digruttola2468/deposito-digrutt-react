@@ -13,11 +13,11 @@ export default function CardPost( {title = "Nuevo", handlePost, handleEmpty , ch
           {children}
         </CardContent>
         <CardActions>
-          <Button variant="outlined" onClick={handlePost}>
-            Agregar
-          </Button>
           <Button variant="text" onClick={handleEmpty}>
             Clear
+          </Button>
+          <Button variant="outlined" onClick={handlePost}>
+            Agregar
           </Button>
         </CardActions>
       </Card>
