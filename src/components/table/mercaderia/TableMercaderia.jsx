@@ -98,7 +98,7 @@ export default function TableMercaderia() {
         </table>
         <Pagination
           count={Math.ceil(api.length / LIMIT)}
-          onChange={(evt) => setEnd(LIMIT * parseInt(evt.target.innerText))}
+          onChange={(evt, value) => setEnd(LIMIT * parseInt(value))}
         />
       </div>
       <div style={{ marginTop: 20 }}>
