@@ -21,12 +21,12 @@ export default function PostInventario() {
 
   const handleClickPost = () => {
     console.log("create");
-    /*
+    
     createApi({
       nombre,
       descripcion
     });
-    */
+    
 
     empty();
   };

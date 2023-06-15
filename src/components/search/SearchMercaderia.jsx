@@ -9,6 +9,7 @@ export default function SearchMercaderia() {
     getEntradaApi,
     getSalidaApi,
     searchSalidaApi,
+    idCategoria
   } = useContext(MercaderiaContext);
 
   const [codProducto, setcodProducto] = useState();
@@ -16,7 +17,7 @@ export default function SearchMercaderia() {
   const [condicional, setCondicional] = useState(false);
 
   const handleClickSeach = () => {
-    if (checked) searchEntradaApi (codProducto.nombre);
+    if (idCategoria == 2) searchEntradaApi (codProducto.nombre);
     else searchSalidaApi(codProducto.nombre);
   };
 
@@ -24,7 +25,7 @@ export default function SearchMercaderia() {
   useEffect(() => {
     if (codProducto == undefined) {
       if (condicional) {
-        if (checked) getEntradaApi();
+        if (idCategoria == 2) getEntradaApi();
         else getSalidaApi();
 
         setCondicional(false);
@@ -38,6 +39,7 @@ export default function SearchMercaderia() {
         options={inventarioNombres}
         getOptionLabel={(elem) => elem.nombre}
         sx={{ width: 200, marginLeft: 1 }}
+        isOptionEqualToValue={(option,value) => option.id === value.id}
         value={codProducto || null}
         onChange={(evt, newValue) => {
           setCondicional(true);

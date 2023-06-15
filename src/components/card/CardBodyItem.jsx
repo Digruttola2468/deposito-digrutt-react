@@ -15,10 +15,10 @@ export default function BodyCardItem({
   return (
     <>
       {data
-        .filter((elem) => elem.idinventario == index)
+        .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
-            <Card key={elem.idinventario} sx={{ marginLeft: 1, marginTop: 3 }}>
+            <Card key={elem.id} sx={{ marginLeft: 1, marginTop: 3 }}>
               <CardContent>
                 <div>
                   <h2>{elem.nombre}</h2>

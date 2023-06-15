@@ -9,10 +9,13 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import { useReadLocalStorage } from "usehooks-ts";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import DialogDelete from "../../dialog/DialogDelete";
-import { IconButton, TextField, Tooltip } from "@mui/material";
+import { FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 
 export default function InfoItem() {
+  const { api, deleteApi, updateApi, inventarioNombres,idCategoria } =
+    useContext(MercaderiaContext);
+
   const index = useReadLocalStorage("selectIndexMercaderia");
   const [openDelete, setOpenDelete] = useState(false);
   const [openActualizar, setOpenActualizar] = useState(false);
@@ -24,14 +27,12 @@ export default function InfoItem() {
 
   //2 - Entrada
   //1 - Salida
-  const [idcategoria, setIdCategoria] = useState();
+  const [idcategoria, setIdCategoria] = useState(idCategoria);
 
   const [stock, setStock] = useState("");
   const [fecha, setFecha] = useState();
 
-  const { api, deleteApi, updateApi, inventarioNombres } =
-    useContext(MercaderiaContext);
-
+  
   //Handle
   const handleDelete = () => {
     deleteApi(apiOne.id);
@@ -61,19 +62,16 @@ export default function InfoItem() {
     setFecha(apiOne.fecha);
     setcodProducto({ nombre: apiOne.nombre, id: apiOne.idinventario });
     setStock(apiOne.stock);
+    setIdCategoria(idCategoria);  
     setOpenActualizar(true);
   };
 
-  const handleCloseUpdate = () => {
-    setOpenActualizar(false);
-  };
+  const handleCloseUpdate = () => setOpenActualizar(false);
 
   useEffect(() => {
     api
       .filter((elem) => elem.id == index)
-      .map((elem) => {
-        setapiOne(elem);
-      });
+      .map((elem) => setapiOne(elem));
   });
 
   return (
@@ -136,24 +134,23 @@ export default function InfoItem() {
         show={openActualizar}
         close={handleCloseUpdate}
       >
-        <Autocomplete
-          disablePortal
-          options={[
-            { nombre: "Entrada", value: 2 },
-            { nombre: "Salida", value: 1 },
-          ]}
-          getOptionLabel={(elem) => elem.nombre}
-          sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
-          value={idcategoria || null}
-          onChange={(evt, newValue) => {
-            setIdCategoria(newValue.value);
-          }}
-          renderInput={(params) => <TextField {...params} label="Categoria" />}
-        />
+        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }}>
+          <InputLabel >Categoria</InputLabel>
+          <Select
+            value={idcategoria}
+            label="Categoria"
+            onChange={(evt,value) => {setIdCategoria(value.props.value);}}
+          >
+            <MenuItem value={1}>Salida</MenuItem>
+            <MenuItem value={2}>Entrada</MenuItem>
+          </Select>
+        </FormControl>
+
         <Autocomplete
           disablePortal
           options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
+          isOptionEqualToValue={(option, value) => option.nombre === value.nombre}
           sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
           value={codProducto || null}
           onChange={(evt, newValue) => setcodProducto(newValue)}

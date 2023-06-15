@@ -1,11 +1,11 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { ToastContainer, toast } from "react-toastify";
 
 export const MercaderiaContext = createContext();
 
 //Hooks
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useScreen } from "usehooks-ts";
 
 //API REST
 import {
@@ -28,10 +28,13 @@ export function MercaderiaContextProvider(props) {
     "inventarioNombres",
     []
   );
+  //2: ENTRADA
+  //1: SALIDA
+  const [idCategoria, setIdCategoria] = useState();
 
   useEffect(() => {
     getEntrada()
-      .then((result) => setApi(result))
+      .then((result) => {setIdCategoria(2);setApi(result);})
       .catch((error) => console.error(error));
 
     getNombresInventario()
@@ -41,13 +44,13 @@ export function MercaderiaContextProvider(props) {
 
   const getEntradaApi = () => {
     getEntrada()
-      .then((result) => setApi(result))
+      .then((result) => {setIdCategoria(2);setApi(result);})
       .catch((error) => console.error(error));
   };
 
   const getSalidaApi = () => {
     getSalida()
-      .then((result) => setApi(result))
+      .then((result) => {setIdCategoria(1);setApi(result);})
       .catch((error) => console.error(error));
   };
 
@@ -203,6 +206,7 @@ export function MercaderiaContextProvider(props) {
         orderFechaDESC,
         orderCantidadASC,
         orderCantidadDESC,
+        idCategoria
       }}
     >
       {props.children}

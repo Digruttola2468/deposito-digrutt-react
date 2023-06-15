@@ -28,8 +28,11 @@ export function InventarioContextProvider(props) {
   const createApi = (json) => {
     post(json)
       .then((result) => {
+        console.log(result);
+        console.log(api);
         toast.success("Creado Correctamente");
-        setApi([...api, result]);
+        setApi([...api, {...result, Entrada: 0,
+          Salida: 0}]);
       })
       .catch((error) => console.log("error", error));
   };
@@ -39,10 +42,10 @@ export function InventarioContextProvider(props) {
       .then((result) => {
         const newUserForeignInfo = [...api];
         let index = newUserForeignInfo.findIndex(
-          (elem) => elem.idinventario == result.idinventario
+          (elem) => elem.id == result.id
         );
 
-        newUserForeignInfo.splice(index, 1, {...result, idinventario: result.id, ...jsonEntradaSalida});
+        newUserForeignInfo.splice(index, 1, {...result, id: result.id, ...jsonEntradaSalida});
 
         setApi(newUserForeignInfo);
         toast.success("Se actualizo Correctamente");

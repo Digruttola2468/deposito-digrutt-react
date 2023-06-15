@@ -11,8 +11,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import CardPost from "../../card/CardBodyPost";
 
-export default function PutMercaderia({ isTableEntrada = true }) {
-  const { createApi, inventarioNombres } = useContext(MercaderiaContext);
+export default function PutMercaderia() {
+  const { createApi, inventarioNombres, idCategoria} = useContext(MercaderiaContext);
 
   const [factura, setFactura] = useState("");
 
@@ -25,15 +25,6 @@ export default function PutMercaderia({ isTableEntrada = true }) {
 
   const [fecha, setFecha] = useState();
   const [inputFechaError, setInputFechaError] = useState(false);
-
-  //2 - Entrada
-  //1 - Salida
-  const [idcategoria, setIdCategoria] = useState();
-
-  useEffect(() => {
-    if (isTableEntrada) setIdCategoria(2);
-    else setIdCategoria(1);
-  });
 
   const empty = () => {
     setFactura("");
@@ -52,7 +43,7 @@ export default function PutMercaderia({ isTableEntrada = true }) {
       proveedor: factura,
       stock,
       idinventario: filter[0].id,
-      idcategoria,
+      idcategoria: idCategoria,
     });
 
     empty();

@@ -29,13 +29,9 @@ export default function Mercaderia() {
   };
 
   useEffect(() => {
-    if (option == "Entrada") {
-      getEntradaApi();
-      setChecked(true);
-    } else if (option == "Salida") {
-      getSalidaApi();
-      setChecked(false);
-    } else if (option == "Export")
+    if (option == "Entrada") getEntradaApi();
+    else if (option == "Salida") getSalidaApi();
+    else if (option == "Export")
       sendFile(
         "https://deposito-digrutt.up.railway.app/excel/mercaderia",
         "mercaderia.xlsx"

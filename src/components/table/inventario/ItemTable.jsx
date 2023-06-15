@@ -42,7 +42,7 @@ export default function SelectItemInventario() {
 
   useEffect(() => {
     api
-      .filter((elem) => elem.idinventario == index)
+      .filter((elem) => elem.id == index)
       .map((elem) => setapiOne(elem));
     return () => {};
   });

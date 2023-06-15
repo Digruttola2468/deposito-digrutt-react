@@ -32,6 +32,7 @@ export default function SearchCodProducto  () {
           disablePortal
           options={api}
           getOptionLabel={(elem) => elem.nombre}
+          isOptionEqualToValue={(option,value) => option.idinventario === value.idinventario}
 
           //Al seleccionar
           value={codProducto || null}

@@ -17,7 +17,7 @@ const BodyTable = ({ data , end, count }) => {
     <tbody className="bodyTableMercaderia">
       {data.slice(start, end).map((elem) => {
         return (
-          <tr key={elem.idinventario} onClick={() => setIndex(elem.idinventario)}>
+          <tr key={elem.id} onClick={() => setIndex(elem.id)}>
             <td>{elem.nombre}</td>
             <td>{elem.descripcion}</td>
             <td>{elem.Entrada}</td>
