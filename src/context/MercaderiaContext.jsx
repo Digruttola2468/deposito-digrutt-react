@@ -150,8 +150,14 @@ export function MercaderiaContextProvider(props) {
   const orderFechaASC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.fecha > b.fecha) return 1;
-        if (a.fecha < b.fecha) return -1;
+        const newA = a.fecha.split("-").reverse().join("-");
+        const ADate = new Date(newA);
+
+        const newB = b.fecha.split("-").reverse().join("-");
+        const BDate = new Date(newB);
+
+        if (ADate > BDate) return 1;
+        if (ADate < BDate) return -1;
         return 0;
       })
     );
@@ -160,8 +166,14 @@ export function MercaderiaContextProvider(props) {
   const orderFechaDESC = () => {
     setApi(
       api.sort((a, b) => {
-        if (a.fecha < b.fecha) return 1;
-        if (a.fecha > b.fecha) return -1;
+        const newA = a.fecha.split("-").reverse().join("-");
+        const ADate = new Date(newA);
+
+        const newB = b.fecha.split("-").reverse().join("-");
+        const BDate = new Date(newB);
+
+        if (ADate < BDate) return 1;
+        if (ADate > BDate) return -1;
         return 0;
       })
     );
