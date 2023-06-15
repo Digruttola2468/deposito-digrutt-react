@@ -28,15 +28,14 @@ export default function SelectItemInventario() {
   };
 
   const handleUpdate = () => {
-    console.log("Actualizando");
-    /*updateApi(
-      apiOne.idinventario,
+    updateApi(
+      apiOne.id,
       {
         nombre,
         descripcion,
       },
       { Entrada: apiOne.Entrada, Salida: apiOne.Salida }
-    );*/
+    );
     setOpenActualizar(false);
   };
 

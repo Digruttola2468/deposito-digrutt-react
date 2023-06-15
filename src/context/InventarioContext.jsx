@@ -45,7 +45,7 @@ export function InventarioContextProvider(props) {
           (elem) => elem.id == result.id
         );
 
-        newUserForeignInfo.splice(index, 1, {...result, id: result.id, ...jsonEntradaSalida});
+        newUserForeignInfo.splice(index, 1, {...result, ...jsonEntradaSalida});
 
         setApi(newUserForeignInfo);
         toast.success("Se actualizo Correctamente");
