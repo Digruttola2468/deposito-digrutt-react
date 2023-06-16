@@ -90,7 +90,7 @@ export default function TableMercaderia() {
   const [end, setEnd] = useState(LIMIT);
   
   return (
-    <div className="divTable">
+    <div className="table-div">
       <div>
         <table className="tableMercaderia">
           <HeadTable />
@@ -101,9 +101,7 @@ export default function TableMercaderia() {
           onChange={(evt, value) => setEnd(LIMIT * parseInt(value))}
         />
       </div>
-      <div style={{ marginTop: 20 }}>
-        <InfoItem />
-      </div>
+      <InfoItem />
     </div>
   );
 }

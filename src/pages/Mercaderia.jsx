@@ -41,7 +41,7 @@ export default function Mercaderia() {
   });
 
   return (
-    <section className="sectionContainer">
+    <section style={{display: "flex", flexDirection: "column"}}>
       <div className="inputSearchTableMercaderia">
         <SearchMercaderia />
         {width > 500 ? (
@@ -50,7 +50,7 @@ export default function Mercaderia() {
             rightP={"Entrada"}
             isChecked={checked}
             handleChange={handleChange}
-          ></SwitchComponent>
+          />
         ) : (
           <></>
         )}

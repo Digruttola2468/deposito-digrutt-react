@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import "./styleDeposito.css";
 
 import SearchCodProducto from "../components/search/SearchInventario";
 import ProgressComponent from "../components/progress/ProgressComponent";

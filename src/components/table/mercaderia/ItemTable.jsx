@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import './itemtable.css'
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -102,7 +103,7 @@ export default function InfoItem() {
   });
 
   return (
-    <div>
+    <div style={{ marginTop: 20 }}>
       {api
         .filter((elem) => elem.id == index)
         .map((elem) => {
@@ -129,7 +130,7 @@ export default function InfoItem() {
                 <Tooltip
                   title="eliminar"
                   onClick={handleClickOpen}
-                  className="pdf"
+                  className="delete"
                 >
                   <IconButton size="small">
                     <FaTrash />

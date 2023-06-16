@@ -1,9 +1,3 @@
-.sectionMercaderia-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr ;
-}
-
 .tableMercaderia {
     text-align: center;
     border-collapse: collapse;
@@ -28,77 +22,16 @@
     cursor: pointer;
 }
 
-.divExportTable {
-    margin-top: 15px;
-}
-
-/*INPUT SEARCH*/
-
-.inputSearchTableMercaderia {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: center;
-    margin-top: 20px;
-}   
-.inputSearchTableMercaderia .buttonsearch{
-    position: absolute;
-    background-color: var(--white);
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 7px;
-
-    transform: translateX(165px) translateY(-1px);
-}
-.inputSearchTableMercaderia .buttonsearch:hover{
-    color: var(--gis-oscuro);
-}
-
-.excel:hover {
-    color: #1e6c41;
-}
-.pdf:hover {
-    color: #f20f00;
-}
-.update:hover {
-    color: #1976d2;
-}
-
-/*-------------EXPORTAR TABLA-------------*/
-
-.divExportTable button {
-    color: white;
-    background-color: var(--celeste-claro);
-    border: none;
-    outline: none;
-    padding: 10px;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.divTable {
+.table-div {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.searchCodProducto {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 10px;
-}
-.searchCodProducto button{
-    margin-left: 10px;
-}
-
-ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
-    justify-content: center;
-    margin-top: 20px;
+@media (max-width: 990px) {
+    .table-div {
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 630px) {
@@ -107,12 +40,5 @@ ul.MuiPagination-ul.css-wjh20t-MuiPagination-ul {
         width: 100%;
         overflow-x: scroll;
         white-space: nowrap;
-    }
-}
-
-
-@media (max-width: 990px) {
-    .divTable {
-        flex-direction: column;
     }
 }

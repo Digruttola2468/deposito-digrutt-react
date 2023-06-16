@@ -1,57 +1,8 @@
-
-.sectionContainer {
+.inputSearchTableMercaderia {
     display: flex;
-    flex-direction: column;
-}
-
-.infoItemTable {
-    padding-top: 20px;
-}
-
-.labelListProductos{
-    margin: 8px;
-}
-
-.inputListCodProductos {
-    border: none;
-    border-radius: 4px;
-    outline: 1px solid #c4c4c4;
-    padding: 14px;
-}
-.inputListCodProductos:hover {
-    outline: 1px solid black;
-}
-.inputListCodProductos:focus {
-    outline: 2px solid #1976d2;
-}
-
-.css-1xhypcz-MuiStack-root {
-    padding-top: 0px;
-}
-
-.required {
-    color: rgba(0, 0, 0, 0.6);
-    font-family: Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 400;
-    font-size: 0.75rem;
-    line-height: 1.66;
-    letter-spacing: 0.03333em;
-    text-align: left;
-    margin: 3px 14px 0px;
-}
-
-@media (max-width: 500px) {
-    .parrafoSalidaSwitch {
-        display: none;
-    }
-    .parrafoEntradaSwitch {
-        display: none;
-    }
-}
-
-@media (max-width: 600px) {
-    .infoItemTable {
-        padding-top: 10px;
-    }
-}
-
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+} 

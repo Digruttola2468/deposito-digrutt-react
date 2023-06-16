@@ -33,7 +33,7 @@ export default function SearchMercaderia() {
     }
   });
   return (
-    <div className="searchCodProducto">
+    <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
       <Autocomplete
         disablePortal
         options={inventarioNombres}

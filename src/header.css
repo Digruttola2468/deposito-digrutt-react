@@ -1,4 +1,3 @@
-
 :root {
     --gis-oscuro: #484848;
     --celeste-oscuro: #006465;
@@ -16,11 +15,6 @@ h1 {
     font-weight: 100;
 }
 
-.barIcon {
-    display: none;
-    color: var(--white);
-}
-
 .nav-container {
     position: relative;
     display: flex;
@@ -32,23 +26,23 @@ h1 {
     padding: 0px 8px;
 }
 
-.nav-container ul{
+.listaAbsolute{
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-
-.nav-container li{
+.listaAbsolute li{
     margin-left: 5px;
 }
-
+.listaAbsolute a {
+    color: var(--white);
+}
+.barIcon {
+    display: none;
+    color: var(--white);
+}
 .ocultar {
     display: none;
-}
-
-
-.nav-container ul a {
-    color: var(--white);
 }
 
 @media (max-width: 570px) {
@@ -58,7 +52,7 @@ h1 {
     .mostrar {
         transform: translateY(263px);
     }
-    .nav-container ul{
+    .listaAbsolute{
         display: block;
         position: absolute;
         
@@ -73,17 +67,29 @@ h1 {
         transition: transform 1s;   
         z-index: 100;
     }
-    .nav-container li {
+    .listaAbsolute li {
         text-align: center;
         padding: 12px;
         
         margin: 0px;
     }
-    .nav-container li:hover {
+    .listaAbsolute li:hover {
         background-color: var(--celeste-claro);
     }
 }
 
-.css-nhb8h9 {
-    justify-content: center;
-}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
