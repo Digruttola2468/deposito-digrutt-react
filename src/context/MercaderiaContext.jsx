@@ -82,6 +82,7 @@ export function MercaderiaContextProvider(props) {
   const createApi = (json) => {
     post(json)
       .then((data2) => {
+        const fecha = data2.fecha.split("-").reverse().join("-");
         getOneInventario(data2.idinventario)
           .then((data) => {
             toast.success("Se envio correctamente");
@@ -89,6 +90,7 @@ export function MercaderiaContextProvider(props) {
               ...api,
               {
                 ...data2,
+                fecha,
                 nombre: data[0].nombre,
                 descripcion: data[0].descripcion,
               },

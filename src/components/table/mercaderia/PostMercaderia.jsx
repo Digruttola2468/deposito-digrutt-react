@@ -12,7 +12,8 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import CardPost from "../../card/CardBodyPost";
 
 export default function PutMercaderia() {
-  const { createApi, inventarioNombres, idCategoria} = useContext(MercaderiaContext);
+  const { createApi, inventarioNombres, idCategoria } =
+    useContext(MercaderiaContext);
 
   const [factura, setFactura] = useState("");
 
@@ -56,30 +57,34 @@ export default function PutMercaderia() {
         handlePost={handleClickPost}
         handleEmpty={empty}
       >
-        <Autocomplete
-          disablePortal
-          options={inventarioNombres}
-          getOptionLabel={(elem) => elem.nombre}
-          sx={{ width: 300, margin: 1 }}
-          value={codProducto || null}
-          onChange={(evt, newValue) => {
-            setcodProducto(newValue);
-            setInputCodError(false);
-          }}
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              error={inputCodError}
-              helperText="Required"
-              value={"Hola"}
-              label="Cod Producto"
-            />
-          )}
-        />
+        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+          <Autocomplete
+            disablePortal
+            options={inventarioNombres}
+            getOptionLabel={(elem) => elem.nombre}
+            sx={{ width: 300, margin: 1 }}
+            value={codProducto || null}
+            onChange={(evt, newValue) => {
+              setcodProducto(newValue);
+              setInputCodError(false);
+            }}
+            inputValue={inputValue}
+            onInputChange={(_, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                error={inputCodError}
+                helperText="Required"
+                value={"Hola"}
+                label="Cod Producto"
+              />
+            )}
+          />
+          <p>{codProducto != undefined ? codProducto.descripcion : ""}</p>
+        </div>
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
