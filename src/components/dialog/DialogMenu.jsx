@@ -19,7 +19,7 @@ export default function DialogMenu ({show,close}) {
   
     const handleExportInventario = () =>
       sendFile(
-        "https://deposito-digrutt.up.railway.app/excel/mercaderia",
+        "https://deposito-digrutt.up.railway.app/excel/inventario",
         "inventario.xlsx"
       );
   

@@ -70,7 +70,7 @@ export default function TableComponent() {
         </table>
         <Pagination
           count={Math.ceil(api.length / LIMIT)}
-          onChange={(evt) => setEnd(LIMIT * parseInt(evt.target.innerText))}
+          onChange={(evt,newValue) => setEnd(LIMIT * parseInt(newValue))}
         />
       </div>
 
