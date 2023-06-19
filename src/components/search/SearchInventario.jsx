@@ -11,7 +11,10 @@ export default function SearchCodProducto  () {
     const [inputValue, setInputValue] = useState("");
     const [condicional, setCondicional] = useState(false);
   
-    const handleClickSearch = () => searchInventario(codProducto);
+    const handleClickSearch = () => {
+      if (inputValue.length != 0) 
+        searchInventario(codProducto);
+    }
     
     useEffect(() => {
       if (codProducto == undefined) {

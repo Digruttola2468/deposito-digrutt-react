@@ -10,6 +10,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import CardPost from "../../card/CardBodyPost";
+import { toast } from "react-toastify";
 
 export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria } =
@@ -19,13 +20,10 @@ export default function PutMercaderia() {
 
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
-  const [inputCodError, setInputCodError] = useState(false);
 
   const [stock, setStock] = useState("");
-  const [inputStockError, setInputStockError] = useState(false);
 
   const [fecha, setFecha] = useState();
-  const [inputFechaError, setInputFechaError] = useState(false);
 
   const empty = () => {
     setFactura("");
@@ -36,6 +34,19 @@ export default function PutMercaderia() {
   };
 
   const handleClickPost = () => {
+    if (inputValue.length === 0) return toast.error("Campo Cod.Producto Vacio");
+
+    if (fecha === undefined) return toast.error("Campo Fecha Vacia");
+
+    if (stock.length === 0) return toast.error("Campo Cantidad vacio");
+
+    if ( !Number.isInteger(parseInt(stock)) )
+      return toast.error("Tiene que ser numerico campo cantidad");
+    
+    if (parseInt(stock) == NaN) 
+      return toast.error("Tiene que ser numerico campo cantidad");
+    
+
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
@@ -51,23 +62,22 @@ export default function PutMercaderia() {
   };
 
   return (
-    <section className="infoItemTable">
+    <div className="infoItemTable">
       <CardPost
         title="Nueva Mercaderia"
         handlePost={handleClickPost}
         handleEmpty={empty}
       >
-        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+        <div
+          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+        >
           <Autocomplete
             disablePortal
             options={inventarioNombres}
             getOptionLabel={(elem) => elem.nombre}
             sx={{ width: 300, margin: 1 }}
             value={codProducto || null}
-            onChange={(evt, newValue) => {
-              setcodProducto(newValue);
-              setInputCodError(false);
-            }}
+            onChange={(evt, newValue) => setcodProducto(newValue)}
             inputValue={inputValue}
             onInputChange={(_, newInputValue) => {
               setInputValue(newInputValue);
@@ -75,7 +85,6 @@ export default function PutMercaderia() {
             renderInput={(params) => (
               <TextField
                 {...params}
-                error={inputCodError}
                 helperText="Required"
                 value={"Hola"}
                 label="Cod Producto"
@@ -90,13 +99,15 @@ export default function PutMercaderia() {
             <DatePicker
               label="Fecha"
               value={fecha || null}
-              onChange={(evt) => {
-                setInputFechaError(false);
-                setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+              onChange={(evt, value) => {
+                if (value.validationError != null)
+                  return toast.error(value.validationError);
+                else if (evt != null)
+                  setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+                else setFecha(undefined);
               }}
               slotProps={{
                 textField: {
-                  error: inputFechaError,
                   helperText: "Required",
                 },
               }}
@@ -106,15 +117,11 @@ export default function PutMercaderia() {
           </DemoContainer>
         </LocalizationProvider>
         <TextField
-          error={inputStockError}
           helperText="Required"
           label="Cantidad"
           value={stock}
           type="number"
-          onChange={(evt) => {
-            setStock(evt.target.value);
-            setInputStockError(false);
-          }}
+          onChange={(evt) => setStock(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
@@ -126,6 +133,6 @@ export default function PutMercaderia() {
           sx={{ margin: 1, width: 300 }}
         />
       </CardPost>
-    </section>
+    </div>
   );
 }

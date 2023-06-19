@@ -4,15 +4,14 @@ import { InventarioContext } from "../../../context/InventarioContext";
 import CardPost from "../../card/CardBodyPost";
 
 import TextField from "@mui/material/TextField";
+import { toast } from "react-toastify";
 
 export default function PostInventario() {
   const { createApi } = useContext(InventarioContext);
 
   const [nombre, setNombre] = useState("");
-  const [inputNombreError, setInputNombreError] = useState(false);
 
   const [descripcion, setDescripcion] = useState("");
-  const [inputDescripcionError, setInputDescripcionError] = useState(false);
 
   const empty = () => {
     setNombre("");
@@ -20,41 +19,39 @@ export default function PostInventario() {
   };
 
   const handleClickPost = () => {
-    console.log("create");
+    if (nombre.length === 0) 
+      return toast.error("Campo Cod.Producto Vacio");
+    
+    if (descripcion.length === 0 )
+      return toast.error("Campo Descripcion Vacio");
     
     createApi({
       nombre,
       descripcion
     });
     
-
     empty();
   };
 
   return (
     <>
-      <CardPost title="Nuevo Inventario"
-      handlePost={handleClickPost} handleEmpty={empty}>
+      <CardPost
+        title="Nuevo Inventario"
+        handlePost={handleClickPost}
+        handleEmpty={empty}
+      >
         <TextField
-          error={inputNombreError}
           label="Cod Producto"
           value={nombre}
-          onChange={(evt) => {
-            setNombre(evt.target.value);
-            setInputNombreError(false);
-          }}
+          onChange={(evt) => setNombre(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
         <TextField
-          error={inputDescripcionError}
           label="Descripcion"
           multiline
           value={descripcion}
-          onChange={(evt) => {
-            setDescripcion(evt.target.value);
-            setInputDescripcionError(false);
-          }}
+          onChange={(evt) => setDescripcion(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />
