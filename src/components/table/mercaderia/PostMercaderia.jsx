@@ -42,10 +42,6 @@ export default function PutMercaderia() {
 
     if ( !Number.isInteger(parseInt(stock)) )
       return toast.error("Tiene que ser numerico campo cantidad");
-    
-    if (parseInt(stock) == NaN) 
-      return toast.error("Tiene que ser numerico campo cantidad");
-    
 
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
