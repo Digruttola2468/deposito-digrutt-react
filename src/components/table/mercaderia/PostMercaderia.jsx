@@ -12,9 +12,45 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import CardPost from "../../card/CardBodyPost";
 import { toast } from "react-toastify";
 
+import { createFilterOptions } from "@mui/material/Autocomplete";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
+
+const filter = createFilterOptions();
+
 export default function PutMercaderia() {
-  const { createApi, inventarioNombres, idCategoria } =
+  const { createApi, inventarioNombres, idCategoria, createInventario } =
     useContext(MercaderiaContext);
+
+  const [open, toggleOpen] = useState(false);
+  const [dialogValue, setDialogValue] = useState({
+    cod: "",
+    descripcion: "",
+  });
+
+  const handleClose = () => {
+    setDialogValue({
+      cod: "",
+      descripcion: "",
+    });
+    toggleOpen(false);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Cod", dialogValue.cod);
+    console.log("Descripcion", dialogValue.descripcion);
+    createInventario({
+      nombre: dialogValue.cod,
+      descripcion: dialogValue.descripcion,
+    });
+    handleClose();
+  };
 
   const [factura, setFactura] = useState("");
 
@@ -40,7 +76,7 @@ export default function PutMercaderia() {
 
     if (stock.length === 0) return toast.error("Campo Cantidad vacio");
 
-    if ( !Number.isInteger(parseInt(stock)) )
+    if (!Number.isInteger(parseInt(stock)))
       return toast.error("Tiene que ser numerico campo cantidad");
 
     const filter = inventarioNombres.filter(
@@ -73,10 +109,29 @@ export default function PutMercaderia() {
             getOptionLabel={(elem) => elem.nombre}
             sx={{ width: 300, margin: 1 }}
             value={codProducto || null}
-            onChange={(evt, newValue) => setcodProducto(newValue)}
+            onChange={(evt, newValue) => {
+              if (newValue && newValue.id === undefined) {
+                toggleOpen(true);
+                setDialogValue({
+                  cod: newValue.inputValue,
+                  descripcion: "",
+                });
+              } else setcodProducto(newValue);
+            }}
             inputValue={inputValue}
             onInputChange={(_, newInputValue) => {
               setInputValue(newInputValue);
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+              if (params.inputValue !== "") {
+                filtered.push({
+                  inputValue: params.inputValue,
+                  nombre: `Agregar "${params.inputValue}"`,
+                });
+              }
+
+              return filtered;
             }}
             renderInput={(params) => (
               <TextField
@@ -129,6 +184,43 @@ export default function PutMercaderia() {
           sx={{ margin: 1, width: 300 }}
         />
       </CardPost>
+
+      <Dialog open={open} onClose={handleClose}>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>Nuevo Cod.Producto</DialogTitle>
+          <DialogContent>
+            <TextField
+              autoFocus
+              value={dialogValue.cod}
+              onChange={(event) =>
+                setDialogValue({
+                  ...dialogValue,
+                  cod: event.target.value,
+                })
+              }
+              label="cod. Producto"
+              type="text"
+              variant="standard"
+            />
+            <TextField
+              value={dialogValue.descripcion}
+              onChange={(event) =>
+                setDialogValue({
+                  ...dialogValue,
+                  descripcion: event.target.value,
+                })
+              }
+              label="Descripcion"
+              multiline
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Add</Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

@@ -20,6 +20,7 @@ import {
 import {
   getOneInventario,
   getNombresInventario,
+  post as postInventario
 } from "../services/api_inventario";
 
 export function MercaderiaContextProvider(props) {
@@ -99,6 +100,16 @@ export function MercaderiaContextProvider(props) {
           .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error));
+  };
+
+  const createInventario = (json) => {
+    postInventario(json)
+      .then((result) => {
+        console.log(result);
+        toast.success("Creado Correctamente");
+        inventarioNombres.push({...result})
+      })
+      .catch((error) => console.log("error", error));
   };
 
   const deleteApi = (id) => {
@@ -220,7 +231,8 @@ export function MercaderiaContextProvider(props) {
         orderFechaDESC,
         orderCantidadASC,
         orderCantidadDESC,
-        idCategoria
+        idCategoria,
+        createInventario
       }}
     >
       {props.children}
