@@ -34,7 +34,7 @@ export default function SelectItemInventario() {
         nombre,
         descripcion,
       },
-      { Entrada: apiOne.Entrada, Salida: apiOne.Salida }
+      { entrada: apiOne.entrada, salida: apiOne.salida }
     );
     setOpenActualizar(false);
   };

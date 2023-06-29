@@ -25,17 +25,14 @@ import {
 
 export function MercaderiaContextProvider(props) {
   const [api, setApi] = useLocalStorage("mercaderiaApi", []);
-  const [inventarioNombres, setInventarioNombres] = useLocalStorage(
-    "inventarioNombres",
-    []
-  );
+  const [inventarioNombres, setInventarioNombres] = useState([]);
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState();
 
   useEffect(() => {
     getEntrada()
-      .then((result) => {setIdCategoria(2);setApi(result);})
+      .then((result) => {setIdCategoria(2);setApi(result);console.log(result);})
       .catch((error) => console.error(error));
 
     getNombresInventario()

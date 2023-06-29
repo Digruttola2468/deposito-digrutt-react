@@ -26,13 +26,13 @@ export default function BodyCardItem({
                     <b>Descripcion</b>: {elem.descripcion}
                   </p>
                   <p>
-                    <b>Salida</b>: {elem.Salida}
+                    <b>Entrada</b>: {elem.entrada}
                   </p>
                   <p>
-                    <b>Entrada</b>: {elem.Entrada}
+                    <b>Salida</b>: {elem.salida}
                   </p>
                   <p>
-                    <b>Stock Actual</b>: {elem.Entrada - elem.Salida}
+                    <b>Stock Actual</b>: {elem.entrada - elem.salida}
                   </p>
                 </div>
               </CardContent>

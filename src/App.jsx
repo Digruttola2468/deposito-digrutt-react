@@ -54,7 +54,7 @@ function App() {
       <nav className="nav-container">
         <h1>Digrutt</h1>
         <ul className="listaAbsolute">
-          <li onClick={toPage("mercaderia")}>
+          <li onClick={toPage("")}>
             <a style={{cursor: "pointer"}}>
               <FaTable />
               Mercaderia

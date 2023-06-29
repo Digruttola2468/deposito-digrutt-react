@@ -12,6 +12,8 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import CardPost from "../../card/CardBodyPost";
 import { toast } from "react-toastify";
 
+import Checkbox from "@mui/material/Checkbox";
+
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import {
   Button,
@@ -19,6 +21,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
+  FormGroup,
 } from "@mui/material";
 
 const filter = createFilterOptions();
@@ -26,6 +30,12 @@ const filter = createFilterOptions();
 export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria, createInventario } =
     useContext(MercaderiaContext);
+
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
 
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
@@ -65,8 +75,10 @@ export default function PutMercaderia() {
     setFactura("");
     setFecha();
     setStock("");
-    setInputValue("");
-    setcodProducto("");
+    if(!checked){
+      setInputValue("");
+      setcodProducto("");
+    }
   };
 
   const handleClickPost = () => {
@@ -100,6 +112,13 @@ export default function PutMercaderia() {
         handlePost={handleClickPost}
         handleEmpty={empty}
       >
+        <FormGroup>
+          <FormControlLabel
+            control={<Checkbox checked={checked} onChange={handleChange} size="small"/>}
+            label="Mantener el valor Cod.Producto"
+            sx={{ marginLeft: 1 }}
+          />
+        </FormGroup>
         <div
           style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
         >
@@ -188,7 +207,9 @@ export default function PutMercaderia() {
       <Dialog open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit}>
           <DialogTitle>Nuevo Cod.Producto</DialogTitle>
-          <DialogContent>
+          <DialogContent
+            sx={{ display: "flex", flexDirection: "column", padding: 3 }}
+          >
             <TextField
               autoFocus
               value={dialogValue.cod}
@@ -213,6 +234,7 @@ export default function PutMercaderia() {
               label="Descripcion"
               multiline
               variant="standard"
+              sx={{ marginTop: 2 }}
             />
           </DialogContent>
           <DialogActions>

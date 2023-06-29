@@ -20,9 +20,9 @@ const BodyTable = ({ data , end, count }) => {
           <tr key={elem.id} onClick={() => setIndex(elem.id)}>
             <td>{elem.nombre}</td>
             <td>{elem.descripcion}</td>
-            <td>{elem.Entrada}</td>
-            <td>{elem.Salida}</td>
-            <td>{elem.Entrada - elem.Salida}</td>
+            <td>{elem.entrada}</td>
+            <td>{elem.salida}</td>
+            <td>{elem.entrada - elem.salida}</td>
           </tr>
         );
       })}

@@ -1,6 +1,6 @@
 export const get = async () => {
   const response = await fetch(
-    "https://deposito-digrutt.up.railway.app/inventario/sumstock"
+    "https://deposito-digrutt.up.railway.app/inventario"
   );
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
