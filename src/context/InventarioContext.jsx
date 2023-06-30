@@ -1,19 +1,22 @@
 import { createContext, useState, useEffect } from "react";
 
-//toastify 
+//toastify
 import { ToastContainer, toast } from "react-toastify";
 
 export const InventarioContext = createContext();
 
-//Hook 
+//Hook
 import { useLocalStorage } from "usehooks-ts";
 
 //Statefull
 import { post, get, update, eliminar } from "../services/api_inventario";
+import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
   const [api, setApi] = useLocalStorage("inventarioApi", []);
   const [aux, setAux] = useState([]);
+
+  const [mercaderiaApi, setMercaderiaApi] = useState([]);
   const [isdone, setDone] = useState(false);
 
   useEffect(() => {
@@ -21,6 +24,11 @@ export function InventarioContextProvider(props) {
       .then((result) => {
         setApi(result);
         setDone(true);
+      })
+      .catch((error) => console.error(error));
+    getAllMercaderia()
+      .then((result) => {
+        setMercaderiaApi(result);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -31,8 +39,7 @@ export function InventarioContextProvider(props) {
         console.log(result);
         console.log(api);
         toast.success("Creado Correctamente");
-        setApi([...api, {...result, Entrada: 0,
-          Salida: 0}]);
+        setApi([...api, { ...result, Entrada: 0, Salida: 0 }]);
       })
       .catch((error) => console.log("error", error));
   };
@@ -45,7 +52,10 @@ export function InventarioContextProvider(props) {
           (elem) => elem.id == result.id
         );
 
-        newUserForeignInfo.splice(index, 1, {...result, ...jsonEntradaSalida});
+        newUserForeignInfo.splice(index, 1, {
+          ...result,
+          ...jsonEntradaSalida,
+        });
 
         setApi(newUserForeignInfo);
         toast.success("Se actualizo Correctamente");
@@ -64,13 +74,13 @@ export function InventarioContextProvider(props) {
 
   const searchInventario = (codProducto) => {
     setAux(api);
-    const filter = api.filter(elem => elem.nombre == codProducto.nombre);
+    const filter = api.filter((elem) => elem.nombre == codProducto.nombre);
     setApi(filter);
   };
 
   const getPrevius = () => {
     setApi(aux);
-  }
+  };
 
   //ORDER BY
   const orderNombreASC = () => {
@@ -113,7 +123,8 @@ export function InventarioContextProvider(props) {
         orderNombreDES,
         isdone,
         searchInventario,
-        getPrevius
+        getPrevius,
+        mercaderiaApi
       }}
     >
       {props.children}

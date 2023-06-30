@@ -6,16 +6,18 @@ import ProgressComponent from "../components/progress/ProgressComponent";
 import TableComponent from "../components/table/inventario/TableInventario";
 
 import { InventarioContext } from "../context/InventarioContext";
+import GraficaInventario from "./GraficaInventario";
 
 function Inventario() {
   const { isdone } = useContext(InventarioContext);
- 
+
   return (
     <>
       {isdone ? (
         <>
           <SearchCodProducto />
           <TableComponent />
+          <GraficaInventario />
         </>
       ) : (
         <></>

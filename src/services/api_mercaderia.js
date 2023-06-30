@@ -1,3 +1,11 @@
+export const getAllMercaderia = async () => {
+  const result = await fetch(
+    "https://deposito-digrutt.up.railway.app/mercaderia"
+  );
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+  return await result.json();
+}
+
 //Get entrada mercaderia
 export const getEntrada = async () => {
   const result = await fetch(
