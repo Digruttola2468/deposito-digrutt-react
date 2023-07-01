@@ -36,10 +36,8 @@ export function InventarioContextProvider(props) {
   const createApi = (json) => {
     post(json)
       .then((result) => {
-        console.log(result);
-        console.log(api);
         toast.success("Creado Correctamente");
-        setApi([...api, { ...result, Entrada: 0, Salida: 0 }]);
+        setApi([...api, { ...result, entrada: 0, salida: 0 }]);
       })
       .catch((error) => console.log("error", error));
   };

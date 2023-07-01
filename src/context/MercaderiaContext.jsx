@@ -29,10 +29,10 @@ export function MercaderiaContextProvider(props) {
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState();
-
+  
   useEffect(() => {
     getEntrada()
-      .then((result) => {setIdCategoria(2);setApi(result);console.log(result);})
+      .then((result) => {setIdCategoria(2);setApi(result);})
       .catch((error) => console.error(error));
 
     getNombresInventario()
@@ -102,7 +102,6 @@ export function MercaderiaContextProvider(props) {
   const createInventario = (json) => {
     postInventario(json)
       .then((result) => {
-        console.log(result);
         toast.success("Creado Correctamente");
         inventarioNombres.push({...result})
       })
