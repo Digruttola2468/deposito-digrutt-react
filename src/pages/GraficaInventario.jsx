@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 
-import './graficainventario.css'
+import "./graficainventario.css";
 
 import { Input } from "@mui/material";
 import { InventarioContext } from "../context/InventarioContext";
@@ -14,6 +14,7 @@ import {
   TextField,
 } from "@mui/material";
 import BarsComponent from "../components/grafic/BarChart";
+import { useLocalStorage } from "usehooks-ts";
 
 const meses = [
   "Enero",
@@ -30,11 +31,28 @@ const meses = [
   "Diciembre",
 ];
 
+const getArrayYear = (mercaderiaApi, idinventario) => {
+  const enviar = new Set();
+  if (idinventario != null) {
+    const filtrado = mercaderiaApi.filter(
+      (elem) => elem.idinventario == idinventario
+    );
+
+    for (let i = 0; i < filtrado.length; i++) {
+      const element = filtrado[i];
+      const dateFecha = new Date(element.fecha);
+      enviar.add(dateFecha.getFullYear());
+    }
+  }
+  return enviar;
+};
+
 const getArrayMercaderia = (mercaderiaApi, idinventario, categoria, year) => {
   const filtradoDato = mercaderiaApi.filter(
     (elem) => elem.idinventario == idinventario
   );
   const filtrado = filtradoDato.filter((elem) => elem.categoria == categoria);
+
   const enviar = [];
 
   let enero = 0;
@@ -100,28 +118,41 @@ export default function GraficaInventario() {
   const { mercaderiaApi, api } = useContext(InventarioContext);
 
   const [year, setYear] = useState("");
+  const [listYear, setListYear] = useState([]);
+
   const [codProducto, setcodProducto] = useState();
 
   const [apiEntrada, setApiEntrada] = useState([]);
   const [apiSalida, setApiSalida] = useState([]);
 
-  const [colorEntrada, setColorEntrada] = useState("#de3f3f");
-  const [colorSalida, setColorSalida] = useState("#44ee8e");
+  const [colorEntrada, setColorEntrada] = useLocalStorage(
+    "colorGraficaEntrada",
+    "#de3f3f"
+  );
+  const [colorSalida, setColorSalida] = useLocalStorage(
+    "colorGraficaSalida",
+    "#44ee8e"
+  );
 
   const handleChange = (event) => {
-    setYear(event.target.value);
-  };
-
-  const handleClickSearch = (event) => {
     if (codProducto != null) {
-      if (year != "") {
-        setApiEntrada(
-          getArrayMercaderia(mercaderiaApi, codProducto.id, "Entrada", year)
-        );
-        setApiSalida(
-          getArrayMercaderia(mercaderiaApi, codProducto.id, "Salida", year)
-        );
-      }
+      setYear(event.target.value);
+      setApiEntrada(
+        getArrayMercaderia(
+          mercaderiaApi,
+          codProducto.id,
+          "Entrada",
+          event.target.value
+        )
+      );
+      setApiSalida(
+        getArrayMercaderia(
+          mercaderiaApi,
+          codProducto.id,
+          "Salida",
+          event.target.value
+        )
+      );
     }
   };
 
@@ -147,9 +178,7 @@ export default function GraficaInventario() {
       >
         Grafica
       </h2>
-      <div
-        className="graficaContainer"
-      >
+      <div className="graficaContainer">
         <Autocomplete
           disablePortal
           options={api}
@@ -161,25 +190,36 @@ export default function GraficaInventario() {
           value={codProducto || null}
           onChange={(evt, newValue) => {
             setcodProducto(newValue);
-            console.log(newValue);
+            if (newValue != null) {
+              let enviar = [];
+              for (const item of getArrayYear(
+                mercaderiaApi,
+                newValue.id
+              ).values()) {
+                enviar.push(item);
+              }
+              setListYear(enviar);
+            } else {
+              setListYear([]);
+              setYear("");
+            }
           }}
           sx={{ width: 200, marginLeft: 1 }}
           renderInput={(params) => (
-            <TextField {...params} value={"Hola"} label="Cod Producto" />
+            <TextField {...params} value={codProducto} label="Cod Producto" />
           )}
         />
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel>Year</InputLabel>
           <Select value={year} label="Year" onChange={handleChange}>
-            <MenuItem value={2021}>2021</MenuItem>
-            <MenuItem value={2022}>2022</MenuItem>
-            <MenuItem value={2023}>2023</MenuItem>
+            {listYear.map((elem) => (
+              <MenuItem key={elem} value={elem}>
+                {elem}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-        <Button variant="text" onClick={handleClickSearch}>
-          Graficar
-        </Button>
         <div
           style={{
             display: "flex",
