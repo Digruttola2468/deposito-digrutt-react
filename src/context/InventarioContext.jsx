@@ -72,12 +72,21 @@ export function InventarioContextProvider(props) {
 
   const searchInventario = (codProducto) => {
     setAux(api);
-    const filter = api.filter((elem) => elem.nombre == codProducto.nombre);
+    const filter = api.filter((elem) => elem.nombre.toLowerCase().includes(codProducto));
     setApi(filter);
   };
 
+  const filterApiSearch = (filter) => {
+    setAux(api);
+    setApi(filter);
+  }
+
   const getPrevius = () => {
-    setApi(aux);
+    get()
+      .then((result) => {
+        setApi(result);
+      })
+      .catch((error) => console.error(error));
   };
 
   //ORDER BY
@@ -114,6 +123,7 @@ export function InventarioContextProvider(props) {
     <InventarioContext.Provider
       value={{
         api,
+        filterApiSearch,
         createApi,
         updateApi,
         deleteApi,

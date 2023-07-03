@@ -4,59 +4,53 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
 
-export default function SearchCodProducto  () {
-    const { api,searchInventario, getPrevius } = useContext(InventarioContext);
-  
-    const [codProducto, setcodProducto] = useState();
-    const [inputValue, setInputValue] = useState("");
-    const [condicional, setCondicional] = useState(false);
-  
-    const handleClickSearch = () => {
-      if (inputValue.length != 0) 
-        searchInventario(codProducto);
-    }
-    
-    useEffect(() => {
-      if (codProducto == undefined) {
-        if (condicional) getPrevius();
-        setCondicional(false);
-      }
-    });
-  
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <Autocomplete
-          disablePortal
-          options={api}
-          getOptionLabel={(elem) => elem.nombre}
-          isOptionEqualToValue={(option,value) => option.idinventario === value.idinventario}
+export default function SearchCodProducto() {
+  const { api, searchInventario,filterApiSearch, getPrevius } = useContext(InventarioContext);
 
-          //Al seleccionar
-          value={codProducto || null}
-          onChange={(evt, newValue) => {
-            setCondicional(true);
-            setcodProducto(newValue);
-          }}
+  const [codProducto, setcodProducto] = useState();
+  const [inputValue, setInputValue] = useState("");
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
+    >
+      <Autocomplete
+        disablePortal
+        freeSolo
+        options={api}
+        getOptionLabel={(elem) => elem.nombre}
+        isOptionEqualToValue={(option, value) =>
+          option.idinventario === value.idinventario
+        }
+        //Al seleccionar
+        value={codProducto || null}
+        onChange={(evt, newValue) => {
+          setcodProducto(newValue);
+
+          if (newValue != null) searchInventario(newValue.nombre);
+          else getPrevius();
+        }}
+        //Al escribir
+        inputValue={inputValue}
+        onInputChange={(_, newInputValue) => {
+          setInputValue(newInputValue);
+          const resultado = api.filter((elem) => {
+            return elem.nombre.toLowerCase().includes(newInputValue);
+          });
           
-          //Al escribir
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          sx={{ width: 200, marginLeft: 1 }}
-          renderInput={(params) => (
-            <TextField {...params} value={"Hola"} label="Cod Producto" />
-          )}
-        />
-        <Button variant="text" onClick={handleClickSearch}>
-          Buscar
-        </Button>
-      </div>
-    );
-  };
+          if (newInputValue !== "") filterApiSearch(resultado);
+          else getPrevius();
+          
+          
+        }}
+        sx={{ width: 200, marginLeft: 1 }}
+        renderInput={(params) => (
+          <TextField {...params} value={"Hola"} label="Cod Producto" />
+        )}
+      />
+    </div>
+  );
+}
