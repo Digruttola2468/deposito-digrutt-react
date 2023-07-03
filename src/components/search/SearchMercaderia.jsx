@@ -1,5 +1,5 @@
-import { Autocomplete, Button, TextField } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { Autocomplete, TextField } from "@mui/material";
+import { useContext, useState } from "react";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
 
 export default function SearchMercaderia() {
@@ -13,26 +13,7 @@ export default function SearchMercaderia() {
   } = useContext(MercaderiaContext);
 
   const [codProducto, setcodProducto] = useState();
-  const [inputValue, setInputValue] = useState("");
-  const [condicional, setCondicional] = useState(false);
 
-  const handleClickSeach = () => {
-    if (inputValue.length != 0) {
-      if (idCategoria == 2) searchEntradaApi(codProducto.nombre);
-      else searchSalidaApi(codProducto.nombre);
-    }
-  };
-
-  useEffect(() => {
-    if (codProducto == undefined) {
-      if (condicional) {
-        if (idCategoria == 2) getEntradaApi();
-        else getSalidaApi();
-
-        setCondicional(false);
-      }
-    }
-  });
   return (
     <div
       style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
@@ -45,18 +26,18 @@ export default function SearchMercaderia() {
         isOptionEqualToValue={(option, value) => option.id === value.id}
         value={codProducto || null}
         onChange={(evt, newValue) => {
-          setCondicional(true);
           setcodProducto(newValue);
+          if (newValue != null) {
+            if (idCategoria == 2) searchEntradaApi(newValue.nombre);
+            else searchSalidaApi(newValue.nombre);
+          } else {
+            if (idCategoria == 2) getEntradaApi();
+            else getSalidaApi();
+          }
         }}
-        inputValue={inputValue}
-        onInputChange={(_, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
+        onClick={(evt) => console.log(evt)}
         renderInput={(params) => <TextField {...params} label="Cod Producto" />}
       />
-      <Button variant="text" onClick={handleClickSeach}>
-        Buscar
-      </Button>
     </div>
   );
 }

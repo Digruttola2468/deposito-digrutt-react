@@ -34,6 +34,7 @@ function Principal() {
   const [page, setPage] = useState(() => {
     const { pathname } = window.location;
     const page = pathname.slice(1);
+    console.log("PAGE",page);
     return page;
   });
 
@@ -41,6 +42,7 @@ function Principal() {
   const toPage = (page) => (evt) => {
     evt.preventDefault();
     window.history.pushState(null, "", `/${page}`);
+    console.log("TO PAGE",`/${page}`);
     setPage(page);
   };
 
