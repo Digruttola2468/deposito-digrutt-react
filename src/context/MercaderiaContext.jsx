@@ -29,7 +29,7 @@ export function MercaderiaContextProvider(props) {
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState();
-  
+
   useEffect(() => {
     getEntrada()
       .then((result) => {setIdCategoria(2);setApi(result);})
@@ -213,6 +213,7 @@ export function MercaderiaContextProvider(props) {
     <MercaderiaContext.Provider
       value={{
         api,
+        setApi,
         inventarioNombres,
         createApi,
         updateApi,

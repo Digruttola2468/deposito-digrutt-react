@@ -4,6 +4,8 @@ import { MercaderiaContext } from "../../context/MercaderiaContext";
 
 export default function SearchMercaderia() {
   const {
+    api,
+    setApi,
     inventarioNombres,
     searchEntradaApi,
     getEntradaApi,
@@ -13,6 +15,7 @@ export default function SearchMercaderia() {
   } = useContext(MercaderiaContext);
 
   const [codProducto, setcodProducto] = useState();
+  const [inputValue, setInputCod] = useState("");
 
   return (
     <div
@@ -20,6 +23,7 @@ export default function SearchMercaderia() {
     >
       <Autocomplete
         disablePortal
+        freeSolo
         options={inventarioNombres}
         getOptionLabel={(elem) => elem.nombre}
         sx={{ width: 200, marginLeft: 1 }}
@@ -35,7 +39,18 @@ export default function SearchMercaderia() {
             else getSalidaApi();
           }
         }}
-        onClick={(evt) => console.log(evt)}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputCod(newInputValue);
+          const resultado = api.filter((elem) => {
+            return elem.nombre.toLowerCase().includes(newInputValue);
+          });
+          if (newInputValue !== "") setApi(resultado);
+          else {
+            if (idCategoria == 2) getEntradaApi();
+            else getSalidaApi();
+          }
+        }}
         renderInput={(params) => <TextField {...params} label="Cod Producto" />}
       />
     </div>
