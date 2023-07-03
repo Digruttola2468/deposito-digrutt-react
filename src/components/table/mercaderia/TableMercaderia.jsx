@@ -68,7 +68,7 @@ const BodyTable = ({ data, end, count }) => {
 
   return (
     <tbody className="bodyTableMercaderia">
-      {data.slice(start, end).map((elem) => {
+      {data.length != 0 ? data.slice(start, end).map((elem) => {
         return (
           <tr key={elem.id} onClick={() => setIndex(elem.id)}>
             <td>{elem.nombre}</td>
@@ -78,7 +78,7 @@ const BodyTable = ({ data, end, count }) => {
             <td>{elem.proveedor}</td>
           </tr>
         );
-      })}
+      }) : <p style={{color: "red", position: "relative", margin: "auto", left: "calc(100%)", zIndex: 2}}>NO HAY DATOS</p>}
     </tbody>
   );
 };
