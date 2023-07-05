@@ -14,6 +14,7 @@ import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
   const [api, setApi] = useLocalStorage("inventarioApi", []);
+  const [apiOriginal, setApiOriginal] = useState([]);
   const [aux, setAux] = useState([]);
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
@@ -23,6 +24,7 @@ export function InventarioContextProvider(props) {
     get()
       .then((result) => {
         setApi(result);
+        setApiOriginal(result);
         setDone(true);
       })
       .catch((error) => console.error(error));
@@ -123,6 +125,7 @@ export function InventarioContextProvider(props) {
     <InventarioContext.Provider
       value={{
         api,
+        apiOriginal,
         filterApiSearch,
         createApi,
         updateApi,

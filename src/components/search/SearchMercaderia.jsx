@@ -4,7 +4,7 @@ import { MercaderiaContext } from "../../context/MercaderiaContext";
 
 export default function SearchMercaderia() {
   const {
-    api,
+    apiOriginal,
     setApi,
     inventarioNombres,
     searchEntradaApi,
@@ -42,7 +42,7 @@ export default function SearchMercaderia() {
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputCod(newInputValue);
-          const resultado = api.filter((elem) => {
+          const resultado = apiOriginal.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
           if (newInputValue !== "") setApi(resultado);

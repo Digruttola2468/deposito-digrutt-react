@@ -5,7 +5,7 @@ import { Autocomplete, Button, TextField } from "@mui/material";
 import { InventarioContext } from "../../context/InventarioContext";
 
 export default function SearchCodProducto() {
-  const { api, searchInventario,filterApiSearch, getPrevius } = useContext(InventarioContext);
+  const { api,apiOriginal, searchInventario, filterApiSearch, getPrevius } = useContext(InventarioContext);
 
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
@@ -37,7 +37,7 @@ export default function SearchCodProducto() {
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
-          const resultado = api.filter((elem) => {
+          const resultado = apiOriginal.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
           
