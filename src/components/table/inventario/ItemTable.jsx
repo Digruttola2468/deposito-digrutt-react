@@ -8,12 +8,14 @@ import DialogUpdate from "../../dialog/DialogUpdate";
 import BodyCardItem from "../../card/CardBodyItem";
 
 import { TextField } from "@mui/material";
+import DialogDelete from "../../dialog/DialogDelete";
 
 export default function SelectItemInventario() {
-  const { api, updateApi } = useContext(InventarioContext);
+  const { api, updateApi,deleteApi } = useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
   const [openActualizar, setOpenActualizar] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const [apiOne, setapiOne] = useState([]);
 
@@ -38,6 +40,12 @@ export default function SelectItemInventario() {
     );
     setOpenActualizar(false);
   };
+  
+  const handleDelete = () => {
+    console.log(apiOne.id);
+    deleteApi(apiOne.id);
+    setOpenDelete(false);
+  }
 
   useEffect(() => {
     api
@@ -48,7 +56,7 @@ export default function SelectItemInventario() {
 
   return (
     <div>
-      <BodyCardItem data={api} handleUpdate={handleOpenUpdate} index={index}/>
+      <BodyCardItem data={api} handleDelete={() => setOpenDelete(true)} handleUpdate={handleOpenUpdate} index={index}/> 
       <PostInventario />
 
       <DialogUpdate
@@ -73,6 +81,7 @@ export default function SelectItemInventario() {
           onChange={(evt) => setDescripcion(evt.target.value)}
         />
       </DialogUpdate>
+      <DialogDelete title="Eliminar Mercaderia" show={openDelete} eliminar={handleDelete} close={() => setOpenDelete(false)}/>
     </div>
   );
 }

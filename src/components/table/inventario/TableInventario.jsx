@@ -7,35 +7,49 @@ import { useLocalStorage } from "usehooks-ts";
 
 import Pagination from "@mui/material/Pagination";
 
-const BodyTable = ({ data , end, count }) => {
-  const [index,setIndex] = useLocalStorage('selectIndexInventario', 0);
+const BodyTable = ({ data, end, count }) => {
+  const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
   const [start, setStart] = useState(0);
-  
+
   useEffect(() => setStart(end - count));
 
   return (
     <tbody className="bodyTableMercaderia">
-      {data.slice(start, end).map((elem) => {
-        return (
-          <tr key={elem.id} onClick={() => setIndex(elem.id)}>
-            <td>{elem.nombre}</td>
-            <td>{elem.descripcion}</td>
-            <td>{elem.entrada}</td>
-            <td>{elem.salida}</td>
-            <td>{elem.entrada - elem.salida}</td>
-          </tr>
-        );
-      })}
+      {data.length != 0 ? (
+        data.slice(start, end).map((elem) => {
+          return (
+            <tr key={elem.id} onClick={() => setIndex(elem.id)}>
+              <td>{elem.nombre}</td>
+              <td>{elem.descripcion}</td>
+              <td>{elem.entrada}</td>
+              <td>{elem.salida}</td>
+              <td>{elem.entrada - elem.salida}</td>
+            </tr>
+          );
+        })
+      ) : (
+        <p
+          style={{
+            color: "red",
+            position: "relative",
+            margin: "auto",
+            left: "calc(100%)",
+            zIndex: 2,
+          }}
+        >
+          NO HAY DATOS
+        </p>
+      )}
     </tbody>
   );
 };
 
-export default function TableComponent() { 
+export default function TableComponent() {
   const { api, orderNombreASC, orderNombreDES } = useContext(InventarioContext);
 
   const LIMIT = 10;
 
-  //1: ASC 
+  //1: ASC
   //0: DESC
   const [order, setOrder] = useState(1);
   const [end, setEnd] = useState(LIMIT);
@@ -62,15 +76,11 @@ export default function TableComponent() {
               <th>stockActual</th>
             </tr>
           </thead>
-          <BodyTable
-            data={api}
-            count={LIMIT}
-            end={end}
-          />
+          <BodyTable data={api} count={LIMIT} end={end} />
         </table>
         <Pagination
           count={Math.ceil(api.length / LIMIT)}
-          onChange={(evt,newValue) => setEnd(LIMIT * parseInt(newValue))}
+          onChange={(evt, newValue) => setEnd(LIMIT * parseInt(newValue))}
         />
       </div>
 

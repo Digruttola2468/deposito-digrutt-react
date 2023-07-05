@@ -12,6 +12,7 @@ import DialogMenu from "./components/dialog/DialogMenu";
 import { FaBars, FaTable, FaFileExport } from "react-icons/fa";
 
 import Button from "@mui/material/Button";
+import { useLocalStorage } from "usehooks-ts";
 
 const getContent = (page) => {
   if (page === "inventario")
@@ -31,18 +32,15 @@ const getContent = (page) => {
 function Principal() {
   const [open, setOpen] = useState(false);
   
-  const [page, setPage] = useState(() => {
+  const [page, setPage] = useLocalStorage("page",() => {
     const { pathname } = window.location;
     const page = pathname.slice(1);
-    console.log("PAGE",page);
     return page;
   });
 
   //Handle Click
   const toPage = (page) => (evt) => {
     evt.preventDefault();
-    window.history.pushState(null, "", `/${page}`);
-    console.log("TO PAGE",`/${page}`);
     setPage(page);
   };
 

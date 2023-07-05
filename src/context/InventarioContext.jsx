@@ -62,7 +62,7 @@ export function InventarioContextProvider(props) {
   };
 
   const deleteApi = (id) => {
-    eliminar
+    eliminar(id)
       .then((data) => {
         toast.success(data.message);
         setApi(api.filter((elem) => elem.id != id));
