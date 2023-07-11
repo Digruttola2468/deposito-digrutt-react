@@ -18,7 +18,7 @@ export default function BodyCardItem({
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
-            <Card key={elem.id} sx={{ marginLeft: 1, marginTop: 3 }}>
+            <Card key={elem.id} className="ml-2 mt-4">
               <CardContent>
                 <div>
                   <h2>{elem.nombre}</h2>
@@ -41,9 +41,9 @@ export default function BodyCardItem({
                   <Tooltip
                     title="Eliminar"
                     onClick={handleDelete}
-                    className="pdf"
+                    className="hover:text-red-500" 
                   >
-                    <IconButton size="small">
+                    <IconButton size="small" >
                       <FaTrash />
                     </IconButton>
                   </Tooltip>
@@ -54,7 +54,7 @@ export default function BodyCardItem({
                   <Tooltip
                     title="actualizar"
                     onClick={handleUpdate}
-                    className="update"
+                    className=" hover:text-blue-400"
                   >
                     <IconButton size="small">
                       <FaPen />

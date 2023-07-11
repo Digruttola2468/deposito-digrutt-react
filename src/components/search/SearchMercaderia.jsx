@@ -18,9 +18,7 @@ export default function SearchMercaderia() {
   const [inputValue, setInputCod] = useState("");
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-    >
+    <div className="flex flex-row items-center">
       <Autocomplete
         disablePortal
         freeSolo

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import "./styleMercaderia.css";
 
 import TableMercaderia from "../components/table/mercaderia/TableMercaderia";
 import PutMercaderia from "../components/table/mercaderia/PostMercaderia";
@@ -41,8 +40,8 @@ export default function Mercaderia() {
   });
 
   return (
-    <section style={{display: "flex", flexDirection: "column"}}>
-      <div className="inputSearchTableMercaderia">
+    <section className="flex flex-col">
+      <div className="flex flex-row w-full justify-center items-center mt-5">
         <SearchMercaderia />
         {width > 500 ? (
           <SwitchComponent

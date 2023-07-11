@@ -36,7 +36,7 @@ export default function DialogMenu ({show,close}) {
           <Button onClick={handleExportMercaderia} autoFocus>
             Export Mercaderia
           </Button>
-          <Button onClick={handleExportInventario} autoFocus>
+          <Button onClick={handleExportInventario} >
             Export Inventario
           </Button>
         </DialogContent>

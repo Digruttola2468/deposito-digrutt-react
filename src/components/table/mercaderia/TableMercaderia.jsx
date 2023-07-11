@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from "react";
-import "./table.css";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import InfoItem from "./ItemTable";
@@ -42,19 +41,19 @@ const HeadTable = () => {
   };
 
   return (
-    <thead>
+    <thead className="bg-gris-oscuro text-white border-b-[5px] border-celeste-oscuro ">
       <tr>
-        <th onClick={handleNombre} style={{ cursor: "pointer" }}>
+        <th onClick={handleNombre} className="cursor-pointer py-4 px-1" >
           nombre
         </th>
         <th>descripcion</th>
-        <th onClick={handleStock} style={{ cursor: "pointer" }}>
+        <th onClick={handleStock} className="cursor-pointer py-4 px-1">
           cantidad
         </th>
-        <th onClick={handleFecha} style={{ cursor: "pointer" }}>
+        <th onClick={handleFecha} className="cursor-pointer py-4 px-1">
           fecha
         </th>
-        <th>proveedor</th>
+        <th className="py-4 px-1">proveedor</th>
       </tr>
     </thead>
   );
@@ -67,18 +66,18 @@ const BodyTable = ({ data, end, count }) => {
   useEffect(() => setStart(end - count));
 
   return (
-    <tbody className="bodyTableMercaderia">
+    <tbody className="">
       {data.length != 0 ? data.slice(start, end).map((elem) => {
         return (
-          <tr key={elem.id} onClick={() => setIndex(elem.id)}>
-            <td>{elem.nombre}</td>
-            <td>{elem.descripcion}</td>
-            <td>{elem.stock}</td>
-            <td>{elem.fecha}</td>
-            <td>{elem.proveedor}</td>
+          <tr key={elem.id} onClick={() => setIndex(elem.id)} className="hover:bg-celeste-claro cursor-pointer">
+            <td className="py-4 px-1">{elem.nombre}</td>
+            <td className="py-4 px-1">{elem.descripcion}</td>
+            <td className="py-4 px-1">{elem.stock}</td>
+            <td className="py-4 px-1">{elem.fecha}</td>
+            <td className="py-4 px-1">{elem.proveedor}</td>
           </tr>
         );
-      }) : <p style={{color: "red", position: "relative", margin: "auto", left: "calc(100%)", zIndex: 2}}>NO HAY DATOS</p>}
+      }) : <p className="text-red-500 relative m-auto left-[100%] z-20">NO HAY DATOS</p>}
     </tbody>
   );
 };
@@ -91,8 +90,8 @@ export default function TableMercaderia() {
   
   return (
     <div className="table-div">
-      <div>
-        <table className="tableMercaderia">
+      <div className="">
+        <table className="block overflow-x-scroll whitespace-nowrap sm:text-center border-collapse sm:mt-5 border border-gris-oscuro">
           <HeadTable />
           <BodyTable data={api} end={end} count={LIMIT}/>
         </table>

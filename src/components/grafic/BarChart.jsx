@@ -31,5 +31,5 @@ var misoptions = {
 };
 
 export default function BarsComponent({data}) {
-  return <Bar data={data} options={misoptions} />;
+  return <Bar data={data} options={misoptions} className="w-full"/>;
 }

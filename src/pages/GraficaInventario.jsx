@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
 
-import "./graficainventario.css";
-
 import { Input } from "@mui/material";
 import { InventarioContext } from "../context/InventarioContext";
 import {
@@ -172,13 +170,14 @@ export default function GraficaInventario() {
     ],
   };
   return (
-    <section style={{ marginTop: "40px", marginBottom: "40px" }}>
+    <section className="my-10">
       <h2
-        style={{ textAlign: "center", fontFamily: "'Bruno Ace SC', cursive" }}
+        style={{ fontFamily: "'Bruno Ace SC', cursive" }}
+        className="text-center"
       >
         Grafica
       </h2>
-      <div className="graficaContainer">
+      <div className="flex flex-col justify-center items-center flex-wrap mb-5 sm:flex-row sm:mb-0 ">
         <Autocomplete
           disablePortal
           options={api}

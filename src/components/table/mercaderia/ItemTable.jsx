@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from "react";
-import './itemtable.css'
 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -103,12 +102,12 @@ export default function InfoItem() {
   });
 
   return (
-    <div style={{ marginTop: 20 }}>
+    <div className="mt-5">
       {api
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
-            <Card key={elem.id} sx={{ marginLeft: 1 }}>
+            <Card key={elem.id} className="ml-4">
               <CardContent>
                 <div>
                   <h2>{elem.nombre}</h2>
@@ -130,7 +129,7 @@ export default function InfoItem() {
                 <Tooltip
                   title="eliminar"
                   onClick={handleClickOpen}
-                  className="delete"
+                  className="hover:text-red-500"
                 >
                   <IconButton size="small">
                     <FaTrash />
@@ -139,7 +138,7 @@ export default function InfoItem() {
                 <Tooltip
                   title="actualizar"
                   onClick={handleOpenUpdate}
-                  className="update"
+                  className="hover:text-blue-400"
                 >
                   <IconButton size="small">
                     <FaPen />
@@ -162,7 +161,7 @@ export default function InfoItem() {
         show={openActualizar}
         close={handleCloseUpdate}
       >
-        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }}>
+        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }} >
           <InputLabel>Categoria</InputLabel>
           <Select
             value={idcategoria}

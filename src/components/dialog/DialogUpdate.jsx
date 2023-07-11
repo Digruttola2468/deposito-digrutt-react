@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import { DialogTitle, Button } from "@mui/material";
+import {
+  DialogTitle,
+  Button,
+  DialogActions,
+  DialogContent,
+  Dialog,
+} from "@mui/material";
 
 export default function DialogUpdate({
   title = "Actualizar",
@@ -12,8 +13,8 @@ export default function DialogUpdate({
   show,
   close,
 }) {
-  const handleClose = () => close();
 
+  const handleClose = () => close();
   const handleUpdate = () => update();
 
   return (
@@ -25,7 +26,7 @@ export default function DialogUpdate({
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent
-        sx={{ display: "flex", flexDirection: "column", padding: 3 }}
+        className="flex flex-col"
       >
         {children}
       </DialogContent>

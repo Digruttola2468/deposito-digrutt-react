@@ -1,22 +1,17 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState} from "react";
 
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete,  TextField } from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
 
 export default function SearchCodProducto() {
-  const { api,apiOriginal, searchInventario, filterApiSearch, getPrevius } = useContext(InventarioContext);
+  const { api, apiOriginal, searchInventario, filterApiSearch, getPrevius } =
+    useContext(InventarioContext);
 
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-      }}
-    >
+    <div className="flex flex-row justify-center">
       <Autocomplete
         disablePortal
         freeSolo
@@ -40,15 +35,13 @@ export default function SearchCodProducto() {
           const resultado = apiOriginal.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
-          
+
           if (newInputValue !== "") filterApiSearch(resultado);
           else getPrevius();
-          
-          
         }}
         sx={{ width: 200, marginLeft: 1 }}
         renderInput={(params) => (
-          <TextField {...params} value={"Hola"} label="Cod Producto" />
+          <TextField {...params} value={inputValue} label="Cod Producto" />
         )}
       />
     </div>
