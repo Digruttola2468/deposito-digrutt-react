@@ -89,7 +89,7 @@ export default function TableMercaderia() {
   const [end, setEnd] = useState(LIMIT);
   
   return (
-    <div className="table-div">
+    <div className="flex flex-col lg:flex-row justify-center  ">
       <div className="">
         <table className="block overflow-x-scroll whitespace-nowrap sm:text-center border-collapse sm:mt-5 border border-gris-oscuro">
           <HeadTable />
