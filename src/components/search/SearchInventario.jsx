@@ -11,7 +11,7 @@ export default function SearchCodProducto() {
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
   return (
-    <div className="flex flex-row justify-center">
+    <div >
       <Autocomplete
         disablePortal
         freeSolo
@@ -39,9 +39,9 @@ export default function SearchCodProducto() {
           if (newInputValue !== "") filterApiSearch(resultado);
           else getPrevius();
         }}
-        sx={{ width: 200, marginLeft: 1 }}
+        sx={{ width: 200, margin: 1 }}
         renderInput={(params) => (
-          <TextField {...params} value={inputValue} label="Cod Producto" />
+          <TextField {...params} value={inputValue} label="Buscar" variant="standard" />
         )}
       />
     </div>

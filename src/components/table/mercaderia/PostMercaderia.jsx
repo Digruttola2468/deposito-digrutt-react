@@ -75,7 +75,7 @@ export default function PutMercaderia() {
     setFactura("");
     setFecha();
     setStock("");
-    if(!checked){
+    if (!checked) {
       setInputValue("");
       setcodProducto("");
     }
@@ -106,7 +106,7 @@ export default function PutMercaderia() {
   };
 
   return (
-    <div className="infoItemTable">
+    <form>
       <CardPost
         title="Nueva Mercaderia"
         handlePost={handleClickPost}
@@ -114,14 +114,18 @@ export default function PutMercaderia() {
       >
         <FormGroup>
           <FormControlLabel
-            control={<Checkbox checked={checked} onChange={handleChange} size="small"/>}
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={handleChange}
+                size="small"
+              />
+            }
             label="Mantener el valor Cod.Producto"
             sx={{ marginLeft: 1 }}
           />
         </FormGroup>
-        <div
-          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
-        >
+        <div className="flex flex-row flex-wrap">
           <Autocomplete
             disablePortal
             options={inventarioNombres}
@@ -243,6 +247,6 @@ export default function PutMercaderia() {
           </DialogActions>
         </form>
       </Dialog>
-    </div>
+    </form>
   );
 }

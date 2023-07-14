@@ -236,7 +236,6 @@ export function MercaderiaContextProvider(props) {
       }}
     >
       {props.children}
-      <ToastContainer />
     </MercaderiaContext.Provider>
   );
 }

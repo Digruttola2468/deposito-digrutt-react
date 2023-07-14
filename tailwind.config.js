@@ -17,6 +17,9 @@ export default {
       }
       
     },
+    fontFamily: {
+      'bruno': ['"Bruno Ace SC"']
+    }
   },
   plugins: [],
 }

@@ -1,30 +1,51 @@
-import { useState } from "react";
-import Principal from "./Principal";
-import { useLocalStorage } from "usehooks-ts";
+import { Route, Routes, useNavigate } from "react-router-dom";
+
+import Inventario from "./pages/Inventario";
+import Mercaderia from "./pages/Mercaderia";
+import VerifyEmployes from "./pages/VerifyEmployes";
+
+import { useReadLocalStorage } from "usehooks-ts";
+import { useEffect } from "react";
+
+import NavMenu from "./components/Menu";
+import { MercaderiaContextProvider } from "./context/MercaderiaContext";
+import { InventarioContextProvider } from "./context/InventarioContext";
 
 function App() {
-  const [input, setInput] = useState();
-  const [validar, setValidar] = useLocalStorage("login",true);
+  const navegate = useNavigate();
 
-  const handleText = (evt) => {
-    setInput(evt.target.value);
-  };
-  const handleClick = () => {
-    if (input === "digrutt2468") setValidar(false);
-  };
+  const key = useReadLocalStorage("key");
+
+  useEffect(() => {
+    if (key != "digrutt2468") navegate("/verifyEmployes");
+  }, []);
 
   return (
     <>
-      {validar ? (
-        <>
-          <input type="password" onChange={handleText} />
-          <button onClick={handleClick}>Enviar</button>
-        </>
-      ) : (
-        <>
-          <Principal />
-        </>
-      )}
+      <header className="bg-celeste-oscuro">
+        <NavMenu />
+      </header>
+      <main >
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MercaderiaContextProvider>
+                <Mercaderia />
+              </MercaderiaContextProvider>
+            }
+          />
+          <Route
+            path="/inventario"
+            element={
+              <InventarioContextProvider>
+                <Inventario />
+              </InventarioContextProvider>
+            }
+          />
+          <Route path="/verifyEmployes" element={<VerifyEmployes />} />
+        </Routes>
+      </main>
     </>
   );
 }

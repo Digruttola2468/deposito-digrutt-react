@@ -15,7 +15,6 @@ function Inventario() {
     <>
       {isdone ? (
         <>
-          <SearchCodProducto />
           <TableComponent />
           <GraficaInventario />
         </>

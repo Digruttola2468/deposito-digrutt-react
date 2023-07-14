@@ -6,6 +6,32 @@ import SelectItemInventario from "./ItemTable";
 import { useLocalStorage } from "usehooks-ts";
 
 import Pagination from "@mui/material/Pagination";
+import SearchCodProducto from "../../search/SearchInventario";
+
+const HeadTable = () => {
+  const { orderNombreASC, orderNombreDES } = useContext(InventarioContext);
+  const [order,setOrder] = useState(false);
+
+  //Handle Button
+  const handleNombre = () => {
+    if (order) orderNombreASC();
+    else orderNombreDES();
+    setOrder(!order);
+  };
+  return (
+    <thead className="tableHeader">
+      <tr>
+        <th onClick={handleNombre} className="cursor-pointer py-4 px-1">
+          nombre
+        </th>
+        <th>descripcion</th>
+        <th>entrada</th>
+        <th>salida</th>
+        <th>stockActual</th>
+      </tr>
+    </thead>
+  );
+};
 
 const BodyTable = ({ data, end, count }) => {
   const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
@@ -14,29 +40,25 @@ const BodyTable = ({ data, end, count }) => {
   useEffect(() => setStart(end - count));
 
   return (
-    <tbody className="bodyTableMercaderia">
+    <tbody>
       {data.length != 0 ? (
         data.slice(start, end).map((elem) => {
           return (
-            <tr key={elem.id} onClick={() => setIndex(elem.id)}>
-              <td>{elem.nombre}</td>
-              <td>{elem.descripcion}</td>
-              <td>{elem.entrada}</td>
-              <td>{elem.salida}</td>
-              <td>{elem.entrada - elem.salida}</td>
+            <tr
+              key={elem.id}
+              onClick={() => setIndex(elem.id)}
+              className="hover:bg-celeste-claro cursor-pointer"
+            >
+              <td className="py-4 px-1">{elem.nombre}</td>
+              <td className="py-4 px-1"> {elem.descripcion}</td>
+              <td className="py-4 px-1">{elem.entrada}</td>
+              <td className="py-4 px-1">{elem.salida}</td>
+              <td className="py-4 px-1">{elem.entrada - elem.salida}</td>
             </tr>
           );
         })
       ) : (
-        <p
-          style={{
-            color: "red",
-            position: "relative",
-            margin: "auto",
-            left: "calc(100%)",
-            zIndex: 2,
-          }}
-        >
+        <p className="text-red-500 relative m-auto left-[100%] z-20">
           NO HAY DATOS
         </p>
       )}
@@ -45,37 +67,17 @@ const BodyTable = ({ data, end, count }) => {
 };
 
 export default function TableComponent() {
-  const { api, orderNombreASC, orderNombreDES } = useContext(InventarioContext);
-
+  const { api } = useContext(InventarioContext);
+  
   const LIMIT = 10;
-
-  //1: ASC
-  //0: DESC
-  const [order, setOrder] = useState(1);
   const [end, setEnd] = useState(LIMIT);
 
-  //Handle Button
-  const handleNombre = () => {
-    if (order) orderNombreASC();
-    else orderNombreDES();
-    setOrder(!order);
-  };
-
   return (
-    <div className="divTable">
-      <div>
-        <table className="tableMercaderia">
-          <thead>
-            <tr>
-              <th onClick={handleNombre} style={{ cursor: "pointer" }}>
-                nombre
-              </th>
-              <th>descripcion</th>
-              <th>entrada</th>
-              <th>salida</th>
-              <th>stockActual</th>
-            </tr>
-          </thead>
+    <div className="flex flex-col lg:flex-row justify-center ">
+      <div className="p-3 flex flex-col items-center shadow-lg">
+        <SearchCodProducto />
+        <table className="table">
+          <HeadTable />
           <BodyTable data={api} count={LIMIT} end={end} />
         </table>
         <Pagination

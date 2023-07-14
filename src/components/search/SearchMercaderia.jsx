@@ -2,6 +2,8 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
 
+import iconSearch from "../../assets/search.svg";
+
 export default function SearchMercaderia() {
   const {
     apiOriginal,
@@ -24,8 +26,8 @@ export default function SearchMercaderia() {
         freeSolo
         options={inventarioNombres}
         getOptionLabel={(elem) => elem.nombre}
-        sx={{ width: 200, marginLeft: 1 }}
         isOptionEqualToValue={(option, value) => option.id === value.id}
+        sx={{ width: 200, marginLeft: 1 }}
         value={codProducto || null}
         onChange={(evt, newValue) => {
           setcodProducto(newValue);
@@ -49,7 +51,9 @@ export default function SearchMercaderia() {
             else getSalidaApi();
           }
         }}
-        renderInput={(params) => <TextField {...params} label="Cod Producto" />}
+        renderInput={(params) => (
+          <TextField {...params} label="Buscar" variant="standard" />
+        )}
       />
     </div>
   );

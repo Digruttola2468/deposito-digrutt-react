@@ -39,8 +39,12 @@ const getDateWithNameMonth = (fechaString) => {
   const fecha = fechaString;
   const newFecha = fecha.split("-").reverse().join("-");
   const fDate = new Date(newFecha);
-  return `${fDate.getDate()} ${monthNames[(fDate.getMonth() + 1)]} ${fDate.getFullYear()}`;
+  return `${fDate.getDate()} ${
+    monthNames[fDate.getMonth() + 1]
+  } ${fDate.getFullYear()}`;
 };
+
+const URL_IMAGE = "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
 
 export default function InfoItem() {
   const { api, deleteApi, updateApi, inventarioNombres, idCategoria } =
@@ -109,8 +113,20 @@ export default function InfoItem() {
           return (
             <Card key={elem.id} className="ml-4">
               <CardContent>
-                <div>
-                  <h2>{elem.nombre}</h2>
+                <div className="flex flex-col">
+                  <div className="w-full bg-slate-400 rounded-lg">
+                    <div className="m-auto w-[150px] ">
+                      <img
+                        src={`${URL_IMAGE}/${elem.nombre}.png`}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <h2 className="text-lg font-semibold uppercase">
+                    {elem.nombre}
+                  </h2>
+
                   <p>
                     <b>Descripcion</b>: {elem.descripcion}
                   </p>
@@ -161,7 +177,7 @@ export default function InfoItem() {
         show={openActualizar}
         close={handleCloseUpdate}
       >
-        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }} >
+        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }}>
           <InputLabel>Categoria</InputLabel>
           <Select
             value={idcategoria}

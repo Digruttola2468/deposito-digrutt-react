@@ -1,116 +1,19 @@
 import { useContext, useState } from "react";
 
-import { Input } from "@mui/material";
 import { InventarioContext } from "../context/InventarioContext";
 import {
   Autocomplete,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   TextField,
+  Input
 } from "@mui/material";
 import BarsComponent from "../components/grafic/BarChart";
 import { useLocalStorage } from "usehooks-ts";
 
-const meses = [
-  "Enero",
-  "Febrero",
-  "Marzo",
-  "Abril",
-  "Mayo",
-  "Junio",
-  "Julio",
-  "Agosto",
-  "Septiembre",
-  "Octubre",
-  "Noviembre",
-  "Diciembre",
-];
-
-const getArrayYear = (mercaderiaApi, idinventario) => {
-  const enviar = new Set();
-  if (idinventario != null) {
-    const filtrado = mercaderiaApi.filter(
-      (elem) => elem.idinventario == idinventario
-    );
-
-    for (let i = 0; i < filtrado.length; i++) {
-      const element = filtrado[i];
-      const dateFecha = new Date(element.fecha);
-      enviar.add(dateFecha.getFullYear());
-    }
-  }
-  return enviar;
-};
-
-const getArrayMercaderia = (mercaderiaApi, idinventario, categoria, year) => {
-  const filtradoDato = mercaderiaApi.filter(
-    (elem) => elem.idinventario == idinventario
-  );
-  const filtrado = filtradoDato.filter((elem) => elem.categoria == categoria);
-
-  const enviar = [];
-
-  let enero = 0;
-  let febrero = 0;
-  let marzo = 0;
-  let abril = 0;
-  let mayo = 0;
-  let junio = 0;
-  let julio = 0;
-  let agosto = 0;
-  let septiembre = 0;
-  let octubre = 0;
-  let noviembre = 0;
-  let diciembre = 0;
-
-  for (let i = 0; i < filtrado.length; i++) {
-    const element = filtrado[i];
-    const dateFecha = new Date(element.fecha);
-
-    if (dateFecha.getFullYear() == year) {
-      if (dateFecha.getMonth() == 0) enero += element.stock;
-
-      if (dateFecha.getMonth() == 1) febrero += element.stock;
-
-      if (dateFecha.getMonth() == 2) marzo += element.stock;
-
-      if (dateFecha.getMonth() == 3) abril += element.stock;
-
-      if (dateFecha.getMonth() == 4) mayo += element.stock;
-
-      if (dateFecha.getMonth() == 5) junio += element.stock;
-
-      if (dateFecha.getMonth() == 6) julio += element.stock;
-
-      if (dateFecha.getMonth() == 7) agosto += element.stock;
-
-      if (dateFecha.getMonth() == 8) septiembre += element.stock;
-
-      if (dateFecha.getMonth() == 9) octubre += element.stock;
-
-      if (dateFecha.getMonth() == 10) noviembre += element.stock;
-
-      if (dateFecha.getMonth() == 11) diciembre += element.stock;
-    }
-  }
-  enviar.push(enero);
-  enviar.push(febrero);
-  enviar.push(marzo);
-  enviar.push(abril);
-  enviar.push(mayo);
-  enviar.push(junio);
-  enviar.push(julio);
-  enviar.push(agosto);
-  enviar.push(septiembre);
-  enviar.push(octubre);
-  enviar.push(noviembre);
-  enviar.push(diciembre);
-
-  return enviar;
-};
+import {getArrayMercaderia,getArrayYear,meses} from '../services/date'
 
 export default function GraficaInventario() {
   const { mercaderiaApi, api } = useContext(InventarioContext);
@@ -171,12 +74,7 @@ export default function GraficaInventario() {
   };
   return (
     <section className="my-10">
-      <h2
-        style={{ fontFamily: "'Bruno Ace SC', cursive" }}
-        className="text-center"
-      >
-        Grafica
-      </h2>
+      <h2 className="text-center title text-2xl">Grafica</h2>
       <div className="flex flex-col justify-center items-center flex-wrap mb-5 sm:flex-row sm:mb-0 ">
         <Autocomplete
           disablePortal
@@ -219,14 +117,8 @@ export default function GraficaInventario() {
             ))}
           </Select>
         </FormControl>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ marginLeft: "20px" }}>
+        <div className="flex flex-row items-center">
+          <div className="ml-5">
             <b>Color Entrada: </b>
             <Input
               type="color"
@@ -237,25 +129,18 @@ export default function GraficaInventario() {
               value={colorEntrada}
             />
           </div>
-          <div style={{ marginLeft: "20px" }}>
+          <div className="ml-5">
             <b>Color Salida: </b>
             <Input
               type="color"
               sx={{ width: "30px" }}
-              onChange={(evt) => {
-                setColorSalida(evt.target.value);
-              }}
+              onChange={(evt) => setColorSalida(evt.target.value)}
               value={colorSalida}
             />
           </div>
         </div>
       </div>
-      <div
-        style={{
-          maxWidth: "900px",
-          margin: "auto",
-        }}
-      >
+      <div className="m-auto max-w-[900px]">
         <BarsComponent data={midata} />
       </div>
     </section>

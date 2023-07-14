@@ -139,7 +139,6 @@ export function InventarioContextProvider(props) {
       }}
     >
       {props.children}
-      <ToastContainer />
     </InventarioContext.Provider>
   );
 }
