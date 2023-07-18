@@ -13,7 +13,7 @@ import { post, get, update, eliminar } from "../services/api_inventario";
 import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
-  const [api, setApi] = useState([]);
+  const [api, setApi] = useLocalStorage("inventario",[]);
   const [apiOriginal, setApiOriginal] = useState([]);
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);

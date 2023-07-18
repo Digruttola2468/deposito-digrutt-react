@@ -13,7 +13,7 @@ export default function HeadTable() {
 
   //1: ASC
   //0: DESC
-  const [order, setOrder] = useState(1);
+  const [order, setOrder] = useState(true);
 
   const handleNombre = () => {
     if (order) orderNombreASC();

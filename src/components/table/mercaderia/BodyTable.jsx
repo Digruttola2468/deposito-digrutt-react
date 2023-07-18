@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
-export default function BodyTable({ data, end, count }) {
+import { MercaderiaContext } from "../../../context/MercaderiaContext";
+
+export default function BodyTable({ end, count }) {
+  const { api } = useContext(MercaderiaContext);
+
   const [start, setStart] = useState(0);
   const [index, setIndex] = useLocalStorage("selectIndexMercaderia", null);
 
@@ -9,8 +13,8 @@ export default function BodyTable({ data, end, count }) {
 
   return (
     <tbody>
-      {data.length != 0 ? (
-        data.slice(start, end).map((elem) => {
+      {api.length != 0 ? (
+        api.slice(start, end).map((elem) => {
           return (
             <tr
               key={elem.id}

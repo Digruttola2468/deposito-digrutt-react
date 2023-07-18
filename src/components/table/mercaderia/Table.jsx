@@ -22,7 +22,7 @@ export default function Table() {
     <>
       <table className="table">
         <HeadTable />
-        <BodyTable data={api} end={end} count={LIMIT} />
+        <BodyTable end={end} count={LIMIT} />
       </table>
       <Pagination
         count={Math.ceil(api.length / LIMIT)}
