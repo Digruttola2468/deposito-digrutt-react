@@ -7,7 +7,7 @@ import { FaTrash, FaPen } from "react-icons/fa";
 import { IconButton } from "@mui/material";
 
 const URL =
-  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt/";
+  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
 
 export default function BodyCardItem({
   data,

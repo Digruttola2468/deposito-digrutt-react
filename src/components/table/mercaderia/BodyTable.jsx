@@ -26,9 +26,13 @@ export default function BodyTable({ data, end, count }) {
           );
         })
       ) : (
-        <p className="text-red-500 relative m-auto left-[100%] z-20">
-          NO HAY DATOS
-        </p>
+        <tr className="">
+          <td></td>
+          <td></td>
+          <td className="text-red-400">NO HAY DATOS</td>
+          <td></td>
+          <td></td>
+        </tr>
       )}
     </tbody>
   );

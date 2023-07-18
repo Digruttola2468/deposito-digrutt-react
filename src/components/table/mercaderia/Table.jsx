@@ -1,13 +1,20 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
+
+import { Pagination } from "@mui/material";
 
 import BodyTable from "./BodyTable";
 import HeadTable from "./HeadTable";
 
-import { Pagination } from "@mui/material";
 export default function Table() {
-  const { api } = useContext(MercaderiaContext);
+  const { api,idCategoria,getEntradaApi,getSalidaApi } = useContext(MercaderiaContext);
+
+  useEffect(() => {
+    if(idCategoria == 2) getEntradaApi();
+    else getSalidaApi();
+  }, [idCategoria])
+
   const LIMIT = 10;
   const [end, setEnd] = useState(LIMIT);
 

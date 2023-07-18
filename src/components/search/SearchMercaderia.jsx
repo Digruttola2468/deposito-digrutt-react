@@ -1,23 +1,23 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
-
-import iconSearch from "../../assets/search.svg";
 
 export default function SearchMercaderia() {
   const {
     apiOriginal,
     setApi,
     inventarioNombres,
-    searchEntradaApi,
     getEntradaApi,
     getSalidaApi,
-    searchSalidaApi,
     idCategoria,
+    getProductosInventario
   } = useContext(MercaderiaContext);
 
-  const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputCod] = useState("");
+
+  useEffect(() => {
+    getProductosInventario();
+  }, []);
 
   return (
     <div className="flex flex-row items-center">
@@ -28,17 +28,6 @@ export default function SearchMercaderia() {
         getOptionLabel={(elem) => elem.nombre}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         sx={{ width: 200, marginLeft: 1 }}
-        value={codProducto || null}
-        onChange={(evt, newValue) => {
-          setcodProducto(newValue);
-          if (newValue != null) {
-            if (idCategoria == 2) searchEntradaApi(newValue.nombre);
-            else searchSalidaApi(newValue.nombre);
-          } else {
-            if (idCategoria == 2) getEntradaApi();
-            else getSalidaApi();
-          }
-        }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputCod(newInputValue);

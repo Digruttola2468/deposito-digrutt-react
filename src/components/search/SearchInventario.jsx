@@ -1,34 +1,22 @@
-import { useContext, useState} from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { Autocomplete,  TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
 
 export default function SearchCodProducto() {
-  const { api, apiOriginal, searchInventario, filterApiSearch, getPrevius } =
+  const { api, apiOriginal, filterApiSearch, getPrevius } =
     useContext(InventarioContext);
 
-  const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
+
   return (
-    <div >
+    <div>
       <Autocomplete
         disablePortal
         freeSolo
         options={api}
-        getOptionLabel={(elem) => elem.nombre}
-        isOptionEqualToValue={(option, value) =>
-          option.idinventario === value.idinventario
-        }
-        //Al seleccionar
-        value={codProducto || null}
-        onChange={(evt, newValue) => {
-          setcodProducto(newValue);
-
-          if (newValue != null) searchInventario(newValue.nombre);
-          else getPrevius();
-        }}
-        //Al escribir
+        getOptionLabel={elem => elem.nombre}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
@@ -41,7 +29,12 @@ export default function SearchCodProducto() {
         }}
         sx={{ width: 200, margin: 1 }}
         renderInput={(params) => (
-          <TextField {...params} value={inputValue} label="Buscar" variant="standard" />
+          <TextField
+            {...params}
+            value={inputValue}
+            label="Buscar"
+            variant="standard"
+          />
         )}
       />
     </div>

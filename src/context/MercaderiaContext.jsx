@@ -1,11 +1,8 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const MercaderiaContext = createContext();
-
-//Hooks
-import { useLocalStorage, useScreen } from "usehooks-ts";
 
 //API REST
 import {
@@ -20,37 +17,42 @@ import {
 import {
   getOneInventario,
   getNombresInventario,
-  post as postInventario
+  post as postInventario,
 } from "../services/api_inventario";
+import { useLocalStorage } from "usehooks-ts";
 
 export function MercaderiaContextProvider(props) {
-  const [api, setApi] = useLocalStorage("mercaderiaApi", []);
-  const [inventarioNombres, setInventarioNombres] = useState([]);
   const [apiOriginal, setApiOriginal] = useState([]);
-
+  const [api, setApi] = useState([]);
+  const [inventarioNombres, setInventarioNombres] = useState([]);
+  
   //2: ENTRADA
   //1: SALIDA
-  const [idCategoria, setIdCategoria] = useState();
-
-  useEffect(() => {
-    getEntrada()
-      .then((result) => {setIdCategoria(2);setApi(result);setApiOriginal(result);})
-      .catch((error) => console.error(error));
-
-    getNombresInventario()
-      .then((result) => setInventarioNombres(result))
-      .catch((error) => console.error(error));
-  }, []);
+  const [idCategoria, setIdCategoria] = useState(2);
 
   const getEntradaApi = () => {
     getEntrada()
-      .then((result) => {setIdCategoria(2);setApi(result);setApiOriginal(result);})
+      .then((result) => {
+        setIdCategoria(2);
+        setApi(result);
+        setApiOriginal(result);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const getProductosInventario = () => {
+    getNombresInventario()
+      .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   };
 
   const getSalidaApi = () => {
     getSalida()
-      .then((result) => {setIdCategoria(1);setApi(result);setApiOriginal(result);})
+      .then((result) => {
+        setIdCategoria(1);
+        setApi(result);
+        setApiOriginal(result);
+      })
       .catch((error) => console.error(error));
   };
 
@@ -105,7 +107,7 @@ export function MercaderiaContextProvider(props) {
     postInventario(json)
       .then((result) => {
         toast.success("Creado Correctamente");
-        inventarioNombres.push({...result})
+        inventarioNombres.push({ ...result });
       })
       .catch((error) => console.log("error", error));
   };
@@ -217,6 +219,7 @@ export function MercaderiaContextProvider(props) {
         api,
         apiOriginal,
         setApi,
+        getProductosInventario,
         inventarioNombres,
         createApi,
         updateApi,
@@ -232,7 +235,7 @@ export function MercaderiaContextProvider(props) {
         orderCantidadASC,
         orderCantidadDESC,
         idCategoria,
-        createInventario
+        createInventario,
       }}
     >
       {props.children}

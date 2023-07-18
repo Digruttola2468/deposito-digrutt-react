@@ -9,7 +9,7 @@ export default function VerifyEmployes() {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    if (key === "digrutt2468") navegate("/");
+    if (key === "digrutt2322") navegate("/");
     else toast.error("Clave incorrecto");
   };
 

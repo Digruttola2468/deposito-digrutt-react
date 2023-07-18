@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
 //toastify
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export const InventarioContext = createContext();
 
@@ -13,9 +13,8 @@ import { post, get, update, eliminar } from "../services/api_inventario";
 import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
-  const [api, setApi] = useLocalStorage("inventarioApi", []);
+  const [api, setApi] = useState([]);
   const [apiOriginal, setApiOriginal] = useState([]);
-  const [aux, setAux] = useState([]);
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
   const [isdone, setDone] = useState(false);
@@ -73,13 +72,11 @@ export function InventarioContextProvider(props) {
   };
 
   const searchInventario = (codProducto) => {
-    setAux(api);
     const filter = api.filter((elem) => elem.nombre.toLowerCase().includes(codProducto));
     setApi(filter);
   };
 
   const filterApiSearch = (filter) => {
-    setAux(api);
     setApi(filter);
   }
 
