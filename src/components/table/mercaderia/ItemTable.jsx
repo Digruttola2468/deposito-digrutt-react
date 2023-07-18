@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import { FaTrash, FaPen } from "react-icons/fa";
-import { useReadLocalStorage } from "usehooks-ts";
+import { useFetch, useReadLocalStorage } from "usehooks-ts";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import DialogDelete from "../../dialog/DialogDelete";
 import {
@@ -44,7 +44,8 @@ const getDateWithNameMonth = (fechaString) => {
   } ${fDate.getFullYear()}`;
 };
 
-const URL_IMAGE = "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
+const URL_IMAGE =
+  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
 
 export default function InfoItem() {
   const { api, deleteApi, updateApi, inventarioNombres, idCategoria } =
@@ -58,6 +59,8 @@ export default function InfoItem() {
 
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
+
+  const [image, setImage] = useState("");
 
   //2 - Entrada
   //1 - Salida
@@ -105,6 +108,19 @@ export default function InfoItem() {
     api.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
   });
 
+  useEffect(() => {
+    async function fetchData() {
+      fetch(`${URL_IMAGE}/${apiOne.nombre}.png`)
+        .then((result) => result.json())
+        .then((result) => {
+          if (result.error === "Not found") setImage("");
+          else setImage(`${URL_IMAGE}/${apiOne.nombre}.png`);
+        })
+        .catch((error) => console.log(error));
+    }
+    fetchData();
+  }, [index, apiOne]);
+
   return (
     <div className="mt-5">
       {api
@@ -116,10 +132,7 @@ export default function InfoItem() {
                 <div className="flex flex-col">
                   <div className="w-full bg-slate-400 rounded-lg">
                     <div className="m-auto w-[150px] ">
-                      <img
-                        src={`${URL_IMAGE}/${elem.nombre}.png`}
-                        alt=""
-                      />
+                      <img src={image} alt="" />
                     </div>
                   </div>
 

@@ -68,7 +68,7 @@ export default function DialogNewInventario() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button type="submit">Add</Button>
+          <Button type="submit">Agregar</Button>
         </DialogActions>
       </form>
     </Dialog>
