@@ -7,10 +7,12 @@ import { useLocalStorage } from "usehooks-ts";
 
 import Pagination from "@mui/material/Pagination";
 import SearchCodProducto from "../../search/SearchInventario";
+import { Button } from "@mui/material";
+import DialogNewInventario from "../../dialog/DialogNewInventario";
 
 const HeadTable = () => {
   const { orderNombreASC, orderNombreDES } = useContext(InventarioContext);
-  const [order,setOrder] = useState(false);
+  const [order, setOrder] = useState(false);
 
   //Handle Button
   const handleNombre = () => {
@@ -71,15 +73,20 @@ const BodyTable = ({ data, end, count }) => {
 };
 
 export default function TableComponent() {
-  const { api } = useContext(InventarioContext);
-  
+  const { api,setShowDialogNewInventario } = useContext(InventarioContext);
+
   const LIMIT = 10;
   const [end, setEnd] = useState(LIMIT);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center ">
       <div className="p-3 shadow-xl">
-        <SearchCodProducto />
+        <div className="flex flex-row justify-between items-end">
+          <SearchCodProducto />
+          <Button onClick={() => setShowDialogNewInventario(true)} >New Inventario</Button>
+          <DialogNewInventario />
+        </div>
+
         <table className="table">
           <HeadTable />
           <BodyTable data={api} count={LIMIT} end={end} />

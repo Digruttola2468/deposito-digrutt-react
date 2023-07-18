@@ -13,11 +13,13 @@ import { post, get, update, eliminar } from "../services/api_inventario";
 import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
-  const [api, setApi] = useLocalStorage("inventario",[]);
+  const [api, setApi] = useLocalStorage("inventario", []);
   const [apiOriginal, setApiOriginal] = useState([]);
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
   const [isdone, setDone] = useState(false);
+
+  const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
 
   useEffect(() => {
     get()
@@ -39,6 +41,7 @@ export function InventarioContextProvider(props) {
       .then((result) => {
         toast.success("Creado Correctamente");
         setApi([...api, { ...result, entrada: 0, salida: 0 }]);
+        setApiOriginal([...apiOriginal, { ...result, entrada: 0, salida: 0 }]);
       })
       .catch((error) => console.log("error", error));
   };
@@ -67,18 +70,21 @@ export function InventarioContextProvider(props) {
       .then((data) => {
         toast.success(data.message);
         setApi(api.filter((elem) => elem.id != id));
+        setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
       })
       .catch((error) => console.error("Error:", error));
   };
 
   const searchInventario = (codProducto) => {
-    const filter = api.filter((elem) => elem.nombre.toLowerCase().includes(codProducto));
+    const filter = api.filter((elem) =>
+      elem.nombre.toLowerCase().includes(codProducto)
+    );
     setApi(filter);
   };
 
   const filterApiSearch = (filter) => {
     setApi(filter);
-  }
+  };
 
   const getPrevius = () => {
     get()
@@ -132,7 +138,9 @@ export function InventarioContextProvider(props) {
         isdone,
         searchInventario,
         getPrevius,
-        mercaderiaApi
+        mercaderiaApi,
+        showDialogNewInventario,
+        setShowDialogNewInventario,
       }}
     >
       {props.children}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 
 import { Autocomplete, TextField } from "@mui/material";
 
@@ -11,12 +11,12 @@ export default function SearchCodProducto() {
   const [inputValue, setInputValue] = useState("");
 
   return (
-    <div>
+    <>
       <Autocomplete
         disablePortal
         freeSolo
         options={api}
-        getOptionLabel={elem => elem.nombre}
+        getOptionLabel={(elem) => elem.nombre}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
@@ -37,6 +37,6 @@ export default function SearchCodProducto() {
           />
         )}
       />
-    </div>
+    </>
   );
 }

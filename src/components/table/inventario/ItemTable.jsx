@@ -57,7 +57,6 @@ export default function SelectItemInventario() {
   return (
     <div>
       <BodyCardItem data={api} handleDelete={() => setOpenDelete(true)} handleUpdate={handleOpenUpdate} index={index}/> 
-      <PostInventario />
 
       <DialogUpdate
         show={openActualizar}
