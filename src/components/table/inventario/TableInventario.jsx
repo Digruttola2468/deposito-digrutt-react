@@ -78,7 +78,7 @@ export default function TableComponent() {
 
   return (
     <div className="flex flex-col lg:flex-row justify-center ">
-      <div className="p-3 flex flex-col items-center shadow-lg">
+      <div className="p-3 shadow-xl">
         <SearchCodProducto />
         <table className="table">
           <HeadTable />
