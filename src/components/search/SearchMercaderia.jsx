@@ -25,7 +25,7 @@ export default function SearchMercaderia() {
         options={inventarioNombres}
         getOptionLabel={(elem) => elem.nombre}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        sx={{ width: 200, marginLeft: 1 }}
+        sx={{ width: 140, marginLeft: 1 }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputCod(newInputValue);

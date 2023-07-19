@@ -60,8 +60,6 @@ export default function InfoItem() {
   const [factura, setFactura] = useState("");
   const [codProducto, setcodProducto] = useState();
 
-  const [image, setImage] = useState("");
-
   //2 - Entrada
   //1 - Salida
   const [idcategoria, setIdCategoria] = useState(idCategoria);
@@ -108,19 +106,6 @@ export default function InfoItem() {
     api.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      fetch(`${URL_IMAGE}/${apiOne.nombre}.png`)
-        .then((result) => result.json())
-        .then((result) => {
-          if (result.error === "Not found") setImage("");
-          else setImage(`${URL_IMAGE}/${apiOne.nombre}.png`);
-        })
-        .catch((error) => console.log(error));
-    }
-    fetchData();
-  }, [index, apiOne]);
-
   return (
     <div className="mt-5">
       {api
@@ -132,7 +117,7 @@ export default function InfoItem() {
                 <div className="flex flex-col">
                   <div className="w-full bg-slate-400 rounded-lg">
                     <div className="m-auto w-[150px] ">
-                      <img src={image} alt="" />
+                      <img src={`${URL_IMAGE}/${apiOne.nombre}.png`} alt="" />
                     </div>
                   </div>
 

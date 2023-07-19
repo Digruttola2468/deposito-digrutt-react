@@ -9,12 +9,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
-import CardPost from "../../card/CardBodyPost";
 import { toast } from "react-toastify";
 
-import Checkbox from "@mui/material/Checkbox";
-
-import {MdExpandMore} from 'react-icons/md'
+import { MdExpandMore } from "react-icons/md";
 
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import {
@@ -26,21 +23,16 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControlLabel,
-  FormGroup,
 } from "@mui/material";
 
 const filter = createFilterOptions();
 
+const URL_IMAGE =
+  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
+
 export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria, createInventario } =
     useContext(MercaderiaContext);
-
-  const [checked, setChecked] = useState(false);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
 
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
@@ -78,10 +70,8 @@ export default function PutMercaderia() {
     setFactura("");
     setFecha();
     setStock("");
-    if (!checked) {
-      setInputValue("");
-      setcodProducto("");
-    }
+    setInputValue("");
+    setcodProducto("");
   };
 
   const handleClickPost = () => {
@@ -109,29 +99,24 @@ export default function PutMercaderia() {
   };
 
   return (
-    <Accordion className="mt-2" >
-      <AccordionSummary expandIcon={<MdExpandMore />}>Nueva Mercaderia</AccordionSummary>
+    <Accordion className="mt-2">
+      <AccordionSummary expandIcon={<MdExpandMore />}>
+        Nueva Mercaderia
+      </AccordionSummary>
       <AccordionDetails>
-        <form className="grid grid-cols-1">
-          <div className="flex flex-col flex-wrap">
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={handleChange}
-                    size="small"
-                  />
-                }
-                label="Mantener el valor Cod.Producto"
-                sx={{ marginLeft: 1 }}
-              />
-            </FormGroup>
+        <form className="flex flex-col">
+          <div className="w-full flex flex-row items-center justify-between my-2">
+            {codProducto != null ? <img src={`${URL_IMAGE}/${codProducto.nombre}.png`} className="w-10" /> : <></>}
+            <p className="text-gray-400">
+              {codProducto != undefined ? codProducto.descripcion : ""}
+            </p>
+          </div>
+          <div className="flex flex-row">
             <Autocomplete
               disablePortal
               options={inventarioNombres}
               getOptionLabel={(elem) => elem.nombre}
-              sx={{ width: 300, margin: 1 }}
+              sx={{ width: 200, marginTop: 1 }}
               value={codProducto || null}
               onChange={(evt, newValue) => {
                 if (newValue && newValue.id === undefined) {
@@ -143,9 +128,7 @@ export default function PutMercaderia() {
                 } else setcodProducto(newValue);
               }}
               inputValue={inputValue}
-              onInputChange={(_, newInputValue) => {
-                setInputValue(newInputValue);
-              }}
+              onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
               filterOptions={(options, params) => {
                 const filtered = filter(options, params);
                 if (params.inputValue !== "") {
@@ -166,47 +149,50 @@ export default function PutMercaderia() {
                 />
               )}
             />
-            <p>{codProducto != undefined ? codProducto.descripcion : ""}</p>
+            <TextField
+              helperText="Required"
+              label="Cantidad"
+              value={stock}
+              type="number"
+              onChange={(evt) => setStock(evt.target.value)}
+              variant="outlined"
+              sx={{ width: 150, marginLeft: 1, marginTop: 1 }}
+            />
           </div>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePicker"]}>
-              <DatePicker
-                label="Fecha"
-                value={fecha || null}
-                onChange={(evt, value) => {
-                  if (value.validationError != null)
-                    return toast.error(value.validationError);
-                  else if (evt != null)
-                    setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
-                  else setFecha(undefined);
-                }}
-                slotProps={{
-                  textField: {
-                    helperText: "Required",
-                  },
-                }}
-                format="DD/MM/YYYY"
-                sx={{ margin: 1, width: 300 }}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-          <TextField
-            helperText="Required"
-            label="Cantidad"
-            value={stock}
-            type="number"
-            onChange={(evt) => setStock(evt.target.value)}
-            variant="outlined"
-            sx={{ margin: 1, width: 300 }}
-          />
-          <TextField
-            label="N° Factura"
-            value={factura}
-            onChange={(evt) => setFactura(evt.target.value)}
-            variant="outlined"
-            sx={{ margin: 1, width: 300 }}
-          />
+          <div className="flex flex-row items-center ">
+            <LocalizationProvider dateAdapter={AdapterDayjs} >
+              <DemoContainer components={["DatePicker"]} sx={{width: 200}}>
+                <DatePicker
+                  label="Fecha"
+                  value={fecha || null}
+                  onChange={(evt, value) => {
+                    if (value.validationError != null)
+                      return toast.error(value.validationError);
+                    else if (evt != null)
+                      setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+                    else setFecha(undefined);
+                  }}
+                  slotProps={{
+                    textField: {
+                      helperText: "Required",
+                    },
+                  }}
+                  format="DD/MM/YYYY"
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+            <TextField
+              label="N° Factura"
+              value={factura}
+              onChange={(evt) => setFactura(evt.target.value)}
+              variant="outlined"
+              sx={{ width: 150, marginLeft: 1, marginBottom: 2 }}
+            />
+          </div>
+          <div className="flex flex-row justify-end">
+            <Button onClick={empty}>Limpiar</Button>
+            <Button onClick={handleClickPost}>Agregar</Button>
+          </div>
         </form>
         <Dialog open={open} onClose={handleClose}>
           <form onSubmit={handleSubmit}>

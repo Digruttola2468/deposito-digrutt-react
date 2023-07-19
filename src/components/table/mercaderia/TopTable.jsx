@@ -9,7 +9,7 @@ export default function TopTable() {
   return (
     <div className="w-full flex justify-between items-end flex-row ">
       <SearchMercaderia />
-      <div className="hidden sm:block">
+      <div className="block">
         <button
           onClick={() => getSalidaApi()}
           className={`${
