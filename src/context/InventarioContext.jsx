@@ -87,11 +87,12 @@ export function InventarioContextProvider(props) {
   };
 
   const getPrevius = () => {
-    get()
+    setApi(apiOriginal);
+    /*get()
       .then((result) => {
         setApi(result);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error));*/
   };
 
   //ORDER BY

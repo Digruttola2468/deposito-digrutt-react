@@ -7,10 +7,8 @@ export default function SearchMercaderia() {
     apiOriginal,
     setApi,
     inventarioNombres,
-    getEntradaApi,
-    getSalidaApi,
-    idCategoria,
-    getProductosInventario
+    getPrevius,
+    getProductosInventario,
   } = useContext(MercaderiaContext);
 
   const [inputValue, setInputCod] = useState("");
@@ -35,10 +33,7 @@ export default function SearchMercaderia() {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
           if (newInputValue !== "") setApi(resultado);
-          else {
-            if (idCategoria == 2) getEntradaApi();
-            else getSalidaApi();
-          }
+          else getPrevius();
         }}
         renderInput={(params) => (
           <TextField {...params} label="Buscar" variant="standard" />

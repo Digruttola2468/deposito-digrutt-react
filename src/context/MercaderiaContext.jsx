@@ -23,9 +23,9 @@ import { useLocalStorage } from "usehooks-ts";
 
 export function MercaderiaContextProvider(props) {
   const [apiOriginal, setApiOriginal] = useState([]);
-  const [api, setApi] = useLocalStorage("mercaderia",[]);
+  const [api, setApi] = useLocalStorage("mercaderia", []);
   const [inventarioNombres, setInventarioNombres] = useState([]);
-  
+
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
@@ -55,6 +55,8 @@ export function MercaderiaContextProvider(props) {
       })
       .catch((error) => console.error(error));
   };
+
+  const getPrevius = () => setApi(apiOriginal);
 
   const updateApi = (id, json) => {
     update(id, json)
@@ -236,6 +238,7 @@ export function MercaderiaContextProvider(props) {
         orderCantidadDESC,
         idCategoria,
         createInventario,
+        getPrevius
       }}
     >
       {props.children}
