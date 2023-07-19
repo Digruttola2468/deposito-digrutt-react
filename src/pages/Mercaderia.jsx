@@ -1,6 +1,6 @@
 import TableMercaderia from "../components/table/mercaderia/TableMercaderia";
-import PutMercaderia from "../components/table/mercaderia/PostMercaderia";
 import NavMenu from "../components/Menu";
+import GraficaInventario from "./GraficaInventario";
 
 export default function Mercaderia() {
   return (
@@ -11,6 +11,9 @@ export default function Mercaderia() {
       <main>
         <section className="flex flex-col">
           <TableMercaderia />
+        </section>
+        <section>
+          <GraficaInventario />
         </section>
       </main>
     </>

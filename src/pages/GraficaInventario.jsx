@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { InventarioContext } from "../context/InventarioContext";
+import { MercaderiaContext } from "../context/MercaderiaContext";
+
 import {
   Autocomplete,
   FormControl,
@@ -10,13 +11,19 @@ import {
   TextField,
   Input
 } from "@mui/material";
+
 import BarsComponent from "../components/grafic/BarChart";
+
 import { useLocalStorage } from "usehooks-ts";
 
 import {getArrayMercaderia,getArrayYear,meses} from '../services/date'
 
 export default function GraficaInventario() {
-  const { mercaderiaApi, api } = useContext(InventarioContext);
+  const { mercaderiaApi, inventarioNombres,getAllMercade } = useContext(MercaderiaContext);
+
+  useEffect(() => {
+    getAllMercade();
+  }, [])
 
   const [year, setYear] = useState("");
   const [listYear, setListYear] = useState([]);
@@ -78,7 +85,7 @@ export default function GraficaInventario() {
       <div className="flex flex-col justify-center items-center flex-wrap mb-5 sm:flex-row sm:mb-0 ">
         <Autocomplete
           disablePortal
-          options={api}
+          options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
           isOptionEqualToValue={(option, value) =>
             option.idinventario === value.idinventario
@@ -99,6 +106,8 @@ export default function GraficaInventario() {
             } else {
               setListYear([]);
               setYear("");
+              setApiEntrada([]);
+              setApiSalida([]);
             }
           }}
           sx={{ width: 200, marginLeft: 1 }}

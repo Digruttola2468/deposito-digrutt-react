@@ -10,13 +10,11 @@ import { useLocalStorage } from "usehooks-ts";
 
 //Statefull
 import { post, get, update, eliminar } from "../services/api_inventario";
-import { getAllMercaderia } from "../services/api_mercaderia";
 
 export function InventarioContextProvider(props) {
   const [api, setApi] = useLocalStorage("inventario", []);
   const [apiOriginal, setApiOriginal] = useState([]);
 
-  const [mercaderiaApi, setMercaderiaApi] = useState([]);
   const [isdone, setDone] = useState(false);
 
   const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
@@ -27,11 +25,6 @@ export function InventarioContextProvider(props) {
         setApi(result);
         setApiOriginal(result);
         setDone(true);
-      })
-      .catch((error) => console.error(error));
-    getAllMercaderia()
-      .then((result) => {
-        setMercaderiaApi(result);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -82,9 +75,7 @@ export function InventarioContextProvider(props) {
     setApi(filter);
   };
 
-  const filterApiSearch = (filter) => {
-    setApi(filter);
-  };
+  const filterApiSearch = (filter) => setApi(filter);
 
   const getPrevius = () => {
     setApi(apiOriginal);
@@ -139,7 +130,6 @@ export function InventarioContextProvider(props) {
         isdone,
         searchInventario,
         getPrevius,
-        mercaderiaApi,
         showDialogNewInventario,
         setShowDialogNewInventario,
       }}

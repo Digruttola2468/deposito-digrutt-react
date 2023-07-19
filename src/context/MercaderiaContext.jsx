@@ -21,14 +21,26 @@ import {
 } from "../services/api_inventario";
 import { useLocalStorage } from "usehooks-ts";
 
+import { getAllMercaderia } from "../services/api_mercaderia";
+
 export function MercaderiaContextProvider(props) {
   const [apiOriginal, setApiOriginal] = useState([]);
   const [api, setApi] = useLocalStorage("mercaderia", []);
   const [inventarioNombres, setInventarioNombres] = useState([]);
 
+  const [mercaderiaApi, setMercaderiaApi] = useState([]);
+  
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
+
+  const getAllMercade = () => {
+    getAllMercaderia()
+    .then((result) => {
+      setMercaderiaApi(result);
+    })
+    .catch((error) => console.error(error));
+  }
 
   const getEntradaApi = () => {
     getEntrada()
@@ -223,6 +235,8 @@ export function MercaderiaContextProvider(props) {
         setApi,
         getProductosInventario,
         inventarioNombres,
+        mercaderiaApi,
+        getAllMercade,
         createApi,
         updateApi,
         deleteApi,

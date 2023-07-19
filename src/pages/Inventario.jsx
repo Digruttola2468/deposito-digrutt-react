@@ -4,7 +4,6 @@ import { InventarioContext } from "../context/InventarioContext";
 
 import ProgressComponent from "../components/progress/ProgressComponent";
 import TableComponent from "../components/table/inventario/TableInventario";
-import GraficaInventario from "./GraficaInventario";
 import NavMenu from "../components/Menu";
 
 export default function Inventario() {
@@ -20,9 +19,6 @@ export default function Inventario() {
           <>
             <section>
               <TableComponent />
-            </section>
-            <section>
-              <GraficaInventario />
             </section>
           </>
         ) : (
