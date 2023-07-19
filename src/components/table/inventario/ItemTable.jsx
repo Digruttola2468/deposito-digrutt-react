@@ -21,6 +21,7 @@ export default function SelectItemInventario() {
 
   const [descripcion, setDescripcion] = useState("");
   const [nombre, setNombre] = useState("");
+  const [pesoUnidad, setPesoUnidad] = useState("");
 
   //Handle
   const handleOpenUpdate = () => {
@@ -35,6 +36,7 @@ export default function SelectItemInventario() {
       {
         nombre,
         descripcion,
+        pesoUnidad: parseFloat(pesoUnidad),
       },
       { entrada: apiOne.entrada, salida: apiOne.salida }
     );
@@ -79,6 +81,13 @@ export default function SelectItemInventario() {
           value={descripcion}
           onChange={(evt) => setDescripcion(evt.target.value)}
         />
+        <TextField
+            value={pesoUnidad}
+            onChange={(event) => setPesoUnidad(event.target.value)}
+            label="Peso x Unidad"
+            type="number"
+            sx={{ marginTop: 3, marginLeft: 1 }}
+          />
       </DialogUpdate>
       <DialogDelete title="Eliminar Mercaderia" show={openDelete} eliminar={handleDelete} close={() => setOpenDelete(false)}/>
     </div>

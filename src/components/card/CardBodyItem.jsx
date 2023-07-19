@@ -45,6 +45,11 @@ export default function BodyCardItem({
                   <p>
                     <b>Stock Actual</b>: {elem.entrada - elem.salida}
                   </p>
+                  {
+                    elem.pesoUnidad ? (<p>
+                      <b>Peso x Unidad</b>: {elem.pesoUnidad}g
+                    </p>) : (<></>)
+                  }
                 </div>
               </CardContent>
               <CardActions>

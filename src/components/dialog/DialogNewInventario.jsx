@@ -18,27 +18,32 @@ export default function DialogNewInventario() {
 
   const [codProducto, setCodProducto] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [pesoUnidad, setPesoUnidad] = useState("");
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    if (codProducto.length === 0) return toast.error("Campo Cod.Producto Vacio");
+    if (codProducto.length === 0)
+      return toast.error("Campo Cod.Producto Vacio");
 
     if (descripcion.length === 0) return toast.error("Campo Descripcion Vacio");
 
     createApi({
       nombre: codProducto,
-      descripcion
+      descripcion,
+      pesoUnidad: parseFloat(pesoUnidad),
     });
 
-    setCodProducto('');
-    setDescripcion('');
+    setCodProducto("");
+    setDescripcion("");
+    setPesoUnidad("");
     setShowDialogNewInventario(false);
   };
 
   const handleCloseDialog = () => {
     setCodProducto("");
     setDescripcion("");
+    setPesoUnidad("");
     setShowDialogNewInventario(false);
   };
 
@@ -64,6 +69,14 @@ export default function DialogNewInventario() {
             multiline
             variant="standard"
             sx={{ marginTop: 2 }}
+          />
+          <TextField
+            value={pesoUnidad}
+            onChange={(event) => setPesoUnidad(event.target.value)}
+            label="Peso x Unidad"
+            type="number"
+            variant="standard"
+            sx={{ marginTop: 2 }} 
           />
         </DialogContent>
         <DialogActions>

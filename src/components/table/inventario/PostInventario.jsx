@@ -10,8 +10,9 @@ export default function PostInventario() {
   const { createApi } = useContext(InventarioContext);
 
   const [nombre, setNombre] = useState("");
-
   const [descripcion, setDescripcion] = useState("");
+  const [pesoUnidad, setPesoUnidad] = useState("");
+  
 
   const empty = () => {
     setNombre("");
@@ -51,6 +52,14 @@ export default function PostInventario() {
           label="Descripcion"
           multiline
           value={descripcion}
+          onChange={(evt) => setDescripcion(evt.target.value)}
+          variant="outlined"
+          sx={{ margin: 1, width: 300 }}
+        />
+        <TextField
+          label="Peso x Unidad"
+          value={pesoUnidad}
+          type="number"
           onChange={(evt) => setDescripcion(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}

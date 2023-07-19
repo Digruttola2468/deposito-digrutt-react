@@ -106,7 +106,7 @@ export default function PutMercaderia() {
       <AccordionDetails>
         <form className="flex flex-col">
           <div className="w-full flex flex-row items-center justify-between my-2">
-            {codProducto != null ? <img src={`${URL_IMAGE}/${codProducto.nombre}.png`} className="w-10" /> : <></>}
+            {codProducto != null ? <img src={`${URL_IMAGE}/${codProducto.nombre}.png`} className="w-[100px]" /> : <></>}
             <p className="text-gray-400">
               {codProducto != undefined ? codProducto.descripcion : ""}
             </p>

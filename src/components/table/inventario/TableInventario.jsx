@@ -30,6 +30,7 @@ const HeadTable = () => {
         <th>entrada</th>
         <th>salida</th>
         <th>stockActual</th>
+        <th>Peso x Unidad</th>
       </tr>
     </thead>
   );
@@ -56,6 +57,7 @@ const BodyTable = ({ data, end, count }) => {
               <td className="py-4 px-1">{elem.entrada}</td>
               <td className="py-4 px-1">{elem.salida}</td>
               <td className="py-4 px-1">{elem.entrada - elem.salida}</td>
+              <td className="py-4 px-1">{elem.pesoUnidad} g</td>
             </tr>
           );
         })
@@ -64,6 +66,7 @@ const BodyTable = ({ data, end, count }) => {
           <td></td>
           <td></td>
           <td className="text-red-400">NO HAY DATOS</td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
