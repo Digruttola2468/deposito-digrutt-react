@@ -1,4 +1,5 @@
 import InfoItem from "./ItemTable";
+import PutMercaderia from "./PostMercaderia";
 import Table from "./Table";
 import TopTable from "./TopTable";
 
@@ -9,7 +10,10 @@ export default function TableMercaderia() {
         <TopTable />
         <Table />
       </div>
-      <InfoItem />
+      <div className="flex flex-col m-2">
+        <InfoItem />
+        <PutMercaderia />
+      </div>
     </div>
   );
 }

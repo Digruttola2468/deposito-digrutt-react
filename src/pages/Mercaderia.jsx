@@ -11,7 +11,6 @@ export default function Mercaderia() {
       <main>
         <section className="flex flex-col">
           <TableMercaderia />
-          <PutMercaderia />
         </section>
       </main>
     </>

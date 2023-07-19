@@ -127,7 +127,7 @@ export default function InfoItem() {
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
-            <Card key={elem.id} className="ml-4">
+            <Card key={elem.id}>
               <CardContent>
                 <div className="flex flex-col">
                   <div className="w-full bg-slate-400 rounded-lg">
