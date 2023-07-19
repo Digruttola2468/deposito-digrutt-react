@@ -9,21 +9,22 @@ import {
   MenuItem,
   Select,
   TextField,
-  Input
+  Input,
 } from "@mui/material";
 
 import BarsComponent from "../components/grafic/BarChart";
 
 import { useLocalStorage } from "usehooks-ts";
 
-import {getArrayMercaderia,getArrayYear,meses} from '../services/date'
+import { getArrayMercaderia, getArrayYear, meses } from "../services/date";
 
 export default function GraficaInventario() {
-  const { mercaderiaApi, inventarioNombres,getAllMercade } = useContext(MercaderiaContext);
+  const { mercaderiaApi, inventarioNombres, getAllMercade } =
+    useContext(MercaderiaContext);
 
   useEffect(() => {
     getAllMercade();
-  }, [])
+  }, []);
 
   const [year, setYear] = useState("");
   const [listYear, setListYear] = useState([]);
@@ -126,31 +127,46 @@ export default function GraficaInventario() {
             ))}
           </Select>
         </FormControl>
-        <div className="flex flex-row items-center">
-          <div className="ml-5">
-            <b>Color Entrada: </b>
-            <Input
-              type="color"
-              sx={{ width: "30px" }}
-              onChange={(evt) => {
-                setColorEntrada(evt.target.value);
-              }}
-              value={colorEntrada}
-            />
+        {codProducto != undefined ? (
+          <div className=" flex flex-row items-center">
+            <div className="w-[70px]">
+              <img
+                src={`https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt/${codProducto.nombre}.png`}
+                alt=""
+              />
+            </div>
+            <p className="text-gray-500">
+              {codProducto.descripcion}
+            </p>
           </div>
-          <div className="ml-5">
-            <b>Color Salida: </b>
-            <Input
-              type="color"
-              sx={{ width: "30px" }}
-              onChange={(evt) => setColorSalida(evt.target.value)}
-              value={colorSalida}
-            />
-          </div>
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="m-auto max-w-[900px]">
         <BarsComponent data={midata} />
+      </div>
+      <div className="flex flex-row items-center justify-center">
+        <div className="ml-5">
+          <b>Color Entrada: </b>
+          <Input
+            type="color"
+            sx={{ width: "30px" }}
+            onChange={(evt) => {
+              setColorEntrada(evt.target.value);
+            }}
+            value={colorEntrada}
+          />
+        </div>
+        <div className="ml-5">
+          <b>Color Salida: </b>
+          <Input
+            type="color"
+            sx={{ width: "30px" }}
+            onChange={(evt) => setColorSalida(evt.target.value)}
+            value={colorSalida}
+          />
+        </div>
       </div>
     </section>
   );
