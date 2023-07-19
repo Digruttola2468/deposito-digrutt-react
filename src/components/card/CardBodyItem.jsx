@@ -47,7 +47,7 @@ export default function BodyCardItem({
                   </p>
                   {
                     elem.pesoUnidad ? (<p>
-                      <b>Peso x Unidad</b>: {elem.pesoUnidad}g
+                      <b>Peso x Unidad</b>: {elem.pesoUnidad} kg
                     </p>) : (<></>)
                   }
                 </div>

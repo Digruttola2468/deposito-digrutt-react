@@ -9,6 +9,7 @@ import Pagination from "@mui/material/Pagination";
 import SearchCodProducto from "../../search/SearchInventario";
 import { Button } from "@mui/material";
 import DialogNewInventario from "../../dialog/DialogNewInventario";
+import PesoUnidad from "./PesoUnidad";
 
 const HeadTable = () => {
   const { orderNombreASC, orderNombreDES } = useContext(InventarioContext);
@@ -57,7 +58,7 @@ const BodyTable = ({ data, end, count }) => {
               <td className="py-4 px-1">{elem.entrada}</td>
               <td className="py-4 px-1">{elem.salida}</td>
               <td className="py-4 px-1">{elem.entrada - elem.salida}</td>
-              <td className="py-4 px-1">{elem.pesoUnidad} g</td>
+              <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
             </tr>
           );
         })
@@ -100,7 +101,11 @@ export default function TableComponent() {
         />
       </div>
 
-      <SelectItemInventario />
+      <div className="flex flex-col ">
+        <SelectItemInventario />
+        <PesoUnidad />
+      </div>
+      
     </div>
   );
 }
