@@ -1,6 +1,8 @@
+const BASE_URL = "https://deposito-render.onrender.com";
+
 export const get = async () => {
   const response = await fetch(
-    "https://deposito-digrutt.up.railway.app/inventario"
+    `${BASE_URL}/inventario`
   );
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   return await response.json();
@@ -9,7 +11,7 @@ export const get = async () => {
 //Get one inventario
 export const getOneInventario = async (idInventario) => {
   const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/inventario/${idInventario}`
+    `${BASE_URL}/inventario/${idInventario}`
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
 
@@ -20,7 +22,7 @@ export const getOneInventario = async (idInventario) => {
 //Get Inventario Nombres
 export const getNombresInventario = async () => {
   const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/inventario/nombres"
+    `${BASE_URL}/inventario/nombres`
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
@@ -36,7 +38,7 @@ export const post = async (json) => {
   };
 
   const response = await fetch(
-    "https://deposito-digrutt.up.railway.app/inventario",
+    `${BASE_URL}/inventario`,
     requestOptions
   );
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -54,7 +56,7 @@ export const update = async (id, json) => {
   };
 
   const resultado = await fetch(
-    `https://deposito-digrutt.up.railway.app/inventario/${id}`,
+    `${BASE_URL}/inventario/${id}`,
     requestOptions
   );
   if(!resultado.ok) throw new Error(`HTTP error! status: ${resultado.status}`);
@@ -63,7 +65,7 @@ export const update = async (id, json) => {
 };
 
 export const eliminar = async (id) => {
-  const resultado = await fetch(`https://deposito-digrutt.up.railway.app/inventario/${id}`, {
+  const resultado = await fetch(`${BASE_URL}/inventario/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

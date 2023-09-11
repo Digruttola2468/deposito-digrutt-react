@@ -1,6 +1,8 @@
+const BASE_URL = "https://deposito-render.onrender.com";
+
 export const getAllMercaderia = async () => {
   const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/mercaderia"
+    `${BASE_URL}/mercaderia`
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
@@ -9,7 +11,7 @@ export const getAllMercaderia = async () => {
 //Get entrada mercaderia
 export const getEntrada = async () => {
   const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/mercaderia/entrada"
+    `${BASE_URL}/mercaderia/entrada`
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
@@ -18,7 +20,7 @@ export const getEntrada = async () => {
 //Get Salida mercaderia
 export const getSalida = async () => {
   const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/mercaderia/salida"
+    `${BASE_URL}/mercaderia/salida`
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
@@ -27,7 +29,7 @@ export const getSalida = async () => {
 //New mercaderia
 export const post = async (json) => {
   const result = await fetch(
-    "https://deposito-digrutt.up.railway.app/mercaderia",
+    `${BASE_URL}/mercaderia`,
     {
       method: "POST",
       headers: {
@@ -52,7 +54,7 @@ export const update = async (id, json) => {
   };
 
   const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
+    `${BASE_URL}/mercaderia/${id}`,
     requestOptions
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
@@ -62,7 +64,7 @@ export const update = async (id, json) => {
 //Delete Mercaderia
 export const eliminar = async (id) => {
   const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/mercaderia/${id}`,
+    `${BASE_URL}/mercaderia/${id}`,
     {
       method: "DELETE",
       headers: {
@@ -77,7 +79,7 @@ export const eliminar = async (id) => {
 //Search one entrada
 export const searchEntrada = async (search) => {
   const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/mercaderia/entrada/${search}`,
+    `${BASE_URL}/mercaderia/entrada/${search}`,
     { method: "GET" }
   );
   return await result.json();
@@ -86,7 +88,7 @@ export const searchEntrada = async (search) => {
 //Search one salida
 export const searchSalida = async (search) => {
   const result = await fetch(
-    `https://deposito-digrutt.up.railway.app/mercaderia/salida/${search}`,
+    `${BASE_URL}/mercaderia/salida/${search}`,
     { method: "GET" }
   );
   return await result.json();
