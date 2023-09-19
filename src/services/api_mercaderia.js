@@ -1,4 +1,4 @@
-const BASE_URL = "https://deposito-render.onrender.com";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/";
 
 export const getAllMercaderia = async () => {
   const result = await fetch(

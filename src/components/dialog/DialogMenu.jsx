@@ -7,17 +7,19 @@ import { sendFile } from "../../services/sendFile";
 
 import Button from "@mui/material/Button";
 
+const BASEAPIREST = "https://deposito-digrutt-express-production.up.railway.app";
+
 export default function DialogMenu ({show,close}) {
     
     const handleExportMercaderia = () =>
       sendFile(
-        "https://deposito-digrutt.up.railway.app/excel/mercaderia",
+        `${BASEAPIREST}/excel/mercaderia`,
         "mercaderia.xlsx"
       );
   
     const handleExportInventario = () =>
       sendFile(
-        "https://deposito-digrutt.up.railway.app/excel/inventario",
+        `${BASEAPIREST}/excel/inventario`,
         "inventario.xlsx"
       );
   
