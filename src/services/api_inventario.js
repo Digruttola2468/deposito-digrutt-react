@@ -1,4 +1,4 @@
-const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
 
 export const get = async () => {
   const response = await fetch(

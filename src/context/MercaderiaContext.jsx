@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
 
@@ -8,8 +8,6 @@ export const MercaderiaContext = createContext();
 import {
   update,
   eliminar,
-  getEntrada,
-  getSalida,
   post,
   searchEntrada,
   searchSalida,
@@ -29,27 +27,32 @@ export function MercaderiaContextProvider(props) {
   const [inventarioNombres, setInventarioNombres] = useState([]);
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
-  
+
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
 
+  useEffect(() => {
+    getAllMercade();
+  }, []);
+
   const getAllMercade = () => {
     getAllMercaderia()
-    .then((result) => {
-      setMercaderiaApi(result);
-    })
-    .catch((error) => console.error(error));
-  }
-
-  const getEntradaApi = () => {
-    getEntrada()
       .then((result) => {
-        setIdCategoria(2);
-        setApi(result);
-        setApiOriginal(result);
+        setMercaderiaApi(result);
       })
       .catch((error) => console.error(error));
+  };
+
+  const getEntradaSalidaAllMercaderia = (category) => {
+    return mercaderiaApi.filter((e) => e.categoria == category);
+  };
+
+  const getEntradaApi = () => {
+    const result = getEntradaSalidaAllMercaderia("Entrada");
+    setIdCategoria(2);
+    setApi(result);
+    setApiOriginal(result);
   };
 
   const getProductosInventario = () => {
@@ -59,13 +62,10 @@ export function MercaderiaContextProvider(props) {
   };
 
   const getSalidaApi = () => {
-    getSalida()
-      .then((result) => {
-        setIdCategoria(1);
-        setApi(result);
-        setApiOriginal(result);
-      })
-      .catch((error) => console.error(error));
+    const result = getEntradaSalidaAllMercaderia("Salida");
+    setIdCategoria(1);
+    setApi(result);
+    setApiOriginal(result);
   };
 
   const getPrevius = () => setApi(apiOriginal);
@@ -252,7 +252,7 @@ export function MercaderiaContextProvider(props) {
         orderCantidadDESC,
         idCategoria,
         createInventario,
-        getPrevius
+        getPrevius,
       }}
     >
       {props.children}

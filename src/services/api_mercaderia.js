@@ -1,4 +1,4 @@
-const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
 
 export const getAllMercaderia = async () => {
   const result = await fetch(
@@ -9,7 +9,7 @@ export const getAllMercaderia = async () => {
 }
 
 //Get entrada mercaderia
-export const getEntrada = async () => {
+/*export const getEntrada = async () => {
   const result = await fetch(
     `${BASE_URL}/mercaderia/entrada`
   );
@@ -24,7 +24,7 @@ export const getSalida = async () => {
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
-};
+};*/
 
 //New mercaderia
 export const post = async (json) => {
