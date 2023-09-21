@@ -8,25 +8,36 @@ import BodyTable from "./BodyTable";
 import HeadTable from "./HeadTable";
 
 export default function Table() {
-  const { api,idCategoria,getEntradaApi,getSalidaApi } = useContext(MercaderiaContext);
+  const {
+    api,
+    idCategoria,
+    getEntradaApi,
+    getSalidaApi,
+    pagina,
+    setPagina,
+    end,
+    setEnd,
+    limit
+  } = useContext(MercaderiaContext);
 
   useEffect(() => {
-    if(idCategoria == 2) getEntradaApi();
+    if (idCategoria == 2) getEntradaApi();
     else getSalidaApi();
-  }, [idCategoria])
-
-  const LIMIT = 10;
-  const [end, setEnd] = useState(LIMIT);
+  }, [idCategoria]);
 
   return (
     <>
       <table className="table">
         <HeadTable />
-        <BodyTable end={end} count={LIMIT} />
+        <BodyTable />
       </table>
       <Pagination
-        count={Math.ceil(api.length / LIMIT)}
-        onChange={(evt, value) => setEnd(LIMIT * parseInt(value))}
+        count={Math.ceil(api.length / limit)}
+        onChange={(evt, value) => {
+          setEnd(limit * parseInt(value));
+          setPagina(value);
+        }}
+        page={pagina}
       />
     </>
   );

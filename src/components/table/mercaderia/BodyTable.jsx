@@ -3,13 +3,13 @@ import { useLocalStorage } from "usehooks-ts";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
-export default function BodyTable({ end, count }) {
-  const { api } = useContext(MercaderiaContext);
+export default function BodyTable() {
+  const { api,end,limit } = useContext(MercaderiaContext);
 
   const [start, setStart] = useState(0);
   const [index, setIndex] = useLocalStorage("selectIndexMercaderia", null);
 
-  useEffect(() => setStart(end - count));
+  useEffect(() => setStart(end - limit));
 
   return (
     <tbody>

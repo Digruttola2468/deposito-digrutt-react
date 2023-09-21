@@ -28,6 +28,12 @@ export function MercaderiaContextProvider(props) {
 
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
 
+  //page
+  const [pagina,setPagina] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [end, setEnd] = useState(limit);
+
+
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
@@ -52,6 +58,7 @@ export function MercaderiaContextProvider(props) {
     const result = getEntradaSalidaAllMercaderia("Entrada");
     setIdCategoria(2);
     setApi(result);
+    setPagina(1);
     setApiOriginal(result);
   };
 
@@ -65,6 +72,7 @@ export function MercaderiaContextProvider(props) {
     const result = getEntradaSalidaAllMercaderia("Salida");
     setIdCategoria(1);
     setApi(result);
+    setPagina(1);
     setApiOriginal(result);
   };
 
@@ -135,7 +143,7 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.error("Error:", error));
   };
 
-  const searchEntradaApi = (search) => {
+  /*const searchEntradaApi = (search) => {
     searchEntrada(search)
       .then((result) => {
         if (result.message) return toast.error(result.message);
@@ -151,7 +159,7 @@ export function MercaderiaContextProvider(props) {
         setApi(result);
       })
       .catch((error) => console.log(error));
-  };
+  };*/
 
   //ORDER BY
   const orderNombreASC = () => {
@@ -242,8 +250,8 @@ export function MercaderiaContextProvider(props) {
         deleteApi,
         getEntradaApi,
         getSalidaApi,
-        searchSalidaApi,
-        searchEntradaApi,
+        //searchSalidaApi,
+        //searchEntradaApi,
         orderNombreASC,
         orderNombreDESC,
         orderFechaASC,
@@ -253,6 +261,11 @@ export function MercaderiaContextProvider(props) {
         idCategoria,
         createInventario,
         getPrevius,
+        pagina,
+        setPagina,
+        end,
+        setEnd,
+        limit
       }}
     >
       {props.children}
