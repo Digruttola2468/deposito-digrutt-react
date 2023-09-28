@@ -38,14 +38,12 @@ export function MercaderiaContextProvider(props) {
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
 
-  useEffect(() => {
-    getAllMercade();
-  }, []);
 
   const getAllMercade = () => {
     getAllMercaderia()
       .then((result) => {
         setMercaderiaApi(result);
+        setApi(result)
       })
       .catch((error) => console.error(error));
   };
