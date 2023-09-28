@@ -43,7 +43,8 @@ export function MercaderiaContextProvider(props) {
     getAllMercaderia()
       .then((result) => {
         setMercaderiaApi(result);
-        setApi(result)
+        setApi(result);
+        setApiOriginal(result);
       })
       .catch((error) => console.error(error));
   };
