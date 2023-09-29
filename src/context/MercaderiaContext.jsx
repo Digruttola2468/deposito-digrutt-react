@@ -1,6 +1,4 @@
-import { createContext, useEffect, useState } from "react";
-
-import { toast } from "react-toastify";
+import { createContext, useState } from "react";
 
 export const MercaderiaContext = createContext();
 
@@ -9,42 +7,45 @@ import {
   update,
   eliminar,
   post,
-  searchEntrada,
-  searchSalida,
+  getAllMercaderia
 } from "../services/api_mercaderia";
+
 import {
   getOneInventario,
   getNombresInventario,
   post as postInventario,
 } from "../services/api_inventario";
-import { useLocalStorage } from "usehooks-ts";
 
-import { getAllMercaderia } from "../services/api_mercaderia";
+import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
 
 export function MercaderiaContextProvider(props) {
+  //search
   const [apiOriginal, setApiOriginal] = useState([]);
+  
+  //show data of the table
   const [api, setApi] = useLocalStorage("mercaderia", []);
+  
+  //Get all Name inventarios code
   const [inventarioNombres, setInventarioNombres] = useState([]);
 
+  //
   const [mercaderiaApi, setMercaderiaApi] = useState([]);
 
   //page
-  const [pagina,setPagina] = useState(1);
+  const [pagina, setPagina] = useState(1);
   const [limit, setLimit] = useState(10);
   const [end, setEnd] = useState(limit);
-
 
   //2: ENTRADA
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
-
 
   const getAllMercade = () => {
     getAllMercaderia()
       .then((result) => {
         setMercaderiaApi(result);
         setApi(result);
-        setApiOriginal(result);
       })
       .catch((error) => console.error(error));
   };
@@ -264,7 +265,7 @@ export function MercaderiaContextProvider(props) {
         setPagina,
         end,
         setEnd,
-        limit
+        limit,
       }}
     >
       {props.children}

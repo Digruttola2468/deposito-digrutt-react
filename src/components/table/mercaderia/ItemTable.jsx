@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import { FaTrash, FaPen } from "react-icons/fa";
-import { useFetch, useReadLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage } from "usehooks-ts";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import DialogDelete from "../../dialog/DialogDelete";
 import {
@@ -44,8 +44,6 @@ const getDateWithNameMonth = (fechaString) => {
   } ${fDate.getFullYear()}`;
 };
 
-const URL_IMAGE =
-  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
 
 export default function InfoItem() {
   const { api, deleteApi, updateApi, inventarioNombres, idCategoria } =
@@ -116,9 +114,6 @@ export default function InfoItem() {
               <CardContent>
                 <div className="flex flex-col">
                   <div className="w-full bg-slate-400 rounded-lg">
-                    <div className="m-auto w-[150px] ">
-                      <img src={`${URL_IMAGE}/${apiOne.nombre}.png`} alt="" />
-                    </div>
                   </div>
 
                   <h2 className="text-lg font-semibold uppercase">

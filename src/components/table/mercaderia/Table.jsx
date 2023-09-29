@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import {  useContext, useEffect } from "react";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
@@ -15,7 +15,6 @@ export default function Table() {
     getSalidaApi,
     pagina,
     setPagina,
-    end,
     setEnd,
     limit
   } = useContext(MercaderiaContext);
