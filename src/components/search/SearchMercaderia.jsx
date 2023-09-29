@@ -12,9 +12,9 @@ export default function SearchMercaderia() {
     setPagina,
     setEnd,
     limit,
+    inputValue, 
+    setInputCod
   } = useContext(MercaderiaContext);
-
-  const [inputValue, setInputCod] = useState("");
 
   useEffect(() => {
     getProductosInventario();

@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 export function MercaderiaContextProvider(props) {
   //search
   const [apiOriginal, setApiOriginal] = useState([]);
+  const [inputValue, setInputCod] = useState("");
   
   //show data of the table
   const [api, setApi] = useLocalStorage("mercaderia", []);
@@ -46,6 +47,7 @@ export function MercaderiaContextProvider(props) {
       .then((result) => {
         setMercaderiaApi(result);
         setApi(result);
+        setPagina(1);
       })
       .catch((error) => console.error(error));
   };
@@ -60,6 +62,7 @@ export function MercaderiaContextProvider(props) {
     setApi(result);
     setPagina(1);
     setApiOriginal(result);
+    setInputCod("");
   };
 
   const getProductosInventario = () => {
@@ -74,6 +77,7 @@ export function MercaderiaContextProvider(props) {
     setApi(result);
     setPagina(1);
     setApiOriginal(result);
+    setInputCod("");
   };
 
   const getPrevius = () => setApi(apiOriginal);
@@ -266,6 +270,8 @@ export function MercaderiaContextProvider(props) {
         end,
         setEnd,
         limit,
+        inputValue, 
+        setInputCod
       }}
     >
       {props.children}
