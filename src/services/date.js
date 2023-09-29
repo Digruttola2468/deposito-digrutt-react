@@ -22,7 +22,8 @@ export const getArrayYear = (mercaderiaApi, idinventario) => {
 
     for (let i = 0; i < filtrado.length; i++) {
       const element = filtrado[i];
-      const dateFecha = new Date(element.fecha);
+      const newFecha = element.fecha.split("-").reverse().join("-");
+      const dateFecha = new Date(newFecha);
       enviar.add(dateFecha.getFullYear());
     }
   }
