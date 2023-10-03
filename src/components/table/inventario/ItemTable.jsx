@@ -22,6 +22,7 @@ export default function SelectItemInventario() {
   const [descripcion, setDescripcion] = useState("");
   const [nombre, setNombre] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
+  const [cliente, setCliente] = useState();
 
   //Handle
   const handleOpenUpdate = () => {

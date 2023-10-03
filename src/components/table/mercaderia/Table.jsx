@@ -1,4 +1,4 @@
-import {  useContext, useEffect } from "react";
+import {  useContext } from "react";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
@@ -9,20 +9,12 @@ import HeadTable from "./HeadTable";
 
 export default function Table() {
   const {
-    api,
-    idCategoria,
-    getEntradaApi,
-    getSalidaApi,
+    tableList,
     pagina,
     setPagina,
     setEnd,
     limit
   } = useContext(MercaderiaContext);
-
-  useEffect(() => {
-    if (idCategoria == 2) getEntradaApi();
-    else getSalidaApi();
-  }, [idCategoria]);
 
   return (
     <>
@@ -31,7 +23,7 @@ export default function Table() {
         <BodyTable />
       </table>
       <Pagination
-        count={Math.ceil(api.length / limit)}
+        count={Math.ceil(tableList.length / limit)}
         onChange={(evt, value) => {
           setEnd(limit * parseInt(value));
           setPagina(value);

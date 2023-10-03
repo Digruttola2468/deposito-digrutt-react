@@ -22,10 +22,6 @@ export default function GraficaInventario() {
   const { mercaderiaApi, inventarioNombres, getAllMercade } =
     useContext(MercaderiaContext);
 
-  useEffect(() => {
-    getAllMercade();
-  }, []);
-
   const [year, setYear] = useState("");
   const [listYear, setListYear] = useState([]);
 

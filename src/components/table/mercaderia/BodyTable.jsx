@@ -4,7 +4,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
 export default function BodyTable() {
-  const { api,end,limit } = useContext(MercaderiaContext);
+  const { tableList,end,limit } = useContext(MercaderiaContext);
 
   const [start, setStart] = useState(0);
   const [index, setIndex] = useLocalStorage("selectIndexMercaderia", null);
@@ -13,8 +13,8 @@ export default function BodyTable() {
 
   return (
     <tbody>
-      {api.length != 0 ? (
-        api.slice(start, end).map((elem) => {
+      {tableList.length != 0 ? (
+        tableList.slice(start, end).map((elem) => {
           return (
             <tr
               key={elem.id}

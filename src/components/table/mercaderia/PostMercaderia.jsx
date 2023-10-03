@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -26,9 +26,6 @@ import {
 } from "@mui/material";
 
 const filter = createFilterOptions();
-
-const URL_IMAGE =
-  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
 
 export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria, createInventario } =
@@ -106,7 +103,6 @@ export default function PutMercaderia() {
       <AccordionDetails>
         <form className="flex flex-col">
           <div className="w-full flex flex-row items-center justify-between my-2">
-            {codProducto != null ? <img src={`${URL_IMAGE}/${codProducto.nombre}.png`} className="w-[100px]" /> : <></>}
             <p className="text-gray-400">
               {codProducto != undefined ? codProducto.descripcion : ""}
             </p>

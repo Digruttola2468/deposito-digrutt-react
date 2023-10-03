@@ -4,8 +4,9 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import SearchMercaderia from "../../search/SearchMercaderia";
 
 export default function TopTable() {
-    const { getEntradaApi, getSalidaApi, idCategoria } =
+  const { getEntradaApi, getSalidaApi, idCategoria } =
     useContext(MercaderiaContext);
+  
   return (
     <div className="w-full flex justify-between items-end flex-row ">
       <SearchMercaderia />

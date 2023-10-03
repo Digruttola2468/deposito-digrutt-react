@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const MercaderiaContext = createContext();
 
@@ -7,7 +7,7 @@ import {
   update,
   eliminar,
   post,
-  getAllMercaderia
+  getAllMercaderia,
 } from "../services/api_mercaderia";
 
 import {
@@ -16,24 +16,20 @@ import {
   post as postInventario,
 } from "../services/api_inventario";
 
-import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-toastify";
 
 export function MercaderiaContextProvider(props) {
-  //search
+  //table search
+  const [inputSearch, setInputSearch] = useState("");
+
+  //table data
+  const [tableList, setTableList] = useState([]);
   const [apiOriginal, setApiOriginal] = useState([]);
-  const [inputValue, setInputCod] = useState("");
-  
-  //show data of the table
-  const [api, setApi] = useLocalStorage("mercaderia", []);
-  
-  //Get all Name inventarios code
+
+  //Get all Name inventarios
   const [inventarioNombres, setInventarioNombres] = useState([]);
 
-  //
-  const [mercaderiaApi, setMercaderiaApi] = useState([]);
-
-  //page
+  //table page
   const [pagina, setPagina] = useState(1);
   const [limit, setLimit] = useState(10);
   const [end, setEnd] = useState(limit);
@@ -42,50 +38,68 @@ export function MercaderiaContextProvider(props) {
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
 
-  const getAllMercade = () => {
+  //Get List mercaderia from BBDD
+  const getListMercaderiaAll = () => {
     getAllMercaderia()
       .then((result) => {
-        setMercaderiaApi(result);
-        setApi(result);
-        setPagina(1);
+        setApiOriginal(result);
+        setTableList(result.filter((e) => e.categoria == "Entrada"));
+        setIdCategoria(2);
       })
       .catch((error) => console.error(error));
   };
 
+  //
+  useEffect(() => {
+    getListMercaderiaAll();
+  }, []);
+
+  //filtramos list Mercaderia BBDD
   const getEntradaSalidaAllMercaderia = (category) => {
-    return mercaderiaApi.filter((e) => e.categoria == category);
+    return apiOriginal.filter((e) => e.categoria == category);
   };
 
   const getEntradaApi = () => {
-    const result = getEntradaSalidaAllMercaderia("Entrada");
-    setIdCategoria(2);
-    setApi(result);
+    setTableList(getEntradaSalidaAllMercaderia("Entrada"));
+    setIdCategoria(2); //Entrada
+
+    //Obtiene los primemos 10
+    setEnd(limit * 1);
     setPagina(1);
-    setApiOriginal(result);
-    setInputCod("");
+
+    setInputSearch("");
   };
 
+  const getSalidaApi = () => {
+    setTableList(getEntradaSalidaAllMercaderia("Salida"));
+    setIdCategoria(1); //Salida
+
+    //Obtiene los primemos 10
+    setEnd(limit * 1);
+    setPagina(1);
+
+    setInputSearch("");
+  };
+
+  //get List inventario names from BBDD
   const getProductosInventario = () => {
     getNombresInventario()
       .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   };
 
-  const getSalidaApi = () => {
-    const result = getEntradaSalidaAllMercaderia("Salida");
-    setIdCategoria(1);
-    setApi(result);
-    setPagina(1);
-    setApiOriginal(result);
-    setInputCod("");
+  //update table
+  const getPrevius = () => {
+    if (idCategoria === 2) getEntradaApi();
+    else if (idCategoria === 1) getSalidaApi();
+    else console.error("Error: idCategoria no es ni 1 (entrada) ni 2 (salida)");
   };
 
-  const getPrevius = () => setApi(apiOriginal);
-
+  //update BBDD
   const updateApi = (id, json) => {
     update(id, json)
       .then((result) => {
-        const newUserForeignInfo = [...api];
+        const newUserForeignInfo = [...tableList];
         let index = newUserForeignInfo.findIndex(
           (elem) => elem.id == result.id
         );
@@ -100,13 +114,15 @@ export function MercaderiaContextProvider(props) {
           descripcion: filter[0].descripcion,
         });
 
-        setApi(newUserForeignInfo);
+        setTableList(newUserForeignInfo);
+        getListMercaderiaAll();
 
         toast.success("Se actualizo Correctamente");
       })
       .catch((error) => console.log("error", error));
   };
 
+  //create BBDD
   const createApi = (json) => {
     post(json)
       .then((data2) => {
@@ -114,21 +130,34 @@ export function MercaderiaContextProvider(props) {
         getOneInventario(data2.idinventario)
           .then((data) => {
             toast.success("Se envio correctamente");
-            setApi([
-              ...api,
+
+            setApiOriginal([
               {
                 ...data2,
                 fecha,
                 nombre: data[0].nombre,
                 descripcion: data[0].descripcion,
               },
+              ...apiOriginal
+              
             ]);
+            setTableList([
+              {
+                ...data2,
+                fecha,
+                nombre: data[0].nombre,
+                descripcion: data[0].descripcion,
+              },
+              ...tableList
+            ]);
+
           })
           .catch((error) => console.error(error));
       })
       .catch((error) => console.error(error));
   };
 
+  //create inventario BBDD
   const createInventario = (json) => {
     postInventario(json)
       .then((result) => {
@@ -138,37 +167,22 @@ export function MercaderiaContextProvider(props) {
       .catch((error) => console.log("error", error));
   };
 
+  //delete BBDD
   const deleteApi = (id) => {
     eliminar(id)
       .then((data) => {
         toast.success(data.message);
-        setApi(api.filter((elem) => elem.id != id));
+
+        setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
+        setTableList(tableList.filter((elem) => elem.id != id));
       })
       .catch((error) => console.error("Error:", error));
   };
 
-  /*const searchEntradaApi = (search) => {
-    searchEntrada(search)
-      .then((result) => {
-        if (result.message) return toast.error(result.message);
-        setApi(result);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const searchSalidaApi = (search) => {
-    searchSalida(search)
-      .then((result) => {
-        if (result.message) return toast.error(result.message);
-        setApi(result);
-      })
-      .catch((error) => console.log(error));
-  };*/
-
   //ORDER BY
   const orderNombreASC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.nombre > b.nombre) return 1;
         if (a.nombre < b.nombre) return -1;
         return 0;
@@ -177,8 +191,8 @@ export function MercaderiaContextProvider(props) {
     toast.info("Ordenado Nombre Ascendente");
   };
   const orderNombreDESC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.nombre < b.nombre) return 1;
         if (a.nombre > b.nombre) return -1;
         return 0;
@@ -187,8 +201,8 @@ export function MercaderiaContextProvider(props) {
     toast.info("Ordenado Nombre Descendente");
   };
   const orderFechaASC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         const newA = a.fecha.split("-").reverse().join("-");
         const ADate = new Date(newA);
 
@@ -203,8 +217,8 @@ export function MercaderiaContextProvider(props) {
     toast.info("Ordenado Fecha Ascendente");
   };
   const orderFechaDESC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         const newA = a.fecha.split("-").reverse().join("-");
         const ADate = new Date(newA);
 
@@ -219,8 +233,8 @@ export function MercaderiaContextProvider(props) {
     toast.info("Ordenado Fecha Descendente");
   };
   const orderCantidadASC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.stock > b.stock) return 1;
         if (a.stock < b.stock) return -1;
         return 0;
@@ -229,8 +243,8 @@ export function MercaderiaContextProvider(props) {
     toast.info("Ordenado Stock Ascendente");
   };
   const orderCantidadDESC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.stock < b.stock) return 1;
         if (a.stock > b.stock) return -1;
         return 0;
@@ -242,36 +256,34 @@ export function MercaderiaContextProvider(props) {
   return (
     <MercaderiaContext.Provider
       value={{
-        api,
+        inputSearch,
+        setInputSearch,
+        tableList,
+        setTableList,
         apiOriginal,
-        setApi,
-        getProductosInventario,
         inventarioNombres,
-        mercaderiaApi,
-        getAllMercade,
+        pagina,
+        setPagina,
+        limit,
+        setLimit,
+        end,
+        setEnd,
+        idCategoria,
+        setIdCategoria,
+        getEntradaApi,
+        getSalidaApi,
+        getProductosInventario,
+        getPrevius,
         createApi,
         updateApi,
         deleteApi,
-        getEntradaApi,
-        getSalidaApi,
-        //searchSalidaApi,
-        //searchEntradaApi,
+        createInventario,
         orderNombreASC,
         orderNombreDESC,
         orderFechaASC,
         orderFechaDESC,
         orderCantidadASC,
         orderCantidadDESC,
-        idCategoria,
-        createInventario,
-        getPrevius,
-        pagina,
-        setPagina,
-        end,
-        setEnd,
-        limit,
-        inputValue, 
-        setInputCod
       }}
     >
       {props.children}

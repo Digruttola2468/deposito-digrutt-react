@@ -4,16 +4,16 @@ import { MercaderiaContext } from "../../context/MercaderiaContext";
 
 export default function SearchMercaderia() {
   const {
-    apiOriginal,
-    setApi,
+    tableList,
+    setTableList,
     inventarioNombres,
     getPrevius,
     getProductosInventario,
     setPagina,
     setEnd,
     limit,
-    inputValue, 
-    setInputCod
+    inputSearch, 
+    setInputSearch
   } = useContext(MercaderiaContext);
 
   useEffect(() => {
@@ -29,14 +29,14 @@ export default function SearchMercaderia() {
         getOptionLabel={(elem) => elem.nombre}
         isOptionEqualToValue={(option, value) => option.id === value.id}
         sx={{ width: 140, marginLeft: 1 }}
-        inputValue={inputValue}
+        inputValue={inputSearch}
         onInputChange={(event, newInputValue) => {
-          setInputCod(newInputValue);
-          const resultado = apiOriginal.filter((elem) => {
+          setInputSearch(newInputValue);
+          const resultado = tableList.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
           if (newInputValue !== "") {
-            setApi(resultado);
+            setTableList(resultado);
             setPagina(1);
             setEnd(limit);
           } else getPrevius();

@@ -46,7 +46,7 @@ const getDateWithNameMonth = (fechaString) => {
 
 
 export default function InfoItem() {
-  const { api, deleteApi, updateApi, inventarioNombres, idCategoria } =
+  const { tableList, deleteApi, updateApi, inventarioNombres, idCategoria } =
     useContext(MercaderiaContext);
 
   const index = useReadLocalStorage("selectIndexMercaderia");
@@ -101,12 +101,12 @@ export default function InfoItem() {
   const handleCloseUpdate = () => setOpenActualizar(false);
 
   useEffect(() => {
-    api.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
+    tableList.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
   });
 
   return (
     <div className="mt-5">
-      {api
+      {tableList
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
