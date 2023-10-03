@@ -11,7 +11,7 @@ import { TextField } from "@mui/material";
 import DialogDelete from "../../dialog/DialogDelete";
 
 export default function SelectItemInventario() {
-  const { api, updateApi,deleteApi } = useContext(InventarioContext);
+  const { tableList, updateApi, deleteApi } = useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
   const [openActualizar, setOpenActualizar] = useState(false);
@@ -43,23 +43,23 @@ export default function SelectItemInventario() {
     );
     setOpenActualizar(false);
   };
-  
+
   const handleDelete = () => {
-    console.log(apiOne.id);
     deleteApi(apiOne.id);
     setOpenDelete(false);
-  }
+  };
 
   useEffect(() => {
-    api
-      .filter((elem) => elem.id == index)
-      .map((elem) => setapiOne(elem));
+    tableList.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
     return () => {};
   });
 
   return (
     <div>
-      <BodyCardItem data={api} handleDelete={() => setOpenDelete(true)} handleUpdate={handleOpenUpdate} index={index}/> 
+      <BodyCardItem
+        handleDelete={() => setOpenDelete(true)}
+        handleUpdate={handleOpenUpdate}
+      />
 
       <DialogUpdate
         show={openActualizar}
@@ -83,14 +83,19 @@ export default function SelectItemInventario() {
           onChange={(evt) => setDescripcion(evt.target.value)}
         />
         <TextField
-            value={pesoUnidad}
-            onChange={(event) => setPesoUnidad(event.target.value)}
-            label="Peso x Unidad"
-            type="number"
-            sx={{ marginTop: 3, marginLeft: 1 }}
-          />
+          value={pesoUnidad}
+          onChange={(event) => setPesoUnidad(event.target.value)}
+          label="Peso x Unidad"
+          type="number"
+          sx={{ marginTop: 3, marginLeft: 1 }}
+        />
       </DialogUpdate>
-      <DialogDelete title="Eliminar Mercaderia" show={openDelete} eliminar={handleDelete} close={() => setOpenDelete(false)}/>
+      <DialogDelete
+        title="Eliminar Mercaderia"
+        show={openDelete}
+        eliminar={handleDelete}
+        close={() => setOpenDelete(false)}
+      />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { MercaderiaContext } from "../../context/MercaderiaContext";
 
 export default function SearchMercaderia() {
   const {
-    tableList,
+    apiOriginal,
     setTableList,
     inventarioNombres,
     getPrevius,
@@ -12,6 +12,7 @@ export default function SearchMercaderia() {
     setPagina,
     setEnd,
     limit,
+    idCategoria,
     inputSearch, 
     setInputSearch
   } = useContext(MercaderiaContext);
@@ -32,9 +33,18 @@ export default function SearchMercaderia() {
         inputValue={inputSearch}
         onInputChange={(event, newInputValue) => {
           setInputSearch(newInputValue);
-          const resultado = tableList.filter((elem) => {
+
+          let listMercaderia = [];
+          if (idCategoria === 1) {
+            listMercaderia = apiOriginal.filter((e) => e.categoria == "Salida");
+          }else if (idCategoria === 2) {
+            listMercaderia = apiOriginal.filter((e) => e.categoria == "Entrada");
+          }else return console.error("ERROR: No es ni 1 ni 2 el idcategoria");
+          
+          const resultado =  listMercaderia.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
+
           if (newInputValue !== "") {
             setTableList(resultado);
             setPagina(1);

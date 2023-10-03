@@ -12,17 +12,26 @@ import { useLocalStorage } from "usehooks-ts";
 import { post, get, update, eliminar } from "../services/api_inventario";
 
 export function InventarioContextProvider(props) {
-  const [api, setApi] = useLocalStorage("inventario", []);
+  //Table data
+  const [tableList, setTableList] = useLocalStorage("inventario", []);
   const [apiOriginal, setApiOriginal] = useState([]);
 
+  //if the progress to get data is done
   const [isdone, setDone] = useState(false);
 
+  //Page Table
+  const [limit, setLimit] = useState(10);
+  const [end, setEnd] = useState(limit);
+  const [pagina, setPagina] = useState(1);
+
+  //show dialog to create inventario
   const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
 
   useEffect(() => {
     get()
       .then((result) => {
-        setApi(result);
+        console.log(result);
+        setTableList(result);
         setApiOriginal(result);
         setDone(true);
       })
@@ -33,8 +42,9 @@ export function InventarioContextProvider(props) {
     post(json)
       .then((result) => {
         toast.success("Creado Correctamente");
-        setApi([...api, { ...result, entrada: 0, salida: 0 }]);
-        setApiOriginal([...apiOriginal, { ...result, entrada: 0, salida: 0 }]);
+        console.log("al crear inventario",result);
+        setTableList([{ ...result, entrada: 0, salida: 0 }, ...tableList ]);
+        setApiOriginal([ { ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
       })
       .catch((error) => console.log("error", error));
   };
@@ -42,7 +52,7 @@ export function InventarioContextProvider(props) {
   const updateApi = (id, json, jsonEntradaSalida) => {
     update(id, json, jsonEntradaSalida)
       .then((result) => {
-        const newUserForeignInfo = [...api];
+        const newUserForeignInfo = [...tableList];
         let index = newUserForeignInfo.findIndex(
           (elem) => elem.id == result.id
         );
@@ -52,7 +62,9 @@ export function InventarioContextProvider(props) {
           ...jsonEntradaSalida,
         });
 
-        setApi(newUserForeignInfo);
+        setTableList(newUserForeignInfo);
+        setApiOriginal(newUserForeignInfo);
+
         toast.success("Se actualizo Correctamente");
       })
       .catch((error) => console.error("error", error));
@@ -62,34 +74,18 @@ export function InventarioContextProvider(props) {
     eliminar(id)
       .then((data) => {
         toast.success(data.message);
-        setApi(api.filter((elem) => elem.id != id));
+        setTableList(tableList.filter((elem) => elem.id != id));
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
       })
       .catch((error) => console.error("Error:", error));
   };
 
-  const searchInventario = (codProducto) => {
-    const filter = api.filter((elem) =>
-      elem.nombre.toLowerCase().includes(codProducto)
-    );
-    setApi(filter);
-  };
-
-  const filterApiSearch = (filter) => setApi(filter);
-
-  const getPrevius = () => {
-    setApi(apiOriginal);
-    /*get()
-      .then((result) => {
-        setApi(result);
-      })
-      .catch((error) => console.error(error));*/
-  };
+  const getPrevius = () => setTableList(apiOriginal);
 
   //ORDER BY
   const orderNombreASC = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.nombre > b.nombre) {
           return 1;
         }
@@ -102,8 +98,8 @@ export function InventarioContextProvider(props) {
     toast.info("Ordenado Nombre Ascendente");
   };
   const orderNombreDES = () => {
-    setApi(
-      api.sort((a, b) => {
+    setTableList(
+      tableList.sort((a, b) => {
         if (a.nombre < b.nombre) {
           return 1;
         }
@@ -119,16 +115,21 @@ export function InventarioContextProvider(props) {
   return (
     <InventarioContext.Provider
       value={{
-        api,
+        tableList,
+        setTableList,
+        limit,
+        setLimit,
         apiOriginal,
-        filterApiSearch,
+        pagina,
+        setPagina,
+        end,
+        setEnd,
         createApi,
         updateApi,
         deleteApi,
         orderNombreASC,
         orderNombreDES,
         isdone,
-        searchInventario,
         getPrevius,
         showDialogNewInventario,
         setShowDialogNewInventario,

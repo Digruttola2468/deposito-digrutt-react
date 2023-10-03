@@ -5,31 +5,28 @@ import CardContent from "@mui/material/CardContent";
 import Tooltip from "@mui/material/Tooltip";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { IconButton } from "@mui/material";
+import { useContext } from "react";
 
-const URL =
-  "https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt";
+import { InventarioContext } from "../../context/InventarioContext";
+import { useReadLocalStorage } from "usehooks-ts";
+
 
 export default function BodyCardItem({
-  data,
   handleDelete,
   handleUpdate,
-  index,
 }) {
+  const { tableList } = useContext(InventarioContext);
+  const index = useReadLocalStorage("selectIndexInventario");
+
   return (
     <>
-      {data
+      {tableList
         .filter((elem) => elem.id == index)
         .map((elem) => {
           return (
             <Card key={elem.id} className="ml-2 mt-4">
               <CardContent>
                 <div className="flex flex-col">
-                  <div className="w-full bg-slate-400 rounded-lg">
-                    <div className="m-auto w-[150px] ">
-                      <img src={`${URL}/${elem.nombre}.png`} alt="" />
-                    </div>
-                  </div>
-
                   <h2 className="text-lg font-semibold uppercase">
                     {elem.nombre}
                   </h2>

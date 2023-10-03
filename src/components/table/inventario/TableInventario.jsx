@@ -37,16 +37,18 @@ const HeadTable = () => {
   );
 };
 
-const BodyTable = ({ data, end, count }) => {
+const BodyTable = () => {
+  const { tableList, end, limit } = useContext(InventarioContext);
+
   const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
   const [start, setStart] = useState(0);
 
-  useEffect(() => setStart(end - count));
+  useEffect(() => setStart(end - limit));
 
   return (
     <tbody>
-      {data.length != 0 ? (
-        data.slice(start, end).map((elem) => {
+      {tableList.length != 0 ? (
+        tableList.slice(start, end).map((elem) => {
           return (
             <tr
               key={elem.id}
@@ -77,27 +79,37 @@ const BodyTable = ({ data, end, count }) => {
 };
 
 export default function TableComponent() {
-  const { api,setShowDialogNewInventario } = useContext(InventarioContext);
-
-  const LIMIT = 10;
-  const [end, setEnd] = useState(LIMIT);
+  const {
+    setShowDialogNewInventario,
+    tableList,
+    limit,
+    pagina,
+    setPagina,
+    setEnd,
+  } = useContext(InventarioContext);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center ">
       <div className="p-3 shadow-xl">
         <div className="flex flex-row justify-between items-end">
           <SearchCodProducto />
-          <Button onClick={() => setShowDialogNewInventario(true)} >New Inventario</Button>
+          <Button onClick={() => setShowDialogNewInventario(true)}>
+            New Inventario
+          </Button>
           <DialogNewInventario />
         </div>
 
         <table className="table">
           <HeadTable />
-          <BodyTable data={api} count={LIMIT} end={end} />
+          <BodyTable />
         </table>
         <Pagination
-          count={Math.ceil(api.length / LIMIT)}
-          onChange={(evt, newValue) => setEnd(LIMIT * parseInt(newValue))}
+          count={Math.ceil(tableList.length / limit)}
+          onChange={(evt, newValue) => {
+            setEnd(limit * parseInt(newValue));
+            setPagina(newValue);
+          }}
+          page={pagina}
         />
       </div>
 
@@ -105,7 +117,6 @@ export default function TableComponent() {
         <SelectItemInventario />
         <PesoUnidad />
       </div>
-      
     </div>
   );
 }

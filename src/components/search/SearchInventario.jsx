@@ -5,8 +5,14 @@ import { Autocomplete, TextField } from "@mui/material";
 import { InventarioContext } from "../../context/InventarioContext";
 
 export default function SearchCodProducto() {
-  const { api, apiOriginal, filterApiSearch, getPrevius } =
-    useContext(InventarioContext);
+  const {
+    apiOriginal,
+    setTableList,
+    getPrevius,
+    setPagina,
+    setEnd,
+    limit,
+  } = useContext(InventarioContext);
 
   const [inputValue, setInputValue] = useState("");
 
@@ -15,7 +21,7 @@ export default function SearchCodProducto() {
       <Autocomplete
         disablePortal
         freeSolo
-        options={api}
+        options={apiOriginal}
         getOptionLabel={(elem) => elem.nombre}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
@@ -23,9 +29,12 @@ export default function SearchCodProducto() {
           const resultado = apiOriginal.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
-
-          if (newInputValue !== "") filterApiSearch(resultado);
-          else getPrevius();
+          console.log(resultado);
+          if (newInputValue !== "") {
+            setTableList(resultado);
+            setPagina(1);
+            setEnd(limit);
+          } else getPrevius();
         }}
         sx={{ width: 200, margin: 1 }}
         renderInput={(params) => (
