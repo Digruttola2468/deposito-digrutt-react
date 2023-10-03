@@ -16,72 +16,82 @@ import BarsComponent from "../components/grafic/BarChart";
 
 import { useLocalStorage } from "usehooks-ts";
 
-import { getArrayMercaderia, getArrayYear, meses } from "../services/date";
+const meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 
 export default function GraficaInventario() {
-  const { mercaderiaApi, inventarioNombres, getAllMercade } =
+  const { inventarioNombres, grafica, getGraficaMercaderia } =
     useContext(MercaderiaContext);
 
-  const [year, setYear] = useState("");
+  //to select what year do you want to show in the grafic
   const [listYear, setListYear] = useState([]);
 
+  //the year selected
+  const [year, setYear] = useState("");
+  //the codproducto selected
   const [codProducto, setcodProducto] = useState();
 
-  const [apiEntrada, setApiEntrada] = useState([]);
-  const [apiSalida, setApiSalida] = useState([]);
+  //info Entrada Y Salida
+  const [infoEntrada, setInfoEntrada] = useState([]);
+  const [infoSalida, setInfoSalida] = useState([]);
 
+  //Color grafic
   const [colorEntrada, setColorEntrada] = useLocalStorage(
     "colorGraficaEntrada",
-    "#de3f3f"
+    "#44ee8e"
   );
   const [colorSalida, setColorSalida] = useLocalStorage(
     "colorGraficaSalida",
-    "#44ee8e"
+    "#de3f3f"
   );
 
-  const handleChange = (event) => {
-    if (codProducto != null) {
-      setYear(event.target.value);
-      setApiEntrada(
-        getArrayMercaderia(
-          mercaderiaApi,
-          codProducto.id,
-          "Entrada",
-          event.target.value
-        )
-      );
-      setApiSalida(
-        getArrayMercaderia(
-          mercaderiaApi,
-          codProducto.id,
-          "Salida",
-          event.target.value
-        )
-      );
-    }
-  };
+  useEffect(() => {
+    setListYear(grafica.map((elem) => elem.fecha));
+  }, [grafica]);
 
-  const midata = {
+  //show Grafica
+  const data = {
     labels: meses,
     datasets: [
       {
         label: "Entrada",
-        data: apiEntrada,
+        data: infoEntrada,
         backgroundColor: colorEntrada,
       },
       {
         label: "Salida",
-        data: apiSalida,
+        data: infoSalida,
         backgroundColor: colorSalida,
       },
     ],
   };
+
+  const empty = () => {
+    setYear("");
+    setListYear([]);
+    setInfoEntrada([]);
+    setInfoSalida([]);
+    setcodProducto('');
+  };
+
   return (
     <section className="my-10">
       <h2 className="text-center title text-2xl">Grafica</h2>
       <div className="flex flex-col justify-center items-center flex-wrap mb-5 sm:flex-row sm:mb-0 ">
         <Autocomplete
-          disablePortal
+          freeSolo
           options={inventarioNombres}
           getOptionLabel={(elem) => elem.nombre}
           isOptionEqualToValue={(option, value) =>
@@ -90,22 +100,10 @@ export default function GraficaInventario() {
           //Al seleccionar
           value={codProducto || null}
           onChange={(evt, newValue) => {
-            setcodProducto(newValue);
             if (newValue != null) {
-              let enviar = [];
-              for (const item of getArrayYear(
-                mercaderiaApi,
-                newValue.id
-              ).values()) {
-                enviar.push(item);
-              }
-              setListYear(enviar);
-            } else {
-              setListYear([]);
-              setYear("");
-              setApiEntrada([]);
-              setApiSalida([]);
-            }
+              setcodProducto(newValue);
+              getGraficaMercaderia(newValue.id);
+            } else empty();
           }}
           sx={{ width: 200, marginLeft: 1 }}
           renderInput={(params) => (
@@ -115,7 +113,44 @@ export default function GraficaInventario() {
 
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel>Year</InputLabel>
-          <Select value={year} label="Year" onChange={handleChange}>
+          <Select
+            value={year}
+            label="Year"
+            onChange={(evt) => {
+              setYear(evt.target.value);
+              const filter = grafica.filter(
+                (elem) => elem.fecha == evt.target.value
+              );
+              setInfoEntrada([
+                filter[0].entrada.enero,
+                filter[0].entrada.febrero,
+                filter[0].entrada.marzo,
+                filter[0].entrada.abril,
+                filter[0].entrada.mayo,
+                filter[0].entrada.junio,
+                filter[0].entrada.julio,
+                filter[0].entrada.agosto,
+                filter[0].entrada.septiembre,
+                filter[0].entrada.octubre,
+                filter[0].entrada.noviembre,
+                filter[0].entrada.diciembre,
+              ]);
+              setInfoSalida([
+                filter[0].salida.enero,
+                filter[0].salida.febrero,
+                filter[0].salida.marzo,
+                filter[0].salida.abril,
+                filter[0].salida.mayo,
+                filter[0].salida.junio,
+                filter[0].salida.julio,
+                filter[0].salida.agosto,
+                filter[0].salida.septiembre,
+                filter[0].salida.octubre,
+                filter[0].salida.noviembre,
+                filter[0].salida.diciembre,
+              ]);
+            }}
+          >
             {listYear.map((elem) => (
               <MenuItem key={elem} value={elem}>
                 {elem}
@@ -125,22 +160,14 @@ export default function GraficaInventario() {
         </FormControl>
         {codProducto != undefined ? (
           <div className=" flex flex-row items-center">
-            <div className="w-[70px]">
-              <img
-                src={`https://ujutbcehnajaspkfqgyp.supabase.co/storage/v1/object/public/Digrutt/${codProducto.nombre}.png`}
-                alt=""
-              />
-            </div>
-            <p className="text-gray-500">
-              {codProducto.descripcion}
-            </p>
+            <p className="text-gray-500">{codProducto.descripcion}</p>
           </div>
         ) : (
           <></>
         )}
       </div>
       <div className="m-auto max-w-[900px]">
-        <BarsComponent data={midata} />
+        <BarsComponent data={data} />
       </div>
       <div className="flex flex-row items-center justify-center">
         <div className="ml-5">

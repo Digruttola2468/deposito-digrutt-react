@@ -8,24 +8,6 @@ export const getAllMercaderia = async () => {
   return await result.json();
 }
 
-//Get entrada mercaderia
-/*export const getEntrada = async () => {
-  const result = await fetch(
-    `${BASE_URL}/mercaderia/entrada`
-  );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
-  return await result.json();
-};
-
-//Get Salida mercaderia
-export const getSalida = async () => {
-  const result = await fetch(
-    `${BASE_URL}/mercaderia/salida`
-  );
-  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
-  return await result.json();
-};*/
-
 //New mercaderia
 export const post = async (json) => {
   const result = await fetch(
@@ -76,20 +58,10 @@ export const eliminar = async (id) => {
   return await result.json();
 };
 
-//Search one entrada
-export const searchEntrada = async (search) => {
+export const getGrafica = async (idInventario) => {
   const result = await fetch(
-    `${BASE_URL}/mercaderia/entrada/${search}`,
+    `${BASE_URL}/grafica/mercaderia/${idInventario}`,
     { method: "GET" }
   );
   return await result.json();
-};
-
-//Search one salida
-export const searchSalida = async (search) => {
-  const result = await fetch(
-    `${BASE_URL}/mercaderia/salida/${search}`,
-    { method: "GET" }
-  );
-  return await result.json();
-};
+}

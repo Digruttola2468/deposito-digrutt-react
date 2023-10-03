@@ -8,6 +8,7 @@ import {
   eliminar,
   post,
   getAllMercaderia,
+  getGrafica,
 } from "../services/api_mercaderia";
 
 import {
@@ -38,6 +39,9 @@ export function MercaderiaContextProvider(props) {
   //1: SALIDA
   const [idCategoria, setIdCategoria] = useState(2);
 
+  //grafica
+  const [grafica, setGrafica] = useState([]);
+
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
     getAllMercaderia()
@@ -47,6 +51,12 @@ export function MercaderiaContextProvider(props) {
         setIdCategoria(2);
       })
       .catch((error) => console.error(error));
+  };
+
+  const getGraficaMercaderia = (idinventario) => {
+    getGrafica(idinventario).then((result) => {
+      setGrafica(result);
+    });
   };
 
   //
@@ -138,8 +148,7 @@ export function MercaderiaContextProvider(props) {
                 nombre: data[0].nombre,
                 descripcion: data[0].descripcion,
               },
-              ...apiOriginal
-              
+              ...apiOriginal,
             ]);
             setTableList([
               {
@@ -148,9 +157,8 @@ export function MercaderiaContextProvider(props) {
                 nombre: data[0].nombre,
                 descripcion: data[0].descripcion,
               },
-              ...tableList
+              ...tableList,
             ]);
-
           })
           .catch((error) => console.error(error));
       })
@@ -270,6 +278,8 @@ export function MercaderiaContextProvider(props) {
         setEnd,
         idCategoria,
         setIdCategoria,
+        getGraficaMercaderia,
+        grafica,
         getEntradaApi,
         getSalidaApi,
         getProductosInventario,
