@@ -29,7 +29,6 @@ export default function SearchCodProducto() {
           const resultado = apiOriginal.filter((elem) => {
             return elem.nombre.toLowerCase().includes(newInputValue);
           });
-          console.log(resultado);
           if (newInputValue !== "") {
             setTableList(resultado);
             setPagina(1);

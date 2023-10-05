@@ -7,11 +7,19 @@ import PostInventario from "./PostInventario";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import BodyCardItem from "../../card/CardBodyItem";
 
-import { TextField } from "@mui/material";
+import {
+  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import DialogDelete from "../../dialog/DialogDelete";
 
 export default function SelectItemInventario() {
-  const { tableList, updateApi, deleteApi } = useContext(InventarioContext);
+  const { tableList, updateApi, deleteApi, clientesList } =
+    useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
   const [openActualizar, setOpenActualizar] = useState(false);
@@ -22,12 +30,20 @@ export default function SelectItemInventario() {
   const [descripcion, setDescripcion] = useState("");
   const [nombre, setNombre] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
-  const [cliente, setCliente] = useState();
+
+  const [codCliente, setCodCliente] = useState("");
 
   //Handle
   const handleOpenUpdate = () => {
     setDescripcion(apiOne.descripcion);
     setNombre(apiOne.nombre);
+    if (apiOne.idCliente != null) {
+      const filterCliente = clientesList.filter(
+        (elem) => elem.id === apiOne.idCliente
+      );
+      setCodCliente(filterCliente[0]);
+    } else setCodCliente("");
+
     setOpenActualizar(true);
   };
 
@@ -38,6 +54,7 @@ export default function SelectItemInventario() {
         nombre,
         descripcion,
         pesoUnidad: parseFloat(pesoUnidad),
+        idCliente: codCliente.id,
       },
       { entrada: apiOne.entrada, salida: apiOne.salida }
     );
@@ -88,6 +105,17 @@ export default function SelectItemInventario() {
           label="Peso x Unidad"
           type="number"
           sx={{ marginTop: 3, marginLeft: 1 }}
+        />
+        <Autocomplete
+          options={clientesList}
+          getOptionLabel={(elem) => elem.cliente}
+          value={codCliente || null}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          onChange={(evt, newValue) => setCodCliente(newValue)}
+          sx={{ marginTop: 3, marginLeft: 1 }}
+          renderInput={(params) => (
+            <TextField {...params} label="Clientes" variant="outlined" />
+          )}
         />
       </DialogUpdate>
       <DialogDelete

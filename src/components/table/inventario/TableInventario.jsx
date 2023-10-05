@@ -32,13 +32,15 @@ const HeadTable = () => {
         <th>salida</th>
         <th>stockActual</th>
         <th>Peso x Unidad</th>
+        <th>Cliente</th>
       </tr>
     </thead>
   );
 };
 
 const BodyTable = () => {
-  const { tableList, end, limit } = useContext(InventarioContext);
+  const { tableList, end, limit, getClienteName } =
+    useContext(InventarioContext);
 
   const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
   const [start, setStart] = useState(0);
@@ -61,6 +63,7 @@ const BodyTable = () => {
               <td className="py-4 px-1">{elem.salida}</td>
               <td className="py-4 px-1">{elem.entrada - elem.salida}</td>
               <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
+              <td className="py-4 px-1">{getClienteName(elem.idCliente)}</td>
             </tr>
           );
         })
@@ -98,7 +101,6 @@ export default function TableComponent() {
           </Button>
           <DialogNewInventario />
         </div>
-
         <table className="table">
           <HeadTable />
           <BodyTable />
@@ -113,7 +115,7 @@ export default function TableComponent() {
         />
       </div>
 
-      <div className="flex flex-col ">
+      <div className="flex flex-col">
         <SelectItemInventario />
         <PesoUnidad />
       </div>

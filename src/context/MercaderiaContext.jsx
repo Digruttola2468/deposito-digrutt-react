@@ -17,6 +17,10 @@ import {
   post as postInventario,
 } from "../services/api_inventario";
 
+import { 
+  getClientes
+} from '../services/api_otherTables'
+
 import { toast } from "react-toastify";
 
 export function MercaderiaContextProvider(props) {
@@ -42,6 +46,8 @@ export function MercaderiaContextProvider(props) {
   //grafica
   const [grafica, setGrafica] = useState([]);
 
+  const [clientesList, setClientesList] = useState([]);
+
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
     getAllMercaderia()
@@ -59,9 +65,14 @@ export function MercaderiaContextProvider(props) {
     });
   };
 
+  const getClientesAPI = () => {
+    getClientes().then(result => setClientesList(result))
+  }
+
   //
   useEffect(() => {
     getListMercaderiaAll();
+    getClientesAPI();
   }, []);
 
   //filtramos list Mercaderia BBDD

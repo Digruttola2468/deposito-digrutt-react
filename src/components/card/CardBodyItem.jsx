@@ -15,7 +15,7 @@ export default function BodyCardItem({
   handleDelete,
   handleUpdate,
 }) {
-  const { tableList } = useContext(InventarioContext);
+  const { tableList,getClienteName } = useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
   return (
@@ -46,6 +46,9 @@ export default function BodyCardItem({
                     elem.pesoUnidad ? (<p>
                       <b>Peso x Unidad</b>: {elem.pesoUnidad} kg
                     </p>) : (<></>)
+                  }
+                  {
+                    elem.idCliente != null ? (<p><b>Cliente</b>: {getClienteName(elem.idCliente)}</p>) : (<></>)
                   }
                 </div>
               </CardContent>

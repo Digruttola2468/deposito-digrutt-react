@@ -11,6 +11,11 @@ import { useLocalStorage } from "usehooks-ts";
 //Statefull
 import { post, get, update, eliminar } from "../services/api_inventario";
 
+import { 
+  getClientes
+} from '../services/api_otherTables'
+
+
 export function InventarioContextProvider(props) {
   //Table data
   const [tableList, setTableList] = useLocalStorage("inventario", []);
@@ -27,15 +32,30 @@ export function InventarioContextProvider(props) {
   //show dialog to create inventario
   const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
 
+  const [clientesList, setClientesList] = useState([]);
+
+  const getClientesAPI = () => {
+    getClientes().then(result => setClientesList(result))
+  }
+
+  const getClienteName = (idCliente) => {
+    const filterList = clientesList.filter((result) => result.id === idCliente);
+    if(filterList.length != 0) 
+      return filterList[0].cliente;
+    
+    return "";
+    
+  };
+
   useEffect(() => {
     get()
       .then((result) => {
-        console.log(result);
         setTableList(result);
         setApiOriginal(result);
         setDone(true);
       })
       .catch((error) => console.error(error));
+      getClientesAPI();
   }, []);
 
   const createApi = (json) => {
@@ -133,6 +153,8 @@ export function InventarioContextProvider(props) {
         getPrevius,
         showDialogNewInventario,
         setShowDialogNewInventario,
+        clientesList,
+        getClienteName
       }}
     >
       {props.children}
