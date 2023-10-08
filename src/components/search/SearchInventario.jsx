@@ -1,8 +1,17 @@
 import { useContext, useState } from "react";
 
-import { Autocomplete, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
+import { useEffect } from "react";
 
 export default function SearchCodProducto() {
   const {
@@ -12,28 +21,63 @@ export default function SearchCodProducto() {
     setPagina,
     setEnd,
     limit,
+    clientesList,
   } = useContext(InventarioContext);
 
   const [inputValue, setInputValue] = useState("");
 
+  const [cliente, setCliente] = useState("");
+  const [searchInventario, setSearchinventario] = useState(apiOriginal);
+
+  useEffect(() => {
+    if (cliente) {
+      const filterCliente = apiOriginal.filter((elem) => {
+        return elem.idCliente === cliente;
+      });
+      setSearchinventario(filterCliente);
+      console.log("ACA CLIENTE");
+    } else setSearchinventario(apiOriginal);
+  }, [cliente]);
+
   return (
-    <>
+    <div className="flex flex-row items-center">
       <Autocomplete
         disablePortal
         freeSolo
-        options={apiOriginal}
+        options={searchInventario}
         getOptionLabel={(elem) => elem.nombre}
         inputValue={inputValue}
         onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
-          const resultado = apiOriginal.filter((elem) => {
-            return elem.nombre.toLowerCase().includes(newInputValue);
-          });
-          if (newInputValue !== "") {
-            setTableList(resultado);
-            setPagina(1);
-            setEnd(limit);
-          } else getPrevius();
+
+          if (cliente) {
+            const filterCliente = apiOriginal.filter((elem) => {
+              return elem.idCliente === cliente;
+            });
+            console.log(filterCliente);
+            const resultado = filterCliente.filter((elem) => {
+              return elem.nombre.toLowerCase().includes(newInputValue);
+            });
+            if (newInputValue !== "") {
+              setTableList(resultado);
+              setPagina(1);
+              setEnd(limit);
+            } else{
+              setTableList(
+                apiOriginal.filter((elem) => {
+                  return elem.idCliente === cliente;
+                })
+              );}
+          } else {
+            const resultado = apiOriginal.filter((elem) => {
+              return elem.nombre.toLowerCase().includes(newInputValue);
+            });
+            if (newInputValue !== "") {
+              setTableList(resultado);
+              setPagina(1);
+              setEnd(limit);
+            } else getPrevius();
+          }
         }}
         sx={{ width: 200, margin: 1 }}
         renderInput={(params) => (
@@ -41,10 +85,43 @@ export default function SearchCodProducto() {
             {...params}
             value={inputValue}
             label="Buscar"
-            variant="standard"
+            variant="outlined"
           />
         )}
       />
-    </>
+      <Box sx={{ minWidth: 120 }}>
+        <FormControl fullWidth>
+          <InputLabel>Cliente</InputLabel>
+          <Select
+            value={cliente}
+            label="Cliente"
+            onChange={(evt) => {
+              const comboBoxCliente = evt.target.value;
+              setCliente(comboBoxCliente);
+              setInputValue("");
+              const resultado = apiOriginal.filter((elem) => {
+                return elem.idCliente === comboBoxCliente;
+              });
+              if (comboBoxCliente !== "") {
+                setTableList(resultado);
+                setPagina(1);
+                setEnd(limit);
+              } else getPrevius();
+            }}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {clientesList.map((elem) => {
+              return (
+                <MenuItem key={elem.id} value={elem.id}>
+                  {elem.cliente}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </Box>
+    </div>
   );
 }
