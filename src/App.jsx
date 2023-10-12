@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
 import Produccion from "./pages/Produccion";
+import Oficina from "./pages/Oficina";
 
 export default function App() {
   const navegate = useNavigate();
@@ -42,6 +43,12 @@ export default function App() {
         path="/produccion"
         element={
             <Produccion />
+        }
+      />
+      <Route
+        path="/oficina"
+        element={
+            <Oficina />
         }
       />
       <Route path="/verifyEmployes" element={<VerifyEmployes />} />
