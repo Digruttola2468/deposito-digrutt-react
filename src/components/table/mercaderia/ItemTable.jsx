@@ -49,6 +49,8 @@ export default function InfoItem() {
   const { tableList, deleteApi, updateApi, inventarioNombres, idCategoria } =
     useContext(MercaderiaContext);
 
+  const token = useReadLocalStorage('token')
+
   const index = useReadLocalStorage("selectIndexMercaderia");
   const [openDelete, setOpenDelete] = useState(false);
   const [openActualizar, setOpenActualizar] = useState(false);
@@ -67,7 +69,7 @@ export default function InfoItem() {
 
   //Handle
   const handleDelete = () => {
-    deleteApi(apiOne.id);
+    deleteApi(apiOne.id,token);
     handleClose();
   };
 
@@ -81,7 +83,7 @@ export default function InfoItem() {
       stock,
       fecha,
       idcategoria,
-    });
+    },token);
     handleCloseUpdate(idcategoria);
   };
 

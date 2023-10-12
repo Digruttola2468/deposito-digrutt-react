@@ -117,8 +117,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //update BBDD
-  const updateApi = (id, json) => {
-    update(id, json)
+  const updateApi = (id, json,token) => {
+    update(id, json,token)
       .then((result) => {
         const newUserForeignInfo = [...tableList];
         let index = newUserForeignInfo.findIndex(
@@ -144,8 +144,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //create BBDD
-  const createApi = (json) => {
-    post(json)
+  const createApi = (json,token) => {
+    post(json,token)
       .then((data2) => {
         const fecha = data2.fecha.split("-").reverse().join("-");
         getOneInventario(data2.idinventario)
@@ -187,8 +187,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //delete BBDD
-  const deleteApi = (id) => {
-    eliminar(id)
+  const deleteApi = (id, token) => {
+    eliminar(id, token)
       .then((data) => {
         toast.success(data.message);
 

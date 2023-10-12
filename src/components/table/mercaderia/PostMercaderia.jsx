@@ -24,12 +24,15 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { useReadLocalStorage } from "usehooks-ts";
 
 const filter = createFilterOptions();
 
 export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria, createInventario } =
     useContext(MercaderiaContext);
+
+  const token = useReadLocalStorage('token')
 
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
@@ -90,7 +93,7 @@ export default function PutMercaderia() {
       stock,
       idinventario: filter[0].id,
       idcategoria: idCategoria,
-    });
+    },token);
 
     empty();
   };

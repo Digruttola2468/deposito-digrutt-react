@@ -1,4 +1,8 @@
+import axios from "axios";
+
 const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
+
+const token = window.localStorage.getItem("token");
 
 export const get = async () => {
   const response = await fetch(
@@ -28,49 +32,44 @@ export const getNombresInventario = async () => {
   return await result.json();
 };
 
-export const post = async (json) => {
-  const requestOptions = {
-    method: "POST",
+export const post = async (json,token) => {
+  const config = {
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(json),
   };
 
-  const response = await fetch(
-    `${BASE_URL}/inventario`,
-    requestOptions
-  );
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  const request = await axios.post(`${BASE_URL}/inventario`,json, config);
 
-  return await response.json();
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
 };
 
-export const update = async (id, json) => {
-  const requestOptions = {
-    method: "PUT",
+export const update = async (id, json, token) => {
+  const config = {
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(json),
   };
 
-  const resultado = await fetch(
-    `${BASE_URL}/inventario/${id}`,
-    requestOptions
-  );
-  if(!resultado.ok) throw new Error(`HTTP error! status: ${resultado.status}`);
+  const request = await axios.put(`${BASE_URL}/inventario/${id}`,json, config);
 
-  return await resultado.json();
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
 };
 
-export const eliminar = async (id) => {
-  const resultado = await fetch(`${BASE_URL}/inventario/${id}`, {
-    method: "DELETE",
+export const eliminar = async (id,token) => {
+  const config = {
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
-  })
-  if(!resultado.ok) throw new Error(`HTTP error! status: ${response.status}`); 
-  return await resultado.json();
+  };
+
+  const request = await axios.delete(`${BASE_URL}/inventario/${id}`, config);
+
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
 };

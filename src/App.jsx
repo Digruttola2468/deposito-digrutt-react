@@ -10,16 +10,16 @@ import { useEffect } from "react";
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
 import Produccion from "./pages/Produccion";
-import Oficina from "./pages/Oficina";
 
 export default function App() {
   const navegate = useNavigate();
 
-  const key = useReadLocalStorage("key");
+  const token = useReadLocalStorage("token");
 
   useEffect(() => {
-    if (key != "digrutt2322") navegate("/verifyEmployes");
-  }, [key]);
+    if (token == null) navegate("/logIn");
+    else navegate('/')
+  },[token]);
 
   return (
     <Routes>
@@ -45,13 +45,8 @@ export default function App() {
             <Produccion />
         }
       />
-      <Route
-        path="/oficina"
-        element={
-            <Oficina />
-        }
-      />
-      <Route path="/verifyEmployes" element={<VerifyEmployes />} />
+      <Route path="/logIn" element={<VerifyEmployes />} />
+      <Route path="/signIn" element={<h1>SIGN IN - Registrarse</h1>} />
     </Routes>
   );
 }

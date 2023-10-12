@@ -58,8 +58,8 @@ export function InventarioContextProvider(props) {
       getClientesAPI();
   }, []);
 
-  const createApi = (json) => {
-    post(json)
+  const createApi = (json,token) => {
+    post(json,token)
       .then((result) => {
         toast.success("Creado Correctamente");
         console.log("al crear inventario",result);
@@ -69,8 +69,8 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.log("error", error));
   };
 
-  const updateApi = (id, json, jsonEntradaSalida) => {
-    update(id, json, jsonEntradaSalida)
+  const updateApi = (id, json, jsonEntradaSalida, token) => {
+    update(id, json, token)
       .then((result) => {
         const newUserForeignInfo = [...tableList];
         let index = newUserForeignInfo.findIndex(
@@ -90,8 +90,8 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.error("error", error));
   };
 
-  const deleteApi = (id) => {
-    eliminar(id)
+  const deleteApi = (id,token) => {
+    eliminar(id,token)
       .then((data) => {
         toast.success(data.message);
         setTableList(tableList.filter((elem) => elem.id != id));

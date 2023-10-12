@@ -13,6 +13,7 @@ export default function PostInventario() {
   const [descripcion, setDescripcion] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
   
+  const token = useReadLocalStorage('token')
 
   const empty = () => {
     setNombre("");
@@ -29,7 +30,7 @@ export default function PostInventario() {
     createApi({
       nombre,
       descripcion
-    });
+    }, token);
     
     empty();
   };
