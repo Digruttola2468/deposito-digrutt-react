@@ -29,6 +29,15 @@ export default function MenuList() {
           Inventario
         </a>
       </li>
+      <li onClick={() => navegate("/oficina")} className="p-2 sm:ml-2">
+        <a
+          style={{ cursor: "pointer" }}
+          className="text-white flex flex-row items-center cursor-pointer"
+        >
+          <FaTable />
+          Oficina
+        </a>
+      </li>
       <li className="p-2 sm:ml-2">
         <button
           className="uppercase text-white"

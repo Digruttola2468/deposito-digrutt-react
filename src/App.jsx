@@ -9,7 +9,10 @@ import { useEffect } from "react";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
+import { OficinaProvider } from "./context/OficinaContext";
+
 import Produccion from "./pages/Produccion";
+import Oficina from "./pages/Oficina";
 
 export default function App() {
   const navegate = useNavigate();
@@ -17,9 +20,9 @@ export default function App() {
   const token = useReadLocalStorage("token");
 
   useEffect(() => {
-    if (token == null) navegate("/logIn");
-    else navegate('/')
-  },[token]);
+    if (token) navegate("/");
+    else navegate("/logIn");
+  }, [token]);
 
   return (
     <Routes>
@@ -39,10 +42,13 @@ export default function App() {
           </InventarioContextProvider>
         }
       />
+      <Route path="/produccion" element={<Produccion />} />
       <Route
-        path="/produccion"
+        path="/oficina"
         element={
-            <Produccion />
+          <OficinaProvider>
+            <Oficina />
+          </OficinaProvider>
         }
       />
       <Route path="/logIn" element={<VerifyEmployes />} />
