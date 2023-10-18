@@ -18,12 +18,12 @@ export default function App() {
   const navegate = useNavigate();
 
   const token = useReadLocalStorage("token");
-
+/*
   useEffect(() => {
     if (token) navegate("/");
     else navegate("/logIn");
   }, [token]);
-
+*/
   return (
     <Routes>
       <Route
@@ -52,7 +52,7 @@ export default function App() {
         }
       />
       <Route path="/logIn" element={<LogIn />} />
-      <Route path="/signIn" element={<h1>SIGN IN - Registrarse</h1>} />
+      <Route path="/signUp" element={<h1>SIGN UP - Registrarse</h1>} />
     </Routes>
   );
 }
