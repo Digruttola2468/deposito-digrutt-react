@@ -7,7 +7,7 @@ import logo from "../assets/digrutt_logo.png";
 
 import { iniciarSesion } from "../services/api_user";
 
-export default function VerifyEmployes() {
+export default function LogIn() {
   const navegate = useNavigate();
 
   const [userName, setUserName] = useState("");

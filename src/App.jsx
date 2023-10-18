@@ -2,7 +2,6 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 
 import Inventario from "./pages/Inventario";
 import Mercaderia from "./pages/Mercaderia";
-import VerifyEmployes from "./pages/VerifyEmployes";
 
 import { useReadLocalStorage } from "usehooks-ts";
 import { useEffect } from "react";
@@ -13,6 +12,7 @@ import { OficinaProvider } from "./context/OficinaContext";
 
 import Produccion from "./pages/Produccion";
 import Oficina from "./pages/Oficina";
+import LogIn from "./pages/LogIn";
 
 export default function App() {
   const navegate = useNavigate();
@@ -51,7 +51,7 @@ export default function App() {
           </OficinaProvider>
         }
       />
-      <Route path="/logIn" element={<VerifyEmployes />} />
+      <Route path="/logIn" element={<LogIn />} />
       <Route path="/signIn" element={<h1>SIGN IN - Registrarse</h1>} />
     </Routes>
   );
