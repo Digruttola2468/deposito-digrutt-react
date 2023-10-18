@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { BsEye,BsEyeSlash } from 'react-icons/bs'
+
+import TextField from "@mui/material/TextField";
 
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,6 +16,8 @@ export default function FormLogIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleClick_forgotPassword = () => {};
 
@@ -36,42 +41,40 @@ export default function FormLogIn() {
 
   const handleClick_signInWithGoogle = () => {};
 
-  const handleClick_registrarse = () => {
-    navegate("/signUp");
-  };
+  const handleClick_registrarse = () => navegate("/signUp");
 
   return (
     <div className="bg-white px-10 py-20 rounded-3xl border-2 ">
       <h1 className="text-4xl font-semibold text-center">DIGRUTT S.R.L</h1>
       <div className="mt-8">
-        <div>
-          <label className="text-lg font-medium">Email</label>
-          <input
-            type="text"
-            className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
-            placeholder="youremail@gmail.com"
+        <div className="w-full my-4">
+          <TextField
+            label="Gmail"
             value={email}
-            onChange={(evt) => {
-              setEmail(evt.target.value);
-            }}
+            type="email"
+            onChange={(evt) => setEmail(evt.target.value)}
+            variant="outlined"
+            sx={{width: "100%"}}
           />
         </div>
-
-        <div>
-          <label className="text-lg font-medium">Password</label>
-          <input
-            type="password"
-            className="w-full border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
-            placeholder="********"
+        <div className="w-full mt-4 relative">
+          
+          <TextField
+            label="Password"
             value={password}
-            onChange={(evt) => {
-              setPassword(evt.target.value);
-            }}
+            type={showPassword ? 'text' : 'password'}
+            onChange={(evt) => setPassword(evt.target.value)}
+            variant="outlined"
+            sx={{width: "100%"}}
           />
+          <span className="top-[18px] right-3 absolute hover:cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? <BsEye size={"20px"}/> : <BsEyeSlash size={"20px"}/>}
+          </span>
         </div>
-        <div className="mt-8 flex justify-center items-center">
+        
+        <div className=" flex justify-end">
           <button
-            className="font-medium text-base text-violet-500"
+            className="font-medium text-base text-violet-500 hover:text-violet-400"
             onClick={handleClick_forgotPassword}
           >
             Forgot Password?
@@ -85,7 +88,7 @@ export default function FormLogIn() {
             Sign In
           </button>
           <button
-            className="flex py-3  border-2 border-gray-100 items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
+            className="flex py-3 rounded-lg border-2 border-gray-200 items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
             onClick={handleClick_signInWithGoogle}
           >
             <FcGoogle />
@@ -95,7 +98,7 @@ export default function FormLogIn() {
         <div className="mt-8 flex justify-center items-center">
           <p className="font-medium text-base">No tenes una cuenta?</p>
           <button
-            className="text-violet-500 text-base font-medium ml-2"
+            className="text-violet-500 text-base font-medium ml-2 hover:text-violet-400"
             onClick={handleClick_registrarse}
           >
             Registrarse
