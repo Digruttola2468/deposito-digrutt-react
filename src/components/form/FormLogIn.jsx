@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { BsEye,BsEyeSlash } from 'react-icons/bs'
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 import TextField from "@mui/material/TextField";
 
@@ -10,6 +10,9 @@ import { toast } from "react-toastify";
 import { iniciarSesion } from "../../services/api_user";
 import { useLocalStorage } from "usehooks-ts";
 
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase/config";
+
 export default function FormLogIn() {
   const navegate = useNavigate();
   const [token, setToken] = useLocalStorage("token", "");
@@ -17,7 +20,7 @@ export default function FormLogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClick_forgotPassword = () => {};
 
@@ -39,7 +42,22 @@ export default function FormLogIn() {
     } else toast.error("Completar los campos");
   };
 
-  const handleClick_signInWithGoogle = () => {};
+  const handleClick_signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        if(result._tokenResponse.emailVerified) {
+
+          console.log(result._tokenResponse.firstName);
+          console.log(result._tokenResponse.lastName);
+          console.log(result._tokenResponse.email);
+          
+        }else console.log("Gmail no verificado");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleClick_registrarse = () => navegate("/signUp");
 
@@ -54,24 +72,30 @@ export default function FormLogIn() {
             type="email"
             onChange={(evt) => setEmail(evt.target.value)}
             variant="outlined"
-            sx={{width: "100%"}}
+            sx={{ width: "100%" }}
           />
         </div>
         <div className="w-full mt-4 relative">
-          
           <TextField
             label="Password"
             value={password}
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             onChange={(evt) => setPassword(evt.target.value)}
             variant="outlined"
-            sx={{width: "100%"}}
+            sx={{ width: "100%" }}
           />
-          <span className="top-[18px] right-3 absolute hover:cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? <BsEye size={"20px"}/> : <BsEyeSlash size={"20px"}/>}
+          <span
+            className="top-[18px] right-3 absolute hover:cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? (
+              <BsEye size={"20px"} />
+            ) : (
+              <BsEyeSlash size={"20px"} />
+            )}
           </span>
         </div>
-        
+
         <div className=" flex justify-end">
           <button
             className="font-medium text-base text-violet-500 hover:text-violet-400"

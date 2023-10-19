@@ -14,11 +14,15 @@ import Produccion from "./pages/Produccion";
 import Oficina from "./pages/Oficina";
 import LogIn from "./pages/LogIn";
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
+
 export default function App() {
   const navegate = useNavigate();
 
   const token = useReadLocalStorage("token");
-/*
+
+  /*
   useEffect(() => {
     if (token) navegate("/");
     else navegate("/logIn");
