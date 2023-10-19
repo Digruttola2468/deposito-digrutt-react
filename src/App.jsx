@@ -15,7 +15,7 @@ import Oficina from "./pages/Oficina";
 import LogIn from "./pages/LogIn";
 
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/config";
+import { auth } from "./firebase/app.js";
 
 export default function App() {
   const navegate = useNavigate();

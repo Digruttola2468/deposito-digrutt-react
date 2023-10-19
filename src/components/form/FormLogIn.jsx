@@ -11,7 +11,7 @@ import { iniciarSesion } from "../../services/api_user";
 import { useLocalStorage } from "usehooks-ts";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/config";
+import { auth } from "../../firebase/app.js";
 
 export default function FormLogIn() {
   const navegate = useNavigate();
