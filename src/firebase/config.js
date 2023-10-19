@@ -5,8 +5,3 @@ export const storageBucket = import.meta.env.VITE_FB_STORAGEBUCKET;
 export const messagingSenderId = import.meta.env.VITE_FB_MESSAGINGSENDERID;
 export const appId = import.meta.env.VITE_FB_APPID;
 export const measurementId = import.meta.env.VITE_FB_MEASUREMENTID;
-
-
-
-
-

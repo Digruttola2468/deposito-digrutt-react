@@ -15,3 +15,23 @@ export const iniciarSesion = async (username, password) => {
     
       return await result.json();
 };
+
+export const registrarse = async (nombre, apellido, gmail, password) => {
+  const result = await fetch(
+    `${BASE_URL}/signUp`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({nombre,apellido,gmail,password}),
+    }
+  );
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+
+  return await result.json();
+}
+
+export const iniciar_Google = async () => {
+  
+}

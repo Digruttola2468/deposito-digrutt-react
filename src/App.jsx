@@ -16,6 +16,7 @@ import LogIn from "./pages/LogIn";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/app.js";
+import SignUp from "./pages/SignUp";
 
 export default function App() {
   const navegate = useNavigate();
@@ -56,7 +57,7 @@ export default function App() {
         }
       />
       <Route path="/logIn" element={<LogIn />} />
-      <Route path="/signUp" element={<h1>SIGN UP - Registrarse</h1>} />
+      <Route path="/signUp" element={<SignUp/>} />
     </Routes>
   );
 }

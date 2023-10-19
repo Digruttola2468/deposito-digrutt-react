@@ -1,108 +1,108 @@
-import logo from '../assets/digrutt_logo.png';
+import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+
+import { registrarse } from "../services/api_user";
+
+import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
+  const navegate = useNavigate();
+
+  const [token, setToken] = useLocalStorage("token", "");
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+
+  const handleClick_signUp = () => {
+    //verificamos los campos vacios
+    if (email != "" && password != "" && confirmPassword != "" && nombre != "" && apellido != "") {
+      //Verificamos el email
+      const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+
+      if( password === confirmPassword ) {
+        if (email.match(pattern)) {
+          //Obtenemos los datos
+          registrarse(nombre,apellido,email, password)
+            .then((result) => {
+              setToken(result.token);
+              navegate("/");
+            })
+            .catch((e) => console.error(e));
+        } else toast.error('El gmail es incorrecto')
+      } else toast.error("Las contraseñas no son iguales");      
+    } else toast.error("Completar los campos");
+  };
+
+  const handleClick_iniciarSesion = () => navegate("/logIn");
+
   return (
-    <div className="m-3 sm:mx-auto sm:w-full sm:max-w-sm h-[100vh] grid content-center">
-        <div className='w-[200px] sm:w-full justify-self-center'>
-            <img src={logo} alt="alto" />
+    <div className="w-full flex items-center justify-center h-screen bg-slate-200">
+      <div className="bg-white px-10 py-20 rounded-3xl border-2 w-[400px]">
+        <h1 className="text-4xl font-semibold text-center">DIGRUTT S.R.L</h1>
+        <div className="mt-8">
+          <div className="flex flex-row justify-between items-center gap-x-3">
+            <TextField
+              label="Nombre"
+              value={nombre}
+              type="text"
+              onChange={(evt) => setNombre(evt.target.value)}
+              variant="outlined"
+            />
+            <TextField
+              label="Apellido"
+              value={apellido}
+              type="text"
+              onChange={(evt) => setApellido(evt.target.value)}
+              variant="outlined"
+            />
+          </div>
+          <div className="flex flex-col mt-4">
+            <TextField
+              label="Gmail"
+              value={email}
+              type="email"
+              onChange={(evt) => setEmail(evt.target.value)}
+              variant="outlined"
+            />
+            
+          </div>
+          <div className="flex flex-row mt-4 gap-x-3">
+          <TextField
+              label="Password"
+              value={password}
+              type="password"
+              onChange={(evt) => setPassword(evt.target.value)}
+              variant="outlined"
+            />
+            <TextField
+              label="Repeat password"
+              value={confirmPassword}
+              type="password"
+              onChange={(evt) => setConfirmPassword(evt.target.value)}
+              variant="outlined"
+            />
+          </div>
         </div>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6">
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Nombre
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="signUp_nombre"
-                type="text"
-                required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Apellido
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="signUp_apellido"
-                type="text"
-                required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Registrarse
-            </button>
-          </div>
-        </form>
-
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Ya estas registrado?{" "}
-          <a
-            href="#"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+        <div className="mt-4">
+          <button  className="w-full active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
+            onClick={handleClick_signUp}>Registrarse</button>
+        </div>
+        <div className="mt-8 flex justify-center items-center">
+          <p className="font-medium text-base">Estas registrado?</p>
+          <button
+            className="text-violet-500 text-base font-medium ml-2 hover:text-violet-400"
+            onClick={handleClick_iniciarSesion}
           >
-            Iniciar sesion
-          </a>
-        </p>
+            Iniciar Sesion
+          </button>
+        </div>
       </div>
     </div>
   );
