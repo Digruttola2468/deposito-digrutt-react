@@ -34,6 +34,7 @@ export default function FormLogIn() {
         //Obtenemos los datos
         iniciarSesion(email, password)
           .then((result) => {
+            toast.success("Bienvenido")
             setToken(result.token);
             navegate("/");
           })

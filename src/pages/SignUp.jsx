@@ -32,6 +32,7 @@ export default function SignUp() {
           registrarse(nombre,apellido,email, password)
             .then((result) => {
               setToken(result.token);
+              toast.success("Bienvenido")
               navegate("/");
             })
             .catch((e) => console.error(e));

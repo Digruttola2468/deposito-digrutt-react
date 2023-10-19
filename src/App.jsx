@@ -23,12 +23,11 @@ export default function App() {
 
   const token = useReadLocalStorage("token");
 
-  /*
   useEffect(() => {
     if (token) navegate("/");
     else navegate("/logIn");
   }, [token]);
-*/
+
   return (
     <Routes>
       <Route
