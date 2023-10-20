@@ -22,10 +22,13 @@ import {
 } from '../services/api_otherTables'
 
 import { toast } from "react-toastify";
+import { useReadLocalStorage } from "usehooks-ts";
 
 export function MercaderiaContextProvider(props) {
   //table search
   const [inputSearch, setInputSearch] = useState("");
+
+  const token = useReadLocalStorage('token');
 
   //table data
   const [tableList, setTableList] = useState([]);
@@ -50,7 +53,7 @@ export function MercaderiaContextProvider(props) {
 
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
-    getAllMercaderia()
+    getAllMercaderia(token)
       .then((result) => {
         setApiOriginal(result);
         setTableList(result.filter((e) => e.categoria == "Entrada"));
@@ -60,7 +63,7 @@ export function MercaderiaContextProvider(props) {
   };
 
   const getGraficaMercaderia = (idinventario) => {
-    getGrafica(idinventario).then((result) => {
+    getGrafica(idinventario,token).then((result) => {
       setGrafica(result);
     });
   };
@@ -104,7 +107,7 @@ export function MercaderiaContextProvider(props) {
 
   //get List inventario names from BBDD
   const getProductosInventario = () => {
-    getNombresInventario()
+    getNombresInventario(token)
       .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   };
@@ -178,7 +181,7 @@ export function MercaderiaContextProvider(props) {
 
   //create inventario BBDD
   const createInventario = (json) => {
-    postInventario(json)
+    postInventario(json,token)
       .then((result) => {
         toast.success("Creado Correctamente");
         inventarioNombres.push({ ...result });

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 export const InventarioContext = createContext();
 
 //Hook
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
 //Statefull
 import { post, get, update, eliminar } from "../services/api_inventario";
@@ -17,6 +17,8 @@ import {
 
 
 export function InventarioContextProvider(props) {
+  const token = useReadLocalStorage('token');
+
   //Table data
   const [tableList, setTableList] = useLocalStorage("inventario", []);
   const [apiOriginal, setApiOriginal] = useState([]);
@@ -44,11 +46,10 @@ export function InventarioContextProvider(props) {
       return filterList[0].cliente;
     
     return "";
-    
   };
 
   useEffect(() => {
-    get()
+    get(token)
       .then((result) => {
         setTableList(result);
         setApiOriginal(result);

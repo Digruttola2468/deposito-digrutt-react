@@ -2,9 +2,19 @@ import axios from "axios";
 
 const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
 
-export const getAllMercaderia = async () => {
-  const result = await fetch(`${BASE_URL}/mercaderia`);
+export const getAllMercaderia = async (token) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  const result = await fetch(`${BASE_URL}/mercaderia`, requestOptions);
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+
   return await result.json();
 };
 
@@ -53,9 +63,19 @@ export const eliminar = async (id, token) => {
   return await request.data;
 };
 
-export const getGrafica = async (idInventario) => {
-  const result = await fetch(`${BASE_URL}/grafica/mercaderia/${idInventario}`, {
+export const getGrafica = async (idInventario, token) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
     method: "GET",
-  });
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  const result = await fetch(
+    `${BASE_URL}/grafica/mercaderia/${idInventario}`,
+    requestOptions
+  );
   return await result.json();
 };

@@ -54,7 +54,6 @@ export default function SearchCodProducto() {
             const filterCliente = apiOriginal.filter((elem) => {
               return elem.idCliente === cliente;
             });
-            console.log(filterCliente);
             const resultado = filterCliente.filter((elem) => {
               return elem.nombre.toLowerCase().includes(newInputValue);
             });
