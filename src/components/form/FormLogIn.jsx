@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
@@ -8,14 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { iniciarSesion } from "../../services/api_user";
-import { useLocalStorage } from "usehooks-ts";
 
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase/app.js";
+import { UserContext } from "../../context/UserContext";
 
 export default function FormLogIn() {
+  const { setToken, setUser } = useContext(UserContext);
+
   const navegate = useNavigate();
-  const [token, setToken] = useLocalStorage("token", "");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +33,8 @@ export default function FormLogIn() {
         //Obtenemos los datos
         iniciarSesion(email, password)
           .then((result) => {
-            toast.success("Bienvenido")
+            setUser(result);
+            toast.success(`Bienvenido ${result.nombre}`);
             setToken(result.token);
             navegate("/");
           })
@@ -44,7 +44,7 @@ export default function FormLogIn() {
   };
 
   const handleClick_signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
+    /*const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider)
       .then((result) => {
         if(result._tokenResponse.emailVerified) {
@@ -57,7 +57,7 @@ export default function FormLogIn() {
       })
       .catch((error) => {
         console.error(error);
-      });
+      });*/
   };
 
   const handleClick_registrarse = () => navegate("/signUp");

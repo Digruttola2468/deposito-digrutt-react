@@ -14,8 +14,6 @@ import Produccion from "./pages/Produccion";
 import Oficina from "./pages/Oficina";
 import LogIn from "./pages/LogIn";
 
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/app.js";
 import SignUp from "./pages/SignUp";
 
 export default function App() {
