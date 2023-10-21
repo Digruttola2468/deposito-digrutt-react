@@ -5,6 +5,8 @@ import { iniciarSesion,registrarse } from "../services/api_user";
 
 export const UserContext = createContext();
 
+import { supabase } from "../supabase/config";
+
 export const UserProvider = (props) => {
 
   const [token, setToken] = useLocalStorage('token', '')
