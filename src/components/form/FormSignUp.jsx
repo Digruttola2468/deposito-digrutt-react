@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 
 export default function FormSignUp() {
-  const { setToken,setUser } = useContext(UserContext);
+  const { signUp } = useContext(UserContext);
 
   const navegate = useNavigate();
 
@@ -28,14 +28,8 @@ export default function FormSignUp() {
       if( password === confirmPassword ) {
         if (email.match(pattern)) {
           //Obtenemos los datos
-          registrarse(nombre,apellido,email, password)
-            .then((result) => {
-              setToken(result.token);
-              toast.success(`Bienvenido ${result.nombre}`);
-              setUser(result);
-              navegate("/");
-            })
-            .catch((e) => console.error(e));
+          signUp(nombre,apellido,email, password);
+          
         } else toast.error('El gmail es incorrecto')
       } else toast.error("Las contraseñas no son iguales");      
     } else toast.error("Completar los campos");

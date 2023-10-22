@@ -7,12 +7,10 @@ import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { iniciarSesion } from "../../services/api_user";
-
 import { UserContext } from "../../context/UserContext";
 
 export default function FormLogIn() {
-  const { setToken, setUser } = useContext(UserContext);
+  const { signInWithGoogle, signOut, logIn } = useContext(UserContext);
 
   const navegate = useNavigate();
 
@@ -21,7 +19,7 @@ export default function FormLogIn() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick_forgotPassword = () => {};
+  const handleClick_forgotPassword = () => {signOut()};
 
   const handleClick_signIn = () => {
     //verificamos los campos vacios
@@ -30,34 +28,14 @@ export default function FormLogIn() {
       const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
 
       if (email.match(pattern)) {
-        //Obtenemos los datos
-        iniciarSesion(email, password)
-          .then((result) => {
-            setUser(result);
-            toast.success(`Bienvenido ${result.nombre}`);
-            setToken(result.token);
-            navegate("/");
-          })
-          .catch((e) => console.error(e));
+        //
+        logIn(email,password)
       }
     } else toast.error("Completar los campos");
   };
 
   const handleClick_signInWithGoogle = async () => {
-    /*const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider)
-      .then((result) => {
-        if(result._tokenResponse.emailVerified) {
-
-          console.log(result._tokenResponse.firstName);
-          console.log(result._tokenResponse.lastName);
-          console.log(result._tokenResponse.email);
-          
-        }else console.log("Gmail no verificado");
-      })
-      .catch((error) => {
-        console.error(error);
-      });*/
+    signInWithGoogle();
   };
 
   const handleClick_registrarse = () => navegate("/signUp");

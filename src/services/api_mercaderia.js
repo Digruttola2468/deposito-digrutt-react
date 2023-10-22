@@ -3,16 +3,13 @@ import axios from "axios";
 const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
 
 export const getAllMercaderia = async (token) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Authorization", `Bearer ${token}`);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };  
 
-  const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
-
-  const result = await fetch(`${BASE_URL}/mercaderia`, requestOptions);
+  const result = await fetch(`${BASE_URL}/mercaderia`, config);
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
 
   return await result.json();
