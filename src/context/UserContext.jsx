@@ -110,8 +110,8 @@ export const UserProvider = (props) => {
 
         toast.success("Se creo correctamente");
         setUser({ nombre, apellido });
+        navegate("/sendGmail");
 
-        return navegate("/sendGmail");
       } catch (error) {
         console.error(error);
       }
@@ -126,8 +126,6 @@ export const UserProvider = (props) => {
       if (error)
         throw new Error("A ocurrido un error durante la autenticacion");
 
-      console.log(data);
-      
       const { token } = await getToken(data.email);
       setToken(token);
     } catch (error) {
