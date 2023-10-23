@@ -16,6 +16,7 @@ import LogIn from "./pages/LogIn";
 
 import SignUp from "./pages/SignUp";
 import SendEmail from "./pages/SendEmail";
+import WaitValidation from "./pages/WaitForValidation";
 
 export default function App() {
   const navegate = useNavigate();
@@ -57,6 +58,7 @@ export default function App() {
       <Route path="/logIn" element={<LogIn />} />
       <Route path="/signUp" element={<SignUp/>} />
       <Route path="/sendGmail" element={<SendEmail />} />
+      <Route path="/notVerificed" element={<WaitValidation />} />
     </Routes>
   );
 }

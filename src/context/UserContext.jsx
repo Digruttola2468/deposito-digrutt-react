@@ -27,9 +27,16 @@ export const UserProvider = (props) => {
           if (error)
             throw new Error("Ocurrio un error al agregar a la base de datos");
         }
-        if(token === "") {
-          const { token } = await getToken(user.email);
-          setToken(token);
+        
+        if (token === "") {
+          try {
+            const result = await getToken(user.email);
+            setToken(result.token);
+          } catch (error) {
+            if(error.response.status === 404) {
+              navegate('/notVerificed')
+            }
+          }
         }
       }
     });
@@ -55,7 +62,7 @@ export const UserProvider = (props) => {
 
       return data;
     } catch (error) {}
-  }
+  };
 
   const exitsGmail = async (gmail) => {
     try {
@@ -85,11 +92,9 @@ export const UserProvider = (props) => {
         password,
       });
 
-      console.log(error);
-
       if (error != null) {
         if (error.message === "Invalid login credentials")
-          toast.error("Credencial de acceso invalido")
+          toast.error("Credencial de acceso invalido");
         if (error.message === "Email not confirmed")
           toast.error("El Email no esta confirmado");
       }
@@ -111,7 +116,6 @@ export const UserProvider = (props) => {
         toast.success("Se creo correctamente");
         setUser({ nombre, apellido });
         navegate("/sendGmail");
-
       } catch (error) {
         console.error(error);
       }
@@ -135,7 +139,15 @@ export const UserProvider = (props) => {
 
   return (
     <UserContext.Provider
-      value={{ token, signInWithGoogle, signOut, logIn, signUp, getDataGmail, getUserSupabase }}
+      value={{
+        token,
+        signInWithGoogle,
+        signOut,
+        logIn,
+        signUp,
+        getDataGmail,
+        getUserSupabase,
+      }}
     >
       {props.children}
     </UserContext.Provider>

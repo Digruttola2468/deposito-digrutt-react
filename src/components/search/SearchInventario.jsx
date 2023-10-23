@@ -35,7 +35,6 @@ export default function SearchCodProducto() {
         return elem.idCliente === cliente;
       });
       setSearchinventario(filterCliente);
-      console.log("ACA CLIENTE");
     } else setSearchinventario(apiOriginal);
   }, [cliente]);
 
