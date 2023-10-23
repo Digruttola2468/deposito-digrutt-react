@@ -4,7 +4,7 @@ import Inventario from "./pages/Inventario";
 import Mercaderia from "./pages/Mercaderia";
 
 import { useReadLocalStorage } from "usehooks-ts";
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
@@ -17,15 +17,39 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import SendEmail from "./pages/SendEmail";
 import WaitValidation from "./pages/WaitForValidation";
+import { UserContext } from "./context/UserContext";
 
 export default function App() {
+  const { userSupabase } = useContext(UserContext);
   const navegate = useNavigate();
 
   const token = useReadLocalStorage("token");
 
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMercaderia, setIsMercaderia] = useState(false);
+  const [isOficina, setIsOficina] = useState(false);
+  const [isProduccion, setIsProduccion] = useState(false);
+  const [isMatriceria, setIsMatriceria] = useState(false);
+
+
   useEffect(() => {
-    if (token) navegate("/");
-    else navegate("/logIn");
+    if (userSupabase) {
+      const {
+        is_admin,
+        is_mercaderia,
+        is_oficina,
+        is_produccion,
+        is_matriceria,
+      } = userSupabase;
+      setIsAdmin(is_admin);
+      setIsMercaderia(is_mercaderia);
+      setIsOficina(is_oficina);
+      setIsProduccion(is_produccion);
+      setIsMatriceria(is_matriceria)
+
+      if (token) navegate("/");
+      else navegate("/logIn");
+    } else navegate("/logIn");
   }, [token]);
 
   return (
@@ -33,30 +57,42 @@ export default function App() {
       <Route
         path="/"
         element={
-          <MercaderiaContextProvider>
-            <Mercaderia />
-          </MercaderiaContextProvider>
+          isAdmin || isMercaderia || isOficina ? (
+            <MercaderiaContextProvider>
+              <Mercaderia />
+            </MercaderiaContextProvider>
+          ) : (
+            <h1>NO ESTAS HABILITADO</h1>
+          )
         }
       />
       <Route
         path="/inventario"
         element={
-          <InventarioContextProvider>
-            <Inventario />
-          </InventarioContextProvider>
+          isAdmin || isMercaderia || isOficina ? (
+            <InventarioContextProvider>
+              <Inventario />
+            </InventarioContextProvider>
+          ) : (
+            <h1>NO ESTAS HABILITADO</h1>
+          )
         }
       />
       <Route path="/produccion" element={<Produccion />} />
       <Route
         path="/oficina"
         element={
-          <OficinaProvider>
-            <Oficina />
-          </OficinaProvider>
+          isAdmin || isOficina ? (
+            <OficinaProvider>
+              <Oficina />
+            </OficinaProvider>
+          ) : (
+            <h1>NO ESTAS HABILITADO</h1>
+          )
         }
       />
       <Route path="/logIn" element={<LogIn />} />
-      <Route path="/signUp" element={<SignUp/>} />
+      <Route path="/signUp" element={<SignUp />} />
       <Route path="/sendGmail" element={<SendEmail />} />
       <Route path="/notVerificed" element={<WaitValidation />} />
     </Routes>

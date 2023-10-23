@@ -14,6 +14,8 @@ export const UserProvider = (props) => {
   const [token, setToken] = useLocalStorage("token", "");
   const [userTk, setUser] = useLocalStorage("user", {});
 
+  const [userSupabase, setUserSupabase] = useState(null);
+
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
@@ -31,6 +33,7 @@ export const UserProvider = (props) => {
         if (token === "") {
           try {
             const result = await getToken(user.email);
+            setUserSupabase(result);
             setToken(result.token);
           } catch (error) {
             if(error.response.status === 404) {
@@ -98,6 +101,16 @@ export const UserProvider = (props) => {
         if (error.message === "Email not confirmed")
           toast.error("El Email no esta confirmado");
       }
+
+      try {
+        const result = await getToken(email);
+        setUserSupabase(result);
+        setToken(result.token);
+      } catch (error) {
+        if(error.response.status === 404) {
+          navegate('/notVerificed')
+        }
+      }
     } catch (error) {
       console.error(error);
     }
@@ -147,6 +160,7 @@ export const UserProvider = (props) => {
         signUp,
         getDataGmail,
         getUserSupabase,
+        userSupabase
       }}
     >
       {props.children}
