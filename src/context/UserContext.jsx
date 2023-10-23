@@ -15,7 +15,6 @@ export const UserProvider = (props) => {
   const [userTk, setUser] = useLocalStorage("user", {});
 
   const [userSupabase, setUserSupabase] = useState(null);
-
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
@@ -29,15 +28,15 @@ export const UserProvider = (props) => {
           if (error)
             throw new Error("Ocurrio un error al agregar a la base de datos");
         }
-        
+
         if (token === "") {
           try {
             const result = await getToken(user.email);
             setUserSupabase(result);
             setToken(result.token);
           } catch (error) {
-            if(error.response.status === 404) {
-              navegate('/notVerificed')
+            if (error.response.status === 404) {
+              navegate("/notVerificed");
             }
           }
         }
@@ -107,8 +106,8 @@ export const UserProvider = (props) => {
         setUserSupabase(result);
         setToken(result.token);
       } catch (error) {
-        if(error.response.status === 404) {
-          navegate('/notVerificed')
+        if (error.response.status === 404) {
+          navegate("/notVerificed");
         }
       }
     } catch (error) {
@@ -143,8 +142,17 @@ export const UserProvider = (props) => {
       if (error)
         throw new Error("A ocurrido un error durante la autenticacion");
 
-      const { token } = await getToken(data.email);
-      setToken(token);
+      const user = await getUserSupabase();
+
+      try {
+        const result = await getToken(user.email);
+        setUserSupabase(result);
+        setToken(result.token);
+      } catch (error) {
+        if (error.response.status === 404) {
+          navegate("/notVerificed");
+        }
+      }
     } catch (error) {
       console.error(error);
     }
@@ -160,7 +168,7 @@ export const UserProvider = (props) => {
         signUp,
         getDataGmail,
         getUserSupabase,
-        userSupabase
+        userSupabase,
       }}
     >
       {props.children}
