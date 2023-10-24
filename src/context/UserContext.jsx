@@ -113,6 +113,7 @@ export const UserProvider = (props) => {
       setUserSupabase(result);
       setToken(result.token);
     } catch (error) {
+      navegate("/notVerificed");
       setLoading(false);
     }
   };
@@ -127,6 +128,7 @@ export const UserProvider = (props) => {
         });
 
         if (error) throw new Error("Error al momento de registrarse");
+        
         setIsDone(false);
         toast.success("Se creo correctamente");
         setUser({ nombre, apellido });
