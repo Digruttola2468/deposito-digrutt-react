@@ -18,6 +18,8 @@ export const UserProvider = (props) => {
 
   const [isDone, setIsDone] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
@@ -91,6 +93,7 @@ export const UserProvider = (props) => {
   };
 
   const logIn = async (email, password) => {
+    setLoading(true);
     try {
       const { data, error } = await db_supabase.auth.signInWithPassword({
         email,
@@ -105,6 +108,8 @@ export const UserProvider = (props) => {
         return error;
       }
 
+      const user = await getUserSupabase();
+
       try {
         if (!(await exitsGmail(user.email))) {
           const insertData = { ...userTk, gmail: user.email };
@@ -115,12 +120,14 @@ export const UserProvider = (props) => {
             throw new Error("Ocurrio un error al agregar a la base de datos");
         }
         const result = await getToken(email);
+        setLoading(false);
         setUserSupabase(result);
         setToken(result.token);
       } catch (error) {
-        toast.error(error.response.data.message);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
     }
   };
 
@@ -179,7 +186,8 @@ export const UserProvider = (props) => {
         getDataGmail,
         getUserSupabase,
         userSupabase,
-        isDone
+        isDone,
+        loading
       }}
     >
       {props.children}

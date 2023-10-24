@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
+import progress from "../../assets/progress_activity.svg";
+
 import TextField from "@mui/material/TextField";
 
 import { useNavigate } from "react-router-dom";
@@ -10,7 +12,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 
 export default function FormLogIn() {
-  const { signInWithGoogle, logIn } = useContext(UserContext);
+  const { signInWithGoogle, logIn, loading } = useContext(UserContext);
 
   const navegate = useNavigate();
 
@@ -19,7 +21,7 @@ export default function FormLogIn() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick_forgotPassword = () => navegate('/forgotPassword');
+  const handleClick_forgotPassword = () => navegate("/forgotPassword");
 
   const handleClick_signIn = () => {
     //verificamos los campos vacios
@@ -29,7 +31,7 @@ export default function FormLogIn() {
 
       if (email.match(pattern)) {
         //
-        logIn(email,password)
+        logIn(email, password);
       }
     } else toast.error("Completar los campos");
   };
@@ -80,22 +82,30 @@ export default function FormLogIn() {
             className="font-medium text-base text-violet-500 hover:text-violet-400"
             onClick={handleClick_forgotPassword}
           >
-            Forgot Password?
+            ¿Olvidaste tu contraseña?
           </button>
         </div>
         <div className="mt-8 flex flex-col gap-y-4">
           <button
-            className="active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
+            className="flex justify-center items-center active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
             onClick={handleClick_signIn}
+            disabled={loading}
           >
-            Sign In
+            {loading ? (
+              <>
+                <img src={progress} className="animate-spin h-5 w-5 mr-3" />
+              </>
+            ) : (
+              <></>
+            )}
+            {loading ? "Iniciando..." : "Iniciar Sesion"}
           </button>
           <button
             className="flex py-3 rounded-lg border-2 border-gray-200 items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
             onClick={handleClick_signInWithGoogle}
           >
             <FcGoogle />
-            Sign In With Google
+            Iniciar Sesion With Google
           </button>
         </div>
         <div className="mt-8 flex justify-center items-center">
