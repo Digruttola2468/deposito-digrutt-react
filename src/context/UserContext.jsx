@@ -106,6 +106,14 @@ export const UserProvider = (props) => {
       }
 
       try {
+        if (!(await exitsGmail(user.email))) {
+          const insertData = { ...userTk, gmail: user.email };
+
+          const { error } = await db_supabase.from("users").insert(insertData);
+
+          if (error)
+            throw new Error("Ocurrio un error al agregar a la base de datos");
+        }
         const result = await getToken(email);
         setUserSupabase(result);
         setToken(result.token);
