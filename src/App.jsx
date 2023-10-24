@@ -18,6 +18,7 @@ import SignUp from "./pages/SignUp";
 import SendEmail from "./pages/SendEmail";
 import WaitValidation from "./pages/WaitForValidation";
 import { UserContext } from "./context/UserContext";
+import ForgotPassword from "./pages/ForgotPassword";
 
 export default function App() {
   const { userSupabase } = useContext(UserContext);
@@ -95,6 +96,7 @@ export default function App() {
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/sendGmail" element={<SendEmail />} />
       <Route path="/notVerificed" element={<WaitValidation />} />
+      <Route path='/forgotPassword' element={<ForgotPassword />} />
     </Routes>
   );
 }

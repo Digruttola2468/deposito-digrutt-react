@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 
 export default function FormLogIn() {
-  const { signInWithGoogle, signOut, logIn } = useContext(UserContext);
+  const { signInWithGoogle, logIn } = useContext(UserContext);
 
   const navegate = useNavigate();
 
@@ -19,7 +19,7 @@ export default function FormLogIn() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick_forgotPassword = () => {signOut()};
+  const handleClick_forgotPassword = () => navegate('/forgotPassword');
 
   const handleClick_signIn = () => {
     //verificamos los campos vacios
