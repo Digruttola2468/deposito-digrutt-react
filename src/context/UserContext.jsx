@@ -99,33 +99,19 @@ export const UserProvider = (props) => {
         email,
         password,
       });
-      
+
       if (error != null) {
-        if (error.message === 'Invalid login credentials')
+        if (error.message === "Invalid login credentials")
           toast.error("El Gmail o Contraseña son incorrectos");
         if (error.message === "Email not confirmed")
           toast.error("El Email no esta confirmado");
         return error;
       }
 
-      const user = await getUserSupabase();
-
-      try {
-        if (!(await exitsGmail(user.email))) {
-          const insertData = { ...userTk, gmail: user.email };
-
-          const { error } = await db_supabase.from("users").insert(insertData);
-
-          if (error)
-            throw new Error("Ocurrio un error al agregar a la base de datos");
-        }
-        const result = await getToken(email);
-        setLoading(false);
-        setUserSupabase(result);
-        setToken(result.token);
-      } catch (error) {
-        setLoading(false);
-      }
+      const result = await getToken(email);
+      setLoading(false);
+      setUserSupabase(result);
+      setToken(result.token);
     } catch (error) {
       setLoading(false);
     }
@@ -187,7 +173,7 @@ export const UserProvider = (props) => {
         getUserSupabase,
         userSupabase,
         isDone,
-        loading
+        loading,
       }}
     >
       {props.children}
