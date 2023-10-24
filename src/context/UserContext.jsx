@@ -15,6 +15,9 @@ export const UserProvider = (props) => {
   const [userTk, setUser] = useLocalStorage("user", {});
 
   const [userSupabase, setUserSupabase] = useState(null);
+
+  const [isDone, setIsDone] = useState(false);
+
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
@@ -93,12 +96,13 @@ export const UserProvider = (props) => {
         email,
         password,
       });
-
+      
       if (error != null) {
-        if (error.message === "Invalid login credentials")
-          toast.error("Credencial de acceso invalido");
+        if (error.message === 'Invalid login credentials')
+          toast.error("El Gmail o Contraseña son incorrectos");
         if (error.message === "Email not confirmed")
           toast.error("El Email no esta confirmado");
+        return error;
       }
 
       try {
@@ -106,16 +110,14 @@ export const UserProvider = (props) => {
         setUserSupabase(result);
         setToken(result.token);
       } catch (error) {
-        if (error.response.status === 404) {
-          navegate("/notVerificed");
-        }
+        toast.error(error.response.data.message);
       }
     } catch (error) {
-      console.error(error);
     }
   };
 
   const signUp = async (nombre, apellido, email, password) => {
+    setIsDone(true);
     if (password.length >= 6) {
       try {
         const { data, error } = await db_supabase.auth.signUp({
@@ -124,7 +126,7 @@ export const UserProvider = (props) => {
         });
 
         if (error) throw new Error("Error al momento de registrarse");
-
+        setIsDone(false);
         toast.success("Se creo correctamente");
         setUser({ nombre, apellido });
         navegate("/sendGmail");
@@ -169,6 +171,7 @@ export const UserProvider = (props) => {
         getDataGmail,
         getUserSupabase,
         userSupabase,
+        isDone
       }}
     >
       {props.children}

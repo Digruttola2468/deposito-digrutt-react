@@ -6,9 +6,10 @@ import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
+import ProgressComponent from "../progress/ProgressComponent";
 
 export default function FormSignUp() {
-  const { signUp } = useContext(UserContext);
+  const { signUp,isDone } = useContext(UserContext);
 
   const navegate = useNavigate();
 
@@ -99,6 +100,7 @@ export default function FormSignUp() {
           </button>
         </div>
       </div>
+      <ProgressComponent open={isDone} />
     </div>
   );
 }

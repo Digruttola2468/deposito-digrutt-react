@@ -20,7 +20,7 @@ export function InventarioContextProvider(props) {
   const token = useReadLocalStorage('token');
 
   //Table data
-  const [tableList, setTableList] = useLocalStorage("inventario", []);
+  const [tableList, setTableList] = useState([]);
   const [apiOriginal, setApiOriginal] = useState([]);
 
   //if the progress to get data is done
