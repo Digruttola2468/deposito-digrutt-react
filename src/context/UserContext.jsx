@@ -47,7 +47,7 @@ export const UserProvider = (props) => {
         }
       }
     });
-  }, []);
+  }, [userSupabase]);
 
   const signOut = async () => {
     try {
@@ -105,13 +105,20 @@ export const UserProvider = (props) => {
           toast.error("El Gmail o Contraseña son incorrectos");
         if (error.message === "Email not confirmed")
           toast.error("El Email no esta confirmado");
+        setLoading(false);
         return error;
       }
 
-      const result = await getToken(email);
-      setLoading(false);
-      setUserSupabase(result);
-      setToken(result.token);
+      try {
+        const result = await getToken(email);
+        setLoading(false);
+        setUserSupabase(result);
+        setToken(result.token);
+      } catch (error) {
+        //console.log(error);
+        navegate("/notVerificed");
+        setLoading(false);
+      }
     } catch (error) {
       navegate("/notVerificed");
       setLoading(false);
@@ -128,13 +135,14 @@ export const UserProvider = (props) => {
         });
 
         if (error) throw new Error("Error al momento de registrarse");
-        
+
         setIsDone(false);
         toast.success("Se creo correctamente");
         setUser({ nombre, apellido });
         navegate("/sendGmail");
       } catch (error) {
-        console.error(error);
+        setIsDone(false);
+        toast.error("Hubo un error al registrar");
       }
     }
   };
@@ -159,7 +167,7 @@ export const UserProvider = (props) => {
         }
       }
     } catch (error) {
-      console.error(error);
+      toast.error("Hubo un error al iniciar con google");
     }
   };
 

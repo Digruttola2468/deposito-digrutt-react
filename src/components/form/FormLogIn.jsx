@@ -93,7 +93,7 @@ export default function FormLogIn() {
           >
             {loading ? (
               <>
-                <img src={progress} className="animate-spin h-5 w-5 mr-3" />
+                <img src={progress} className="text-white animate-spin h-5 w-5 mr-3" />
               </>
             ) : (
               <></>

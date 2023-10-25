@@ -19,6 +19,7 @@ import SendEmail from "./pages/SendEmail";
 import WaitValidation from "./pages/WaitForValidation";
 import { UserContext } from "./context/UserContext";
 import ForgotPassword from "./pages/ForgotPassword";
+import NotHavePermission from "./pages/NotHavePermission";
 
 export default function App() {
   const { userSupabase } = useContext(UserContext);
@@ -46,7 +47,7 @@ export default function App() {
       setIsMercaderia(is_mercaderia);
       setIsOficina(is_oficina);
       setIsProduccion(is_produccion);
-      setIsMatriceria(is_matriceria)
+      setIsMatriceria(is_matriceria);
 
       if (token) navegate("/");
       else navegate("/logIn");
@@ -63,7 +64,7 @@ export default function App() {
               <Mercaderia />
             </MercaderiaContextProvider>
           ) : (
-            <h1>NO ESTAS HABILITADO</h1>
+            <NotHavePermission />
           )
         }
       />
@@ -75,7 +76,7 @@ export default function App() {
               <Inventario />
             </InventarioContextProvider>
           ) : (
-            <h1>NO ESTAS HABILITADO</h1>
+            <NotHavePermission />
           )
         }
       />
@@ -88,7 +89,7 @@ export default function App() {
               <Oficina />
             </OficinaProvider>
           ) : (
-            <h1>NO ESTAS HABILITADO</h1>
+            <NotHavePermission />
           )
         }
       />
