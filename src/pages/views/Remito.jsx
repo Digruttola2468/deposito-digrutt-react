@@ -30,7 +30,7 @@ export default function DocRemitoPdf({
     let total = 0;
     for (let i = 0; i < products.length; i++) {
       const elem = products[i];
-      total += elem.precio;
+      total += parseInt(elem.precio);
     }
     return total;
   }
@@ -68,7 +68,7 @@ export default function DocRemitoPdf({
             </div>
           </div>
 
-          <div style={{ marginTop: 90, marginLeft: 70, marginRight: 30 }}>
+          <div style={{ marginTop: 90, marginLeft: 70, marginRight: 30, position: 'relative' }}>
             <table>
               <thead style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                 <th>
@@ -101,7 +101,7 @@ export default function DocRemitoPdf({
                 <tr></tr>
               </tbody>
             </table>
-            <div>
+            <div style={{position: 'absolute', top: 450, left: 300}}>
               <Text>Valor Declarado: {getTotal()}</Text>
             </div>
           </div>
