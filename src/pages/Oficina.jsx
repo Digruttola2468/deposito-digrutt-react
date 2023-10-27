@@ -88,11 +88,12 @@ export default function Oficina() {
       let ordenDeCompra = document.querySelector(
         `#ordenCompra-${codProductoArray.id}`
       ).value;
+      let precio = document.querySelector(`#precio-${codProductoArray.id}`).value;
 
-      enviar.products.push({ stock, ordenDeCompra, idProduct });
+      enviar.products.push({ stock, ordenDeCompra, idProduct,precio });
     }
     setListProducts(enviar.products)
-    console.log(enviar);
+    console.log("ENVIAR",enviar);
   };
 
   return (
@@ -244,6 +245,16 @@ export default function Oficina() {
                   </div>
                   <div className="mr-4">
                     <TextField
+                      label="Precio"
+                      type="number"
+                      variant="standard"
+                      id={`precio-${elem.id}`}
+                      className="ml-4"
+                      sx={{ width: 150 }}
+                    />
+                  </div>
+                  <div className="mr-4">
+                    <TextField
                       label="Orden De Compra"
                       type="text"
                       variant="standard"
@@ -252,7 +263,7 @@ export default function Oficina() {
                       sx={{ width: 150 }}
                     />
                   </div>
-
+                  
                   <div>
                     <IconButton
                       aria-label="delete"
