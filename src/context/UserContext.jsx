@@ -24,17 +24,16 @@ export const UserProvider = (props) => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
         const user = await getUserSupabase();
-
-        if (!(await exitsGmail(user.email))) {
+        /*if (!(await exitsGmail(user.email))) {
           const insertData = { ...userTk, gmail: user.email };
 
           const { error } = await db_supabase.from("users").insert(insertData);
 
           if (error)
             throw new Error("Ocurrio un error al agregar a la base de datos");
-        }
+        }*/
 
-        if (token === "") {
+        if (token == "" || user != null) {
           try {
             const result = await getToken(user.email);
             setUserSupabase(result);
@@ -44,8 +43,8 @@ export const UserProvider = (props) => {
               navegate("/notVerificed");
             }
           }
-        }
-      }
+        }else navegate("/login");
+      }else navegate("/login");
     });
   }, [userSupabase]);
 
@@ -114,13 +113,13 @@ export const UserProvider = (props) => {
         setLoading(false);
         setUserSupabase(result);
         setToken(result.token);
+        navegate('/');
       } catch (error) {
-        //console.log(error);
         navegate("/notVerificed");
         setLoading(false);
       }
     } catch (error) {
-      navegate("/notVerificed");
+      console.log(error);
       setLoading(false);
     }
   };
@@ -161,6 +160,7 @@ export const UserProvider = (props) => {
         const result = await getToken(user.email);
         setUserSupabase(result);
         setToken(result.token);
+        navegate('/');
       } catch (error) {
         if (error.response.status === 404) {
           navegate("/notVerificed");

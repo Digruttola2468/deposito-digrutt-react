@@ -49,10 +49,10 @@ export default function App() {
       setIsProduccion(is_produccion);
       setIsMatriceria(is_matriceria);
 
-      if (token) navegate("/");
-      else navegate("/logIn");
-    } else navegate("/logIn");
-  }, [token]);
+      /*if (token) navegate("/");
+      else navegate("/logIn");*/
+    }
+  }, [userSupabase]);
 
   return (
     <Routes>
