@@ -20,22 +20,45 @@ export const UserProvider = (props) => {
 
   const [loading, setLoading] = useState(false);
 
+  // permission
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMercaderia, setIsMercaderia] = useState(false);
+  const [isOficina, setIsOficina] = useState(false);
+  const [isProduccion, setIsProduccion] = useState(false);
+  const [isMatriceria, setIsMatriceria] = useState(false);
+
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
         const user = await getUserSupabase();
 
-        await addBBDD(user.email);
+        if (user != null) {
+          await addBBDD(user.email);
 
-        if (token) {
-          try {
-            const result = await getToken(user.email);
-            setUserSupabase(result);
-            setToken(result.token);
-          } catch (error) {
-            navegate("/notVerificed");
+          if (token) {
+            try {
+              const result = await getToken(user.email);
+
+              const {
+                is_admin,
+                is_mercaderia,
+                is_oficina,
+                is_produccion,
+                is_matriceria,
+              } = result;
+              setIsAdmin(is_admin);
+              setIsMercaderia(is_mercaderia);
+              setIsOficina(is_oficina);
+              setIsProduccion(is_produccion);
+              setIsMatriceria(is_matriceria);
+
+              setUserSupabase(result);
+              setToken(result.token);
+              navegate("/");
+            } catch (error) {
+              navegate("/notVerificed");
+            }
           }
-        } else {
         }
       } else navegate("/login");
     });
@@ -183,6 +206,11 @@ export const UserProvider = (props) => {
         userSupabase,
         isDone,
         loading,
+        isAdmin,
+        isMercaderia,
+        isOficina,
+        isProduccion,
+        isMatriceria,
       }}
     >
       {props.children}

@@ -22,37 +22,31 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NotHavePermission from "./pages/NotHavePermission";
 
 export default function App() {
-  const { userSupabase } = useContext(UserContext);
-  const navegate = useNavigate();
-
-  const token = useReadLocalStorage("token");
-
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isMercaderia, setIsMercaderia] = useState(false);
-  const [isOficina, setIsOficina] = useState(false);
-  const [isProduccion, setIsProduccion] = useState(false);
-  const [isMatriceria, setIsMatriceria] = useState(false);
-
-
+  const {
+    userSupabase,
+    isAdmin,
+    isMercaderia,
+    isOficina,
+    isProduccion,
+    isMatriceria,
+  } = useContext(UserContext);
+  
+/*
+  useEffect(() => {
+    console.log("NAVEGANDO");
+    if (userSupabase) {
+      if (token) navegate("/");
+      else navegate('/notVerificed')
+    } else navegate("/logIn");
+  }, [navegate]);
+*/
+  /*
   useEffect(() => {
     if (userSupabase) {
-      const {
-        is_admin,
-        is_mercaderia,
-        is_oficina,
-        is_produccion,
-        is_matriceria,
-      } = userSupabase;
-      setIsAdmin(is_admin);
-      setIsMercaderia(is_mercaderia);
-      setIsOficina(is_oficina);
-      setIsProduccion(is_produccion);
-      setIsMatriceria(is_matriceria);
-
-      /*if (token) navegate("/");
-      else navegate("/logIn");*/
-    }
-  }, [userSupabase]);
+      if (token) navegate("/");
+      else navegate('/notVerificed')
+    } else navegate("/logIn");
+  }, [userSupabase]);*/
 
   return (
     <Routes>
@@ -97,7 +91,7 @@ export default function App() {
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/sendGmail" element={<SendEmail />} />
       <Route path="/notVerificed" element={<WaitValidation />} />
-      <Route path='/forgotPassword' element={<ForgotPassword />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
     </Routes>
   );
 }
