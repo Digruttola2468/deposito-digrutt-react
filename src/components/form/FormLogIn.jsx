@@ -77,14 +77,14 @@ export default function FormLogIn() {
           </span>
         </div>
 
-        <div className=" flex justify-end">
+        {/* <div className=" flex justify-end">
           <button
             className="font-medium text-base text-violet-500 hover:text-violet-400"
             onClick={handleClick_forgotPassword}
           >
             ¿Olvidaste tu contraseña?
           </button>
-        </div>
+        </div> */}
         <div className="mt-8 flex flex-col gap-y-4">
           <button
             className="flex justify-center items-center active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out py-3 rounded-xl bg-violet-500 text-white text-lg font-bold"
@@ -105,7 +105,7 @@ export default function FormLogIn() {
             onClick={handleClick_signInWithGoogle}
           >
             <FcGoogle />
-            Iniciar Sesion With Google
+            Iniciar Sesion Con Google
           </button>
         </div>
         <div className="mt-8 flex justify-center items-center">

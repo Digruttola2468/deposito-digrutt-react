@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from "react";
 import { Document, Page, Text } from "@react-pdf/renderer";
-import { OficinaContext } from "../../context/OficinaContext";
 
 export default function DocRemitoPdf({
-  fecha,
+  fecha = "",
   cliente,
   domicilio,
   CUIT,
@@ -18,12 +16,15 @@ export default function DocRemitoPdf({
   };
 
   const formatDate = (fecha) => {
-    const date = new Date(fecha);
-    const año = date.getFullYear().toString().slice(2,4);
-    const dia = date.getDate() + 1;
-    const mes = date.getMonth() + 1;
-
-    return ` ${dia}   ${mes}   ${año}`;
+    if(fecha != "") {
+      const date = new Date(fecha);
+      const año = date.getFullYear().toString().slice(2,4);
+      const dia = date.getDate() + 1;
+      const mes = date.getMonth() + 1;
+  
+      return ` ${dia}   ${mes}   ${año}`;
+    }else return ` ${0}   ${0}   ${2023}`;
+    
   };
 
   const getTotal = () => {

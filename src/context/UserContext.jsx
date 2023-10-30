@@ -12,7 +12,7 @@ export const UserProvider = (props) => {
   const navegate = useNavigate();
 
   const [token, setToken] = useLocalStorage("token", "");
-  const [userTk, setUser] = useLocalStorage("user", {});
+  const [userTk, setUserTk] = useLocalStorage("userTk", {});
 
   const [userSupabase, setUserSupabase] = useState(null);
 
@@ -24,34 +24,55 @@ export const UserProvider = (props) => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
         const user = await getUserSupabase();
-        /*if (!(await exitsGmail(user.email))) {
-          const insertData = { ...userTk, gmail: user.email };
 
-          const { error } = await db_supabase.from("users").insert(insertData);
+        await addBBDD(user.email);
 
-          if (error)
-            throw new Error("Ocurrio un error al agregar a la base de datos");
-        }*/
-
-        if (token == "" || user != null) {
+        if (token) {
           try {
             const result = await getToken(user.email);
             setUserSupabase(result);
             setToken(result.token);
           } catch (error) {
-            if (error.response.status === 404) {
-              navegate("/notVerificed");
-            }
+            navegate("/notVerificed");
           }
-        }else navegate("/login");
-      }else navegate("/login");
+        } else {
+        }
+      } else navegate("/login");
     });
   }, [userSupabase]);
+
+  const addBBDD = async (gmail) => {
+    //Verificamos GMAIL
+    try {
+      const { data, error } = await db_supabase
+        .from("users")
+        .select()
+        .eq("gmail", gmail);
+
+      if (error) throw new Error("Error al momento de verificar Gmail");
+
+      if (data.length === 0) {
+        const { nombre, apellido } = userTk;
+        try {
+          const { error } = await db_supabase
+            .from("users")
+            .insert({ nombre, apellido, gmail });
+          if (error) {
+            console.log(error);
+            throw new Error("Ocurrio un error al agregar a la base de datos");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {}
+  };
 
   const signOut = async () => {
     try {
       const { error } = await db_supabase.auth.signOut();
       if (error) throw new Error("Error al momento de cerrar sesion");
+      setToken("");
     } catch (error) {
       console.error(error);
     }
@@ -70,20 +91,6 @@ export const UserProvider = (props) => {
     } catch (error) {}
   };
 
-  const exitsGmail = async (gmail) => {
-    try {
-      const { data, error } = await db_supabase
-        .from("users")
-        .select()
-        .eq("gmail", gmail);
-
-      if (error) throw new Error("Error al momento de verificar Gmail");
-
-      if (data.length > 0) return true;
-      else return false;
-    } catch (error) {}
-  };
-
   const getUserSupabase = async () => {
     const {
       data: { user },
@@ -93,81 +100,73 @@ export const UserProvider = (props) => {
 
   const logIn = async (email, password) => {
     setLoading(true);
-    try {
-      const { data, error } = await db_supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    const { data, error } = await db_supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      if (error != null) {
-        if (error.message === "Invalid login credentials")
-          toast.error("El Gmail o Contraseña son incorrectos");
-        if (error.message === "Email not confirmed")
-          toast.error("El Email no esta confirmado");
-        setLoading(false);
-        return error;
-      }
-
-      try {
-        const result = await getToken(email);
-        setLoading(false);
-        setUserSupabase(result);
-        setToken(result.token);
-        navegate('/');
-      } catch (error) {
-        navegate("/notVerificed");
-        setLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
+    if (error != null) {
+      if (error.message === "Invalid login credentials")
+        toast.error("El Gmail o Contraseña son incorrectos");
+      if (error.message === "Email not confirmed")
+        toast.error("El Email no esta confirmado");
       setLoading(false);
+      return error;
     }
+
+    try {
+      const result = await getToken(email);
+
+      setUserSupabase(result);
+      setToken(result.token);
+      navegate("/");
+    } catch (error) {
+      navegate("/notVerificed");
+    }
+    setLoading(false);
   };
 
   const signUp = async (nombre, apellido, email, password) => {
     setIsDone(true);
     if (password.length >= 6) {
-      try {
-        const { data, error } = await db_supabase.auth.signUp({
-          email: email,
-          password: password,
-        });
+      const { data, error } = await db_supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
 
-        if (error) throw new Error("Error al momento de registrarse");
-
+      if (error) {
+        toast.error("Ocurrio un error al momento de registrarse");
         setIsDone(false);
-        toast.success("Se creo correctamente");
-        setUser({ nombre, apellido });
-        navegate("/sendGmail");
-      } catch (error) {
-        setIsDone(false);
-        toast.error("Hubo un error al registrar");
+        throw new Error("Error al momento de registrarse");
       }
-    }
+      setUserTk({ nombre, apellido });
+
+      toast.success("Se creo correctamente");
+      navegate("/sendGmail");
+    } else toast.error("La contraseña es corta");
+
+    setIsDone(false);
   };
 
   const signInWithGoogle = async () => {
+    const { data, error } = await db_supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    if (error) {
+      toast.error("A ocurrido un error");
+      throw new Error("A ocurrido un error durante la autenticacion");
+    }
+
+    const user = await getUserSupabase();
+
     try {
-      const { data, error } = await db_supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-      if (error)
-        throw new Error("A ocurrido un error durante la autenticacion");
-
-      const user = await getUserSupabase();
-
-      try {
-        const result = await getToken(user.email);
-        setUserSupabase(result);
-        setToken(result.token);
-        navegate('/');
-      } catch (error) {
-        if (error.response.status === 404) {
-          navegate("/notVerificed");
-        }
-      }
+      const result = await getToken(user.email);
+      setUserSupabase(result);
+      setToken(result.token);
+      navegate("/");
     } catch (error) {
-      toast.error("Hubo un error al iniciar con google");
+      navegate("/notVerificed");
     }
   };
 
