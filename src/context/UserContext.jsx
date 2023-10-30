@@ -54,6 +54,7 @@ export const UserProvider = (props) => {
 
               setUserSupabase(result);
               setToken(result.token);
+              console.log("NAVEGATE");
               navegate("/");
             } catch (error) {
               navegate("/notVerificed");
@@ -62,7 +63,7 @@ export const UserProvider = (props) => {
         }
       } else navegate("/login");
     });
-  }, [userSupabase]);
+  }, []);
 
   const addBBDD = async (gmail) => {
     //Verificamos GMAIL

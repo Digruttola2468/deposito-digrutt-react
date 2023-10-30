@@ -103,7 +103,7 @@ export default function DocRemitoPdf({
               </tbody>
             </table>
             <div style={{position: 'absolute', top: 450, left: 300}}>
-              <Text>Valor Declarado: {getTotal()}</Text>
+              <Text>Valor Declarado: AR${getTotal()}</Text>
             </div>
           </div>
         </Page>

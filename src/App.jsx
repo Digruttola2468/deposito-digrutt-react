@@ -1,10 +1,9 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Inventario from "./pages/Inventario";
 import Mercaderia from "./pages/Mercaderia";
 
-import { useReadLocalStorage } from "usehooks-ts";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { InventarioContextProvider } from "./context/InventarioContext";
@@ -30,23 +29,6 @@ export default function App() {
     isProduccion,
     isMatriceria,
   } = useContext(UserContext);
-  
-/*
-  useEffect(() => {
-    console.log("NAVEGANDO");
-    if (userSupabase) {
-      if (token) navegate("/");
-      else navegate('/notVerificed')
-    } else navegate("/logIn");
-  }, [navegate]);
-*/
-  /*
-  useEffect(() => {
-    if (userSupabase) {
-      if (token) navegate("/");
-      else navegate('/notVerificed')
-    } else navegate("/logIn");
-  }, [userSupabase]);*/
 
   return (
     <Routes>
