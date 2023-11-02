@@ -61,7 +61,7 @@ export default function PostInventario() {
           label="Peso x Unidad"
           value={pesoUnidad}
           type="number"
-          onChange={(evt) => setDescripcion(evt.target.value)}
+          onChange={(evt) => setPesoUnidad(evt.target.value)}
           variant="outlined"
           sx={{ margin: 1, width: 300 }}
         />

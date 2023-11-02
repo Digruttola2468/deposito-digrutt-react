@@ -1,11 +1,16 @@
 import { useContext, useState } from "react";
 
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 
@@ -13,12 +18,13 @@ import { InventarioContext } from "../../context/InventarioContext";
 import { toast } from "react-toastify";
 
 export default function DialogNewInventario() {
-  const { showDialogNewInventario, setShowDialogNewInventario, createApi } =
+  const { showDialogNewInventario, setShowDialogNewInventario, createApi, clientesList } =
     useContext(InventarioContext);
 
   const [codProducto, setCodProducto] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
+  const [cliente, setCliente] = useState("");
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -32,11 +38,13 @@ export default function DialogNewInventario() {
       nombre: codProducto,
       descripcion,
       pesoUnidad: parseFloat(pesoUnidad),
+      idCliente: parseInt(cliente)
     });
 
     setCodProducto("");
     setDescripcion("");
     setPesoUnidad("");
+    setCliente("");
     setShowDialogNewInventario(false);
   };
 
@@ -44,6 +52,7 @@ export default function DialogNewInventario() {
     setCodProducto("");
     setDescripcion("");
     setPesoUnidad("");
+    setCliente("");
     setShowDialogNewInventario(false);
   };
 
@@ -54,6 +63,30 @@ export default function DialogNewInventario() {
         <DialogContent
           sx={{ display: "flex", flexDirection: "column", padding: 3 }}
         >
+          <Box sx={{ marginTop: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel>Cliente</InputLabel>
+              <Select
+                value={cliente}
+                label="Cliente"
+                onChange={(evt) => {
+                  const comboBoxCliente = evt.target.value;
+                  setCliente(comboBoxCliente);
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {clientesList.map((elem) => {
+                  return (
+                    <MenuItem key={elem.id} value={elem.id}>
+                      {elem.cliente}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Box>
           <TextField
             autoFocus
             value={codProducto}
@@ -61,6 +94,7 @@ export default function DialogNewInventario() {
             label="cod. Producto"
             type="text"
             variant="standard"
+            sx={{ marginTop: 2 }}
           />
           <TextField
             value={descripcion}
@@ -76,7 +110,7 @@ export default function DialogNewInventario() {
             label="Peso x Unidad"
             type="number"
             variant="standard"
-            sx={{ marginTop: 2 }} 
+            sx={{ marginTop: 2 }}
           />
         </DialogContent>
         <DialogActions>

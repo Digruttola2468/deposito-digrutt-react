@@ -59,7 +59,7 @@ export function InventarioContextProvider(props) {
       getClientesAPI();
   }, []);
 
-  const createApi = (json,token) => {
+  const createApi = (json) => {
     post(json,token)
       .then((result) => {
         toast.success("Creado Correctamente");
