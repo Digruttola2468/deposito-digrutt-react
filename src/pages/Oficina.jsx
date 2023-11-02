@@ -21,12 +21,16 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import DocRemitoPdf from "./views/Remito";
 
+import ProgressComponent from "../components/progress/ProgressComponent";
+
 export default function Oficina() {
   const {
     inventarioNombres,
     getInventarioNombres,
     getClientesAPI,
     clientesList,
+    sendRemito,
+    loadingSend,
   } = useContext(OficinaContext);
 
   //Campos fundamental Remito
@@ -73,8 +77,10 @@ export default function Oficina() {
     enviar.fecha = fecha;
     enviar.numRemito = numRemito;
     enviar.idCliente = cliente;
+    enviar.nroOrden = nroOrden;
     enviar.products = [];
 
+    let valorDeclarado = 0;
     for (let i = 0; i < pedidos.length; i++) {
       const codProductoArray = pedidos[i];
       console.log(codProductoArray);
@@ -89,10 +95,18 @@ export default function Oficina() {
         `#precio-${codProductoArray.id}`
       ).value;
 
+      if (stock == "") stock = 0;
+
+      if (precio == "") precio = 0;
+      else valorDeclarado += parseFloat(precio);
+
       enviar.products.push({ stock, ordenDeCompra, idProduct, precio });
     }
+    enviar.valorDeclarado = valorDeclarado;
     setListProducts(enviar.products);
-  }
+    sendRemito(enviar);
+    empty();
+  };
 
   const handleClickShowPdf = (evt) => {
     evt.preventDefault();
@@ -101,8 +115,10 @@ export default function Oficina() {
     enviar.fecha = fecha;
     enviar.numRemito = numRemito;
     enviar.idCliente = cliente;
+    enviar.nroOrden = nroOrden;
     enviar.products = [];
 
+    let valorDeclarado = 0;
     for (let i = 0; i < pedidos.length; i++) {
       const codProductoArray = pedidos[i];
       console.log(codProductoArray);
@@ -117,10 +133,22 @@ export default function Oficina() {
         `#precio-${codProductoArray.id}`
       ).value;
 
+      valorDeclarado += parseFloat(precio);
       enviar.products.push({ stock, ordenDeCompra, idProduct, precio });
     }
+    enviar.valorDeclarado = valorDeclarado;
+
     setListProducts(enviar.products);
-    console.log("ENVIAR", enviar);
+  };
+
+  const empty = () => {
+    setNumRemito("");
+    setFecha(null);
+    setCliente("");
+    setNroOrden("");
+    setListProducts([]);
+    setPedidos([]);
+    setViewPdf(false);
   };
 
   return (
@@ -166,7 +194,7 @@ export default function Oficina() {
               <TextField
                 label="N° Orden"
                 value={nroOrden}
-                type="number"
+                type="text"
                 placeholder="N° Orden"
                 onChange={(evt) => setNroOrden(evt.target.value)}
                 className="w-full"
@@ -180,6 +208,8 @@ export default function Oficina() {
                     value={cliente}
                     label="Cliente"
                     onChange={(evt) => {
+                      setListProducts([]);
+                      setPedidos([]);
                       const comboBoxCliente = evt.target.value;
                       setCliente(comboBoxCliente);
                       if (comboBoxCliente != "") {
@@ -314,10 +344,16 @@ export default function Oficina() {
               })}
               {pedidos.length != 0 ? (
                 <>
-                  <button onClick={handleClickSend} className="ml-2 px-6 py-3 rounded-lg bg-blue-500 text-white border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out">
+                  <button
+                    onClick={handleClickSend}
+                    className="ml-2 px-6 py-3 rounded-lg bg-blue-500 text-white border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
+                  >
                     Enviar
                   </button>
-                  <button onClick={handleClickShowPdf} className="ml-2 p-3  gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out">
+                  <button
+                    onClick={handleClickShowPdf}
+                    className="ml-2 p-3  gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
+                  >
                     Agregar PDF
                   </button>
                 </>
@@ -328,7 +364,7 @@ export default function Oficina() {
           </section>
         </section>
 
-        <section>
+        <section className="mt-5">
           <button
             onClick={() => setViewPdf(!viewPdf)}
             className="ml-2 p-3 rounded-lg border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
@@ -369,6 +405,7 @@ export default function Oficina() {
             <></>
           )}
         </section>
+        <ProgressComponent open={loadingSend} />
       </main>
     </>
   );
