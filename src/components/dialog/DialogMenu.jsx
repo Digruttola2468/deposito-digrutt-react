@@ -6,20 +6,23 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { sendFile } from "../../services/sendFile";
 
 import Button from "@mui/material/Button";
-
-const BASEAPIREST = "https://deposito-digrutt-express-production.up.railway.app";
+import { useReadLocalStorage } from "usehooks-ts";
 
 export default function DialogMenu ({show,close}) {
     
+  const token = useReadLocalStorage('token');
+
     const handleExportMercaderia = () =>
       sendFile(
-        `${BASEAPIREST}/excel/mercaderia`,
+        token,
+        `/excel/mercaderia`,
         "mercaderia.xlsx"
       );
   
     const handleExportInventario = () =>
       sendFile(
-        `${BASEAPIREST}/excel/inventario`,
+        token,
+        `/excel/inventario`,
         "inventario.xlsx"
       );
   
