@@ -151,7 +151,7 @@ export function MercaderiaContextProvider(props) {
     post(json,token)
       .then((data2) => {
         const fecha = data2.fecha.split("-").reverse().join("-");
-        getOneInventario(data2.idinventario)
+        getOneInventario(data2.idinventario, token)
           .then((data) => {
             toast.success("Se envio correctamente");
 
