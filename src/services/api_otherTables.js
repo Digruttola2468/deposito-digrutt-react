@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
 
 export const getClientes = async () => {
@@ -6,6 +8,14 @@ export const getClientes = async () => {
       );
       if (!result.ok) throw Error(`HTTP status error ${result.status}`);
       return await result.json();
+}
+
+export const getLocalidad = async () => {
+  const result = await fetch(
+      `${BASE_URL}/localidad`
+    );
+    if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+    return await result.json();
 }
 
 export const getColores = async () => {
@@ -54,4 +64,20 @@ export const getUnidadDeMedida = async () => {
   );
   if (!result.ok) throw Error(`HTTP status error ${result.status}`);
   return await result.json();
+}
+
+//            POST
+
+export const postCliente = async (json, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const request = await axios.post(`${BASE_URL}/cliente`, json, config);
+
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
 }

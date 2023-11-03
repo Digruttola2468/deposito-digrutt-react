@@ -11,13 +11,10 @@ import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 //Statefull
 import { post, get, update, eliminar } from "../services/api_inventario";
 
-import { 
-  getClientes
-} from '../services/api_otherTables'
-
+import { getClientes, postCliente } from "../services/api_otherTables";
 
 export function InventarioContextProvider(props) {
-  const token = useReadLocalStorage('token');
+  const token = useReadLocalStorage("token");
 
   //Table data
   const [tableList, setTableList] = useState([]);
@@ -34,17 +31,19 @@ export function InventarioContextProvider(props) {
   //show dialog to create inventario
   const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
 
+  //show dialog to create Cliente
+  const [showDialogNewCliente, setShowDialogNewCliente] = useState(false);
+
   const [clientesList, setClientesList] = useState([]);
 
   const getClientesAPI = () => {
-    getClientes().then(result => setClientesList(result))
-  }
+    getClientes().then((result) => setClientesList(result));
+  };
 
   const getClienteName = (idCliente) => {
     const filterList = clientesList.filter((result) => result.id === idCliente);
-    if(filterList.length != 0) 
-      return filterList[0].cliente;
-    
+    if (filterList.length != 0) return filterList[0].cliente;
+
     return "";
   };
 
@@ -56,16 +55,16 @@ export function InventarioContextProvider(props) {
         setDone(true);
       })
       .catch((error) => console.error(error));
-      getClientesAPI();
+    getClientesAPI();
   }, []);
 
   const createApi = (json) => {
-    post(json,token)
+    post(json, token)
       .then((result) => {
         toast.success("Creado Correctamente");
-        console.log("al crear inventario",result);
-        setTableList([{ ...result, entrada: 0, salida: 0 }, ...tableList ]);
-        setApiOriginal([ { ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
+        console.log("al crear inventario", result);
+        setTableList([{ ...result, entrada: 0, salida: 0 }, ...tableList]);
+        setApiOriginal([{ ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
       })
       .catch((error) => console.log("error", error));
   };
@@ -91,8 +90,8 @@ export function InventarioContextProvider(props) {
       .catch((error) => console.error("error", error));
   };
 
-  const deleteApi = (id,token) => {
-    eliminar(id,token)
+  const deleteApi = (id, token) => {
+    eliminar(id, token)
       .then((data) => {
         toast.success(data.message);
         setTableList(tableList.filter((elem) => elem.id != id));
@@ -102,6 +101,17 @@ export function InventarioContextProvider(props) {
   };
 
   const getPrevius = () => setTableList(apiOriginal);
+
+  const createCliente = (json) => {
+    postCliente(json, token)
+      .then((result) => {
+        clientesList.push(result);
+        toast.success("Se creo con exito")
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   //ORDER BY
   const orderNombreASC = () => {
@@ -155,7 +165,10 @@ export function InventarioContextProvider(props) {
         showDialogNewInventario,
         setShowDialogNewInventario,
         clientesList,
-        getClienteName
+        getClienteName,
+        createCliente,
+        showDialogNewCliente,
+        setShowDialogNewCliente,
       }}
     >
       {props.children}

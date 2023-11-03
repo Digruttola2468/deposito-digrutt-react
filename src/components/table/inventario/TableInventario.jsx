@@ -10,6 +10,7 @@ import SearchCodProducto from "../../search/SearchInventario";
 import { Button } from "@mui/material";
 import DialogNewInventario from "../../dialog/DialogNewInventario";
 import PesoUnidad from "./PesoUnidad";
+import DialogNewCliente from "../../dialog/DialogNewCliente";
 
 const HeadTable = () => {
   const { orderNombreASC, orderNombreDES } = useContext(InventarioContext);
@@ -84,6 +85,7 @@ const BodyTable = () => {
 export default function TableComponent() {
   const {
     setShowDialogNewInventario,
+    setShowDialogNewCliente,
     tableList,
     limit,
     pagina,
@@ -96,10 +98,17 @@ export default function TableComponent() {
       <div className="p-3 shadow-xl">
         <div className="flex flex-row justify-between items-end">
           <SearchCodProducto />
+          <div>
+          <Button onClick={() => setShowDialogNewCliente(true)}>
+            New Cliente
+          </Button>
           <Button onClick={() => setShowDialogNewInventario(true)}>
             New Inventario
           </Button>
           <DialogNewInventario />
+          <DialogNewCliente />
+          </div>
+          
         </div>
         <table className="table">
           <HeadTable />
