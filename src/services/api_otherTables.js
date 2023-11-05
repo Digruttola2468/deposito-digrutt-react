@@ -66,8 +66,20 @@ export const getUnidadDeMedida = async () => {
   return await result.json();
 }
 
-//            POST
+export const getFacturaNegro = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };  
 
+  const result = await fetch(`${BASE_URL}/facturaNegro`, config);
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+
+  return await result.json();
+}
+
+//            POST
 export const postCliente = async (json, token) => {
   const config = {
     headers: {
@@ -76,6 +88,20 @@ export const postCliente = async (json, token) => {
   };
 
   const request = await axios.post(`${BASE_URL}/cliente`, json, config);
+
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
+}
+
+export const postFacturaNegro = async (json, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const request = await axios.post(`${BASE_URL}/facturaNegro`, json, config);
 
   if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
 

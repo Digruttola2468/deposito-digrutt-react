@@ -32,7 +32,7 @@ export default function PutMercaderia() {
   const { createApi, inventarioNombres, idCategoria, createInventario } =
     useContext(MercaderiaContext);
 
-  const token = useReadLocalStorage('token')
+  const token = useReadLocalStorage("token");
 
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
@@ -57,8 +57,6 @@ export default function PutMercaderia() {
     handleClose();
   };
 
-  const [factura, setFactura] = useState("");
-
   const [codProducto, setcodProducto] = useState();
   const [inputValue, setInputValue] = useState("");
 
@@ -67,7 +65,6 @@ export default function PutMercaderia() {
   const [fecha, setFecha] = useState();
 
   const empty = () => {
-    setFactura("");
     setFecha();
     setStock("");
     setInputValue("");
@@ -87,13 +84,15 @@ export default function PutMercaderia() {
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
-    createApi({
-      fecha,
-      proveedor: factura,
-      stock,
-      idinventario: filter[0].id,
-      idcategoria: idCategoria,
-    },token);
+    createApi(
+      {
+        fecha,
+        stock,
+        idinventario: filter[0].id,
+        idcategoria: idCategoria,
+      },
+      token
+    );
 
     empty();
   };
@@ -104,95 +103,94 @@ export default function PutMercaderia() {
         Nueva Mercaderia
       </AccordionSummary>
       <AccordionDetails>
-        <form className="flex flex-col">
-          <div className="w-full flex flex-row items-center justify-between my-2">
-            <p className="text-gray-400">
-              {codProducto != undefined ? codProducto.descripcion : ""}
-            </p>
-          </div>
-          <div className="flex flex-row">
-            <Autocomplete
-              disablePortal
-              options={inventarioNombres}
-              getOptionLabel={(elem) => elem.nombre}
-              sx={{ width: 200, marginTop: 1 }}
-              value={codProducto || null}
-              onChange={(evt, newValue) => {
-                if (newValue && newValue.id === undefined) {
-                  toggleOpen(true);
-                  setDialogValue({
-                    cod: newValue.inputValue,
-                    descripcion: "",
-                  });
-                } else setcodProducto(newValue);
-              }}
-              inputValue={inputValue}
-              onInputChange={(_, newInputValue) => setInputValue(newInputValue)}
-              filterOptions={(options, params) => {
-                const filtered = filter(options, params);
-                if (params.inputValue !== "") {
-                  filtered.push({
-                    inputValue: params.inputValue,
-                    nombre: `Agregar "${params.inputValue}"`,
-                  });
+        {idCategoria == 2 ? (
+          <form className="flex flex-col">
+            <div className="w-full flex flex-row items-center justify-between my-2">
+              <p className="text-gray-400">
+                {codProducto != undefined ? codProducto.descripcion : ""}
+              </p>
+            </div>
+            <div className="flex flex-row">
+              <Autocomplete
+                disablePortal
+                options={inventarioNombres}
+                getOptionLabel={(elem) => elem.nombre}
+                sx={{ width: 200, marginTop: 1 }}
+                value={codProducto || null}
+                onChange={(evt, newValue) => {
+                  if (newValue && newValue.id === undefined) {
+                    toggleOpen(true);
+                    setDialogValue({
+                      cod: newValue.inputValue,
+                      descripcion: "",
+                    });
+                  } else setcodProducto(newValue);
+                }}
+                inputValue={inputValue}
+                onInputChange={(_, newInputValue) =>
+                  setInputValue(newInputValue)
                 }
+                filterOptions={(options, params) => {
+                  const filtered = filter(options, params);
+                  if (params.inputValue !== "") {
+                    filtered.push({
+                      inputValue: params.inputValue,
+                      nombre: `Agregar "${params.inputValue}"`,
+                    });
+                  }
 
-                return filtered;
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  helperText="Required"
-                  value={"Hola"}
-                  label="Cod Producto"
-                />
-              )}
-            />
-            <TextField
-              helperText="Required"
-              label="Cantidad"
-              value={stock}
-              type="number"
-              onChange={(evt) => setStock(evt.target.value)}
-              variant="outlined"
-              sx={{ width: 150, marginLeft: 1, marginTop: 1 }}
-            />
-          </div>
-          <div className="flex flex-row items-center ">
-            <LocalizationProvider dateAdapter={AdapterDayjs} >
-              <DemoContainer components={["DatePicker"]} sx={{width: 200}}>
-                <DatePicker
-                  label="Fecha"
-                  value={fecha || null}
-                  onChange={(evt, value) => {
-                    if (value.validationError != null)
-                      return toast.error(value.validationError);
-                    else if (evt != null)
-                      setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
-                    else setFecha(undefined);
-                  }}
-                  slotProps={{
-                    textField: {
-                      helperText: "Required",
-                    },
-                  }}
-                  format="DD/MM/YYYY"
-                />
-              </DemoContainer>
-            </LocalizationProvider>
-            <TextField
-              label="N° Factura"
-              value={factura}
-              onChange={(evt) => setFactura(evt.target.value)}
-              variant="outlined"
-              sx={{ width: 150, marginLeft: 1, marginBottom: 2 }}
-            />
-          </div>
-          <div className="flex flex-row justify-end">
-            <Button onClick={empty}>Limpiar</Button>
-            <Button onClick={handleClickPost}>Agregar</Button>
-          </div>
-        </form>
+                  return filtered;
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    helperText="Required"
+                    value={"Hola"}
+                    label="Cod Producto"
+                  />
+                )}
+              />
+              <TextField
+                helperText="Required"
+                label="Cantidad"
+                value={stock}
+                type="number"
+                onChange={(evt) => setStock(evt.target.value)}
+                variant="outlined"
+                sx={{ width: 150, marginLeft: 1, marginTop: 1 }}
+              />
+            </div>
+            <div className="flex flex-row items-center ">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker"]} sx={{ width: 200 }}>
+                  <DatePicker
+                    label="Fecha"
+                    value={fecha || null}
+                    onChange={(evt, value) => {
+                      if (value.validationError != null)
+                        return toast.error(value.validationError);
+                      else if (evt != null)
+                        setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+                      else setFecha(undefined);
+                    }}
+                    slotProps={{
+                      textField: {
+                        helperText: "Required",
+                      },
+                    }}
+                    format="DD/MM/YYYY"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+            <div className="flex flex-row justify-end">
+              <Button onClick={empty}>Limpiar</Button>
+              <Button onClick={handleClickPost}>Agregar</Button>
+            </div>
+          </form>
+        ) : (
+          <></>
+        )}
         <Dialog open={open} onClose={handleClose}>
           <form onSubmit={handleSubmit}>
             <DialogTitle>Nuevo Cod.Producto</DialogTitle>

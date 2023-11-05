@@ -18,7 +18,7 @@ import {
 } from "../services/api_inventario";
 
 import { 
-  getClientes
+  getClientes, getFacturaNegro, postFacturaNegro
 } from '../services/api_otherTables'
 
 import { toast } from "react-toastify";
@@ -50,6 +50,24 @@ export function MercaderiaContextProvider(props) {
   const [grafica, setGrafica] = useState([]);
 
   const [clientesList, setClientesList] = useState([]);
+  const [listFacturaNegro, setListFacturaNegro] = useState([]);
+
+  //Loading to send factura Negro
+  const [isDoneFacturaNegro, setIsDoneFacturaNegro] = useState(false);
+
+  const getAllFacturasNegro = () => {
+    getFacturaNegro(token).then(result => {
+      setListFacturaNegro(result);
+    }).catch(e => console.log(e))
+  }
+
+  const postAllFacturaNegro = (json) => {
+    setIsDoneFacturaNegro(true);
+    postFacturaNegro(json,token).then(result => {
+      console.log(result);
+    }).catch(e => console.log(e));
+    setIsDoneFacturaNegro(false);
+  }
 
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
@@ -274,7 +292,6 @@ export function MercaderiaContextProvider(props) {
     );
     toast.info("Ordenado Stock Descendente");
   };
-
   return (
     <MercaderiaContext.Provider
       value={{
@@ -308,6 +325,9 @@ export function MercaderiaContextProvider(props) {
         orderFechaDESC,
         orderCantidadASC,
         orderCantidadDESC,
+        clientesList,
+        isDoneFacturaNegro,
+        postAllFacturaNegro
       }}
     >
       {props.children}
