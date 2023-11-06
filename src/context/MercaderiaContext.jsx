@@ -64,7 +64,7 @@ export function MercaderiaContextProvider(props) {
   const postAllFacturaNegro = (json) => {
     setIsDoneFacturaNegro(true);
     postFacturaNegro(json,token).then(result => {
-      console.log(result);
+      toast.success(result.menssage);
     }).catch(e => console.log(e));
     setIsDoneFacturaNegro(false);
   }
