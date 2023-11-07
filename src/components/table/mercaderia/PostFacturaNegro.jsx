@@ -5,10 +5,12 @@ import {
   Box,
   Button,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
 } from "@mui/material";
 import { AiFillDelete } from "react-icons/ai";
@@ -16,6 +18,7 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getSendEnvio } from "../../../services/api_otherTables";
+import dayjs from "dayjs";
 
 export default function PostFacturaNegro() {
   const { inventarioNombres, clientesList, postAllFacturaNegro } =
@@ -24,6 +27,9 @@ export default function PostFacturaNegro() {
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);
   const [cliente, setCliente] = useState("");
+
+  const [addClientDigrutt, setAddClientDigrutt] = useState(false);
+  const [inputFecha, setInputFecha] = useState(null);
 
   //Todos los pedidos para mercaderia Salida
   const [pedidos, setPedidos] = useState([]);
@@ -82,11 +88,22 @@ export default function PostFacturaNegro() {
     setCliente("");
     setPedidos([]);
     setCodProducto(null);
+    setInputFecha(null);
   };
 
   const handleClickGetNroEnvio = async () => {
     const nro = await getSendEnvio();
     setNroEnvio(nro.nroEnvio);
+  };
+
+  const handleClickFechaActual = async () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const mounth = date.getMonth() + 1;
+    const day = date.getDate();
+
+    setFecha(`${year}-${mounth}-${day}`);
+    setInputFecha(dayjs(`${year}-${mounth}-${day}`));
   };
 
   return (
@@ -111,27 +128,29 @@ export default function PostFacturaNegro() {
               </Button>
             </div>
 
-            <div className="mt-2">
+            <div className="mt-2 flex flex-col justify-around items-center lg:flex-row">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DatePicker"]}>
                   <DatePicker
                     label="Fecha"
-                    value={fecha}
+                    value={inputFecha}
                     onChange={(evt, value) => {
-                      if (value.validationError != null)
-                        return toast.error(value.validationError);
-                      else if (evt != null)
+                      if (evt != null) {
                         setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
-                      else setFecha(undefined);
+                        setInputFecha(
+                          dayjs(`${evt.$y}-${evt.$M + 1}-${evt.$D}`)
+                        );
+                      } else setFecha(undefined);
                     }}
                     format="DD/MM/YYYY"
                   />
                 </DemoContainer>
               </LocalizationProvider>
+              <Button onClick={handleClickFechaActual}>Fecha Actual</Button>
             </div>
 
-            <div className="mt-3">
-              <Box>
+            <div className="mt-3 flex flex-col justify-between lg:flex-row">
+              <Box className="w-full mr-2">
                 <FormControl fullWidth>
                   <InputLabel>Cliente</InputLabel>
                   <Select
@@ -165,8 +184,37 @@ export default function PostFacturaNegro() {
                   </Select>
                 </FormControl>
               </Box>
-            </div>
+              <FormControlLabel
+                control={
+                  <Switch
+                    value={addClientDigrutt}
+                    onChange={(evt, checked) => {
+                      setAddClientDigrutt(checked);
 
+                      if (checked) {
+                        const filterClienteFromDigrutt =
+                          inventarioNombres.filter((elm) => {
+                            return elm.idCliente === 9;
+                          });
+                        searchInventario.push(...filterClienteFromDigrutt);
+                        setSearchinventario(searchInventario);
+                      } else {
+                        if (searchInventario.length != 0) {
+                          const filterCliente = searchInventario.filter(
+                            (elm) => {
+                              return elm.idCliente !== 9;
+                            }
+                          );
+                          setSearchinventario(filterCliente);
+                        }
+                      }
+                    }}
+                    title="Agregar Productos de Digrutt"
+                  />
+                }
+                label="Digrutt"
+              />
+            </div>
             <form action="" className="flex flex-col mt-5">
               <div className="flex flex-row">
                 <Autocomplete
