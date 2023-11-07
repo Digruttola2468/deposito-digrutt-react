@@ -32,6 +32,7 @@ export default function DialogNewCliente() {
       .catch((e) => console.log(e));
   }, []);
 
+  const [codigo, setCodigo] = useState("");
   const [nombreCliente, setNombreCliente] = useState("");
   const [domicilio, setDomicilio] = useState("");
   const [localidad, setLocalidad] = useState("");
@@ -42,7 +43,7 @@ export default function DialogNewCliente() {
     evt.preventDefault();
 
     createCliente({
-      codigo: "ETC",
+      codigo: codigo,
       cliente: nombreCliente,
       domicilio,
       idLocalidad: localidad,
@@ -50,6 +51,7 @@ export default function DialogNewCliente() {
       cuit,
     });
 
+    setCodigo("");
     setNombreCliente("");
     setDomicilio("");
     setLocalidad("");
@@ -59,6 +61,7 @@ export default function DialogNewCliente() {
   };
 
   const handleCloseDialog = () => {
+    setCodigo("");
     setNombreCliente("");
     setDomicilio("");
     setLocalidad("");
@@ -74,6 +77,15 @@ export default function DialogNewCliente() {
         <DialogContent
           sx={{ display: "flex", flexDirection: "column", padding: 3 }}
         >
+          <TextField
+            autoFocus
+            value={codigo}
+            onChange={(event) => setCodigo(event.target.value)}
+            label="Codigo 3 DIG"
+            type="text"
+            variant="standard"
+            sx={{ marginTop: 2 }}
+          />
           <TextField
             autoFocus
             value={nombreCliente}

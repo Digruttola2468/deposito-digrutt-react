@@ -1,13 +1,25 @@
 import { useContext, useState } from "react";
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
-import { Autocomplete, Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { AiFillDelete } from "react-icons/ai";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { getSendEnvio } from "../../../services/api_otherTables";
 
 export default function PostFacturaNegro() {
-  const { inventarioNombres,clientesList,postAllFacturaNegro } = useContext(MercaderiaContext);
+  const { inventarioNombres, clientesList, postAllFacturaNegro } =
+    useContext(MercaderiaContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);
@@ -47,14 +59,13 @@ export default function PostFacturaNegro() {
       let idProduct = codProductoArray.id;
 
       let stock = document.querySelector(`#stock-${codProductoArray.id}`).value;
-   
+
       let precio = document.querySelector(
         `#precio-${codProductoArray.id}`
       ).value;
 
       if (stock == "") stock = 0;
       if (precio == "") precio = 0;
-        
       else valorDeclarado += parseFloat(precio);
 
       enviar.products.push({ stock, idProduct, precio });
@@ -73,13 +84,20 @@ export default function PostFacturaNegro() {
     setCodProducto(null);
   };
 
+  const handleClickGetNroEnvio = async () => {
+    const nro = await getSendEnvio();
+    setNroEnvio(nro.nroEnvio);
+  };
+
   return (
     <>
-      <h1 className="text-center font-bold text-2xl mt-2">Crear Nota de Envio</h1>
+      <h1 className="text-center font-bold text-2xl mt-2">
+        Crear Nota de Envio
+      </h1>
       <div className="mb-5">
         <section className="flex flex-col justify-around items-center lg:flex-row">
           <section className="grid place-content-center ">
-            <div className="mt-4 ">
+            <div className="mt-4 flex flex-row">
               <TextField
                 label="Nota Envio"
                 value={nroEnvio}
@@ -88,6 +106,9 @@ export default function PostFacturaNegro() {
                 onChange={(evt) => setNroEnvio(evt.target.value)}
                 className="w-full"
               />
+              <Button onClick={handleClickGetNroEnvio}>
+                Obtener Nro Envio
+              </Button>
             </div>
 
             <div className="mt-2">
@@ -118,7 +139,7 @@ export default function PostFacturaNegro() {
                     label="Cliente"
                     onChange={(evt) => {
                       setPedidos([]);
-                      setCodProducto(null)
+                      setCodProducto(null);
                       const comboBoxCliente = evt.target.value;
                       setCliente(comboBoxCliente);
                       if (comboBoxCliente != "") {
@@ -128,7 +149,7 @@ export default function PostFacturaNegro() {
                           }
                         );
                         setSearchinventario(filterCliente);
-                      } 
+                      }
                     }}
                   >
                     <MenuItem value="">
@@ -164,10 +185,7 @@ export default function PostFacturaNegro() {
                   )}
                   className="mr-3 "
                 />
-                <Button
-                  onClick={handleClickNew}
-                  variant="outlined"
-                >
+                <Button onClick={handleClickNew} variant="outlined">
                   Agregar
                 </Button>
               </div>

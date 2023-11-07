@@ -106,10 +106,11 @@ export function InventarioContextProvider(props) {
     postCliente(json, token)
       .then((result) => {
         clientesList.push(result);
-        toast.success("Se creo con exito")
+        setClientesList(clientesList);
+        toast.success("Se creo con exito");
       })
       .catch((e) => {
-        console.log(e);
+        toast.error(e.response.data.message); 
       });
   };
 

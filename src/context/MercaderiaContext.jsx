@@ -17,9 +17,11 @@ import {
   post as postInventario,
 } from "../services/api_inventario";
 
-import { 
-  getClientes, getFacturaNegro, postFacturaNegro
-} from '../services/api_otherTables'
+import {
+  getClientes,
+  getFacturaNegro,
+  postFacturaNegro,
+} from "../services/api_otherTables";
 
 import { toast } from "react-toastify";
 import { useReadLocalStorage } from "usehooks-ts";
@@ -28,7 +30,7 @@ export function MercaderiaContextProvider(props) {
   //table search
   const [inputSearch, setInputSearch] = useState("");
 
-  const token = useReadLocalStorage('token');
+  const token = useReadLocalStorage("token");
 
   //table data
   const [tableList, setTableList] = useState([]);
@@ -56,18 +58,24 @@ export function MercaderiaContextProvider(props) {
   const [isDoneFacturaNegro, setIsDoneFacturaNegro] = useState(false);
 
   const getAllFacturasNegro = () => {
-    getFacturaNegro(token).then(result => {
-      setListFacturaNegro(result);
-    }).catch(e => console.log(e))
-  }
+    getFacturaNegro(token)
+      .then((result) => {
+        setListFacturaNegro(result);
+      })
+      .catch((e) => console.log(e));
+  };
 
   const postAllFacturaNegro = (json) => {
     setIsDoneFacturaNegro(true);
-    postFacturaNegro(json,token).then(result => {
-      toast.success(result.menssage);
-    }).catch(e => console.log(e));
+    postFacturaNegro(json, token)
+      .then((result) => {
+        toast.success(result.message);
+      })
+      .catch((e) => {
+        toast.error(e.response.data.message);
+      });
     setIsDoneFacturaNegro(false);
-  }
+  };
 
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
@@ -81,19 +89,20 @@ export function MercaderiaContextProvider(props) {
   };
 
   const getGraficaMercaderia = (idinventario) => {
-    getGrafica(idinventario,token).then((result) => {
+    getGrafica(idinventario, token).then((result) => {
       setGrafica(result);
     });
   };
 
   const getClientesAPI = () => {
-    getClientes().then(result => setClientesList(result))
-  }
+    getClientes().then((result) => setClientesList(result));
+  };
 
   //
   useEffect(() => {
     getListMercaderiaAll();
     getClientesAPI();
+    getAllFacturasNegro();
   }, []);
 
   //filtramos list Mercaderia BBDD
@@ -138,8 +147,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //update BBDD
-  const updateApi = (id, json,token) => {
-    update(id, json,token)
+  const updateApi = (id, json, token) => {
+    update(id, json, token)
       .then((result) => {
         const newUserForeignInfo = [...tableList];
         let index = newUserForeignInfo.findIndex(
@@ -165,8 +174,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //create BBDD
-  const createApi = (json,token) => {
-    post(json,token)
+  const createApi = (json, token) => {
+    post(json, token)
       .then((data2) => {
         const fecha = data2.fecha.split("-").reverse().join("-");
         getOneInventario(data2.idinventario, token)
@@ -199,7 +208,7 @@ export function MercaderiaContextProvider(props) {
 
   //create inventario BBDD
   const createInventario = (json) => {
-    postInventario(json,token)
+    postInventario(json, token)
       .then((result) => {
         toast.success("Creado Correctamente");
         inventarioNombres.push({ ...result });
@@ -327,7 +336,7 @@ export function MercaderiaContextProvider(props) {
         orderCantidadDESC,
         clientesList,
         isDoneFacturaNegro,
-        postAllFacturaNegro
+        postAllFacturaNegro,
       }}
     >
       {props.children}

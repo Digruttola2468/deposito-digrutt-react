@@ -79,6 +79,14 @@ export const getFacturaNegro = async (token) => {
   return await result.json();
 }
 
+export const getSendEnvio = async () => {
+  const result = await fetch(
+    `${BASE_URL}/facturaNegro/newNroEnvio`
+  );
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+  return await result.json();
+}
+
 //            POST
 export const postCliente = async (json, token) => {
   const config = {
