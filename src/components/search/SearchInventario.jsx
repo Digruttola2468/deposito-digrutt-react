@@ -82,7 +82,7 @@ export default function SearchCodProducto() {
           <TextField
             {...params}
             value={inputValue}
-            label="Buscar"
+            label="Buscar Nombre"
             variant="outlined"
           />
         )}

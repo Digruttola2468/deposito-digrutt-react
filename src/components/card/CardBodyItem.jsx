@@ -10,12 +10,8 @@ import { useContext } from "react";
 import { InventarioContext } from "../../context/InventarioContext";
 import { useReadLocalStorage } from "usehooks-ts";
 
-
-export default function BodyCardItem({
-  handleDelete,
-  handleUpdate,
-}) {
-  const { tableList,getClienteName } = useContext(InventarioContext);
+export default function BodyCardItem({ handleDelete, handleUpdate }) {
+  const { tableList, getClienteName } = useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
   return (
@@ -30,6 +26,13 @@ export default function BodyCardItem({
                   <h2 className="text-lg font-semibold uppercase">
                     {elem.nombre}
                   </h2>
+                  {elem.articulo ? (
+                    <p>
+                      <b>Articulo</b>: {elem.articulo}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
                   <p>
                     <b>Descripcion</b>: {elem.descripcion}
                   </p>
@@ -42,14 +45,20 @@ export default function BodyCardItem({
                   <p>
                     <b>Stock Actual</b>: {elem.entrada - elem.salida}
                   </p>
-                  {
-                    elem.pesoUnidad ? (<p>
+                  {elem.pesoUnidad ? (
+                    <p>
                       <b>Peso x Unidad</b>: {elem.pesoUnidad} kg
-                    </p>) : (<></>)
-                  }
-                  {
-                    elem.idCliente != null ? (<p><b>Cliente</b>: {getClienteName(elem.idCliente)}</p>) : (<></>)
-                  }
+                    </p>
+                  ) : (
+                    <></>
+                  )}
+                  {elem.idCliente != null ? (
+                    <p>
+                      <b>Cliente</b>: {getClienteName(elem.idCliente)}
+                    </p>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </CardContent>
               <CardActions>

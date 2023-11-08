@@ -22,13 +22,14 @@ export default function SelectItemInventario() {
     useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
-  const token = useReadLocalStorage('token')
+  const token = useReadLocalStorage("token");
 
   const [openActualizar, setOpenActualizar] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
   const [apiOne, setapiOne] = useState([]);
 
+  const [articulo, setArticulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [nombre, setNombre] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
@@ -38,7 +39,6 @@ export default function SelectItemInventario() {
   //Handle
   const handleOpenUpdate = () => {
     setDescripcion(apiOne.descripcion);
-    setNombre(apiOne.nombre);
     if (apiOne.idCliente != null) {
       const filterCliente = clientesList.filter(
         (elem) => elem.id === apiOne.idCliente
@@ -53,6 +53,7 @@ export default function SelectItemInventario() {
     updateApi(
       apiOne.id,
       {
+        articulo,
         nombre,
         descripcion,
         pesoUnidad: parseFloat(pesoUnidad),
@@ -61,18 +62,31 @@ export default function SelectItemInventario() {
       { entrada: apiOne.entrada, salida: apiOne.salida },
       token
     );
+    empty();
     setOpenActualizar(false);
   };
 
   const handleDelete = () => {
-    deleteApi(apiOne.id,token);
+    deleteApi(apiOne.id, token);
+    empty();
     setOpenDelete(false);
   };
 
   useEffect(() => {
-    tableList.filter((elem) => elem.id == index).map((elem) => setapiOne(elem));
-    return () => {};
-  });
+    const data = tableList.find((elem) => elem.id == index);
+    setapiOne(data);
+  }, [index]);
+
+  const empty = () => {
+    setOpenActualizar(false);
+    setOpenDelete(false);
+    setapiOne([]);
+    setArticulo("");
+    setDescripcion("");
+    setNombre("");
+    setPesoUnidad("");
+    setCodCliente("");
+  };
 
   return (
     <div>
@@ -89,13 +103,19 @@ export default function SelectItemInventario() {
       >
         <TextField
           sx={{ marginTop: 1, marginLeft: 1 }}
+          label="Articulo"
+          placeholder="Articulo"
+          value={articulo}
+          onChange={(evt) => setArticulo(evt.target.value)}
+        />
+        <TextField
+          sx={{ marginTop: 3, marginLeft: 1 }}
           label="Cod. Producto"
           placeholder="Cod. Producto"
           value={nombre}
           onChange={(evt) => setNombre(evt.target.value)}
         />
         <TextField
-          multiline
           sx={{ marginTop: 3, marginLeft: 1 }}
           label="Descripcion"
           placeholder="Descripcion"

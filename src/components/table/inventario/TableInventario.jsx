@@ -25,6 +25,9 @@ const HeadTable = () => {
   return (
     <thead className="tableHeader">
       <tr>
+        <th>
+          Articulo
+        </th>
         <th onClick={handleNombre} className="cursor-pointer py-4 px-1">
           nombre
         </th>
@@ -58,6 +61,7 @@ const BodyTable = () => {
               onClick={() => setIndex(elem.id)}
               className="hover:bg-celeste-claro cursor-pointer"
             >
+              <td className="py-4 px-1">{elem.articulo}</td>
               <td className="py-4 px-1">{elem.nombre}</td>
               <td className="py-4 px-1"> {elem.descripcion}</td>
               <td className="py-4 px-1">{elem.entrada}</td>

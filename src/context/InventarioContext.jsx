@@ -66,7 +66,9 @@ export function InventarioContextProvider(props) {
         setTableList([{ ...result, entrada: 0, salida: 0 }, ...tableList]);
         setApiOriginal([{ ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
       })
-      .catch((error) => console.log("error", error));
+      .catch((e) => {
+        toast.error(e.response.data.message); 
+      });
   };
 
   const updateApi = (id, json, jsonEntradaSalida, token) => {
@@ -87,7 +89,9 @@ export function InventarioContextProvider(props) {
 
         toast.success("Se actualizo Correctamente");
       })
-      .catch((error) => console.error("error", error));
+      .catch((e) => {
+        toast.error(e.response.data.message); 
+      });
   };
 
   const deleteApi = (id, token) => {
@@ -97,7 +101,9 @@ export function InventarioContextProvider(props) {
         setTableList(tableList.filter((elem) => elem.id != id));
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((e) => {
+        toast.error(e.response.data.message); 
+      });
   };
 
   const getPrevius = () => setTableList(apiOriginal);
