@@ -81,7 +81,6 @@ export function MercaderiaContextProvider(props) {
   const getListMercaderiaAll = () => {
     getAllMercaderia(token)
       .then((result) => {
-        console.log("MERCADERIA API", result);
         setApiOriginal(result);
         setTableList(result.filter((e) => e.categoria == "Entrada"));
         setIdCategoria(2);
@@ -172,7 +171,6 @@ export function MercaderiaContextProvider(props) {
   const createApi = (json, token) => {
     post(json, token)
       .then((data2) => {
-        console.log(data2);
         setApiOriginal([
           {
             ...data2,
@@ -185,6 +183,8 @@ export function MercaderiaContextProvider(props) {
           },
           ...tableList,
         ]);
+
+        toast.success("Se agrego correctamente");
       })
       .catch((e) => toast.error(e.response.data.message));
   };
