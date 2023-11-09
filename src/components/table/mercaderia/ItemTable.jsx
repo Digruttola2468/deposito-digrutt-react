@@ -36,9 +36,7 @@ const getDateWithNameMonth = (fechaString) => {
     "Noviembre",
     "Diciembre",
   ];
-  const fecha = fechaString;
-  const newFecha = fecha.split("-").reverse().join("-");
-  const fDate = new Date(newFecha);
+  const fDate = new Date(fechaString);
   return `${fDate.getDate()} ${
     monthNames[fDate.getMonth() + 1]
   } ${fDate.getFullYear()}`;

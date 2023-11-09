@@ -81,11 +81,12 @@ export function MercaderiaContextProvider(props) {
   const getListMercaderiaAll = () => {
     getAllMercaderia(token)
       .then((result) => {
+        console.log("MERCADERIA API", result);
         setApiOriginal(result);
         setTableList(result.filter((e) => e.categoria == "Entrada"));
         setIdCategoria(2);
       })
-      .catch((error) => console.error(error));
+      .catch((e) => toast.error(e.response.data.message));
   };
 
   const getGraficaMercaderia = (idinventario) => {
@@ -155,55 +156,37 @@ export function MercaderiaContextProvider(props) {
           (elem) => elem.id == result.id
         );
 
-        const filter = inventarioNombres.filter(
-          (elem) => elem.id == result.idinventario
-        );
-
         newUserForeignInfo.splice(index, 1, {
-          ...result,
-          nombre: filter[0].nombre,
-          descripcion: filter[0].descripcion,
+          ...result
         });
 
         setTableList(newUserForeignInfo);
-        getListMercaderiaAll();
+        //getListMercaderiaAll();
 
         toast.success("Se actualizo Correctamente");
       })
-      .catch((error) => console.log("error", error));
+      .catch((e) => toast.error(e.response.data.message));
   };
 
   //create BBDD
   const createApi = (json, token) => {
     post(json, token)
       .then((data2) => {
-        const fecha = data2.fecha.split("-").reverse().join("-");
-        getOneInventario(data2.idinventario, token)
-          .then((data) => {
-            toast.success("Se envio correctamente");
-
-            setApiOriginal([
-              {
-                ...data2,
-                fecha,
-                nombre: data[0].nombre,
-                descripcion: data[0].descripcion,
-              },
-              ...apiOriginal,
-            ]);
-            setTableList([
-              {
-                ...data2,
-                fecha,
-                nombre: data[0].nombre,
-                descripcion: data[0].descripcion,
-              },
-              ...tableList,
-            ]);
-          })
-          .catch((error) => console.error(error));
+        console.log(data2);
+        setApiOriginal([
+          {
+            ...data2,
+          },
+          ...apiOriginal,
+        ]);
+        setTableList([
+          {
+            ...data2,
+          },
+          ...tableList,
+        ]);
       })
-      .catch((error) => console.error(error));
+      .catch((e) => toast.error(e.response.data.message));
   };
 
   //create inventario BBDD
@@ -225,7 +208,7 @@ export function MercaderiaContextProvider(props) {
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
         setTableList(tableList.filter((elem) => elem.id != id));
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((e) => toast.error(e.response.data.message));
   };
 
   //ORDER BY
