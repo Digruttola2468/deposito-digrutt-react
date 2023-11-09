@@ -24,69 +24,50 @@ export default function SearchCodProducto() {
     clientesList,
   } = useContext(InventarioContext);
 
-  const [inputValue, setInputValue] = useState("");
-
   const [cliente, setCliente] = useState("");
-  const [searchInventario, setSearchinventario] = useState(apiOriginal);
-
-  useEffect(() => {
-    if (cliente) {
-      const filterCliente = apiOriginal.filter((elem) => {
-        return elem.idCliente === cliente;
-      });
-      setSearchinventario(filterCliente);
-    } else setSearchinventario(apiOriginal);
-  }, [cliente]);
+  const [searchDescripcion, setSearchDescripcion] = useState("");
 
   return (
     <div className="flex flex-row items-center">
-      <Autocomplete
-        disablePortal
-        freeSolo
-        options={searchInventario}
-        getOptionLabel={(elem) => elem.nombre}
-        inputValue={inputValue}
-        onInputChange={(_, newInputValue) => {
-          setInputValue(newInputValue);
+      <TextField
+      sx={{ width: 200, margin: 1 }}
+        label="Buscar Descripcion"
+        value={searchDescripcion}
+        onChange={(evt) => {
+          const newValue = evt.target.value;
+          setSearchDescripcion(newValue);
 
           if (cliente) {
             const filterCliente = apiOriginal.filter((elem) => {
               return elem.idCliente === cliente;
             });
             const resultado = filterCliente.filter((elem) => {
-              return elem.nombre.toLowerCase().includes(newInputValue);
+              return elem.descripcion.toLowerCase().includes(newValue);
             });
-            if (newInputValue !== "") {
+            if (newValue !== "") {
               setTableList(resultado);
               setPagina(1);
               setEnd(limit);
-            } else{
+            } else {
               setTableList(
                 apiOriginal.filter((elem) => {
                   return elem.idCliente === cliente;
                 })
-              );}
+              );
+            }
           } else {
             const resultado = apiOriginal.filter((elem) => {
-              return elem.nombre.toLowerCase().includes(newInputValue);
+              return elem.descripcion.toLowerCase().includes(newValue);
             });
-            if (newInputValue !== "") {
+            if (newValue !== "") {
               setTableList(resultado);
               setPagina(1);
               setEnd(limit);
             } else getPrevius();
           }
         }}
-        sx={{ width: 200, margin: 1 }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            value={inputValue}
-            label="Buscar Nombre"
-            variant="outlined"
-          />
-        )}
       />
+
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel>Cliente</InputLabel>
@@ -96,7 +77,6 @@ export default function SearchCodProducto() {
             onChange={(evt) => {
               const comboBoxCliente = evt.target.value;
               setCliente(comboBoxCliente);
-              setInputValue("");
               const resultado = apiOriginal.filter((elem) => {
                 return elem.idCliente === comboBoxCliente;
               });
