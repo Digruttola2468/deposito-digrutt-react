@@ -92,6 +92,13 @@ export function InventarioContextProvider(props) {
       .catch((e) => {
         toast.error(e.response.data.message); 
       });
+    get(token)
+      .then((result) => {
+        setTableList(result);
+        setApiOriginal(result);
+        setDone(true);
+      })
+      .catch((error) => console.error(error));
   };
 
   const deleteApi = (id, token) => {

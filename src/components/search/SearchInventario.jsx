@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 
 import {
-  Autocomplete,
   Box,
   FormControl,
   InputLabel,
@@ -11,7 +10,6 @@ import {
 } from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
-import { useEffect } from "react";
 
 export default function SearchCodProducto() {
   const {
