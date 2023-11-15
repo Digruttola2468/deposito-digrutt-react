@@ -55,6 +55,7 @@ const BodyTable = () => {
     <tbody>
       {tableList.length != 0 ? (
         tableList.slice(start, end).map((elem) => {
+          let stockActual = elem.entrada - elem.salida;
           return (
             <tr
               key={elem.id}
@@ -66,7 +67,7 @@ const BodyTable = () => {
               <td className="py-4 px-1"> {elem.descripcion}</td>
               <td className="py-4 px-1">{elem.entrada}</td>
               <td className="py-4 px-1">{elem.salida}</td>
-              <td className="py-4 px-1">{elem.entrada - elem.salida}</td>
+              <td className={`py-4 px-1 ${stockActual <= 0 ? "text-red-500" : "text-green-500"}`}>{stockActual}</td>
               <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
               <td className="py-4 px-1">{getClienteName(elem.idCliente)}</td>
             </tr>
