@@ -48,9 +48,7 @@ export default function App() {
         path="/inventario"
         element={
           isAdmin || isMercaderia || isOficina ? (
-            <InventarioContextProvider>
-              <Inventario />
-            </InventarioContextProvider>
+            <Inventario />
           ) : (
             <NotHavePermission />
           )

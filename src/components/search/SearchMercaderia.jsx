@@ -1,14 +1,13 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
+import { InventarioContext } from "../../context/InventarioContext";
 
 export default function SearchMercaderia() {
   const {
     apiOriginal,
     setTableList,
-    inventarioNombres,
     getPrevius,
-    getProductosInventario,
     setPagina,
     setEnd,
     limit,
@@ -17,9 +16,7 @@ export default function SearchMercaderia() {
     setInputSearch
   } = useContext(MercaderiaContext);
 
-  useEffect(() => {
-    getProductosInventario();
-  }, []);
+  const {inventarioNombres} = useContext(InventarioContext); 
 
   return (
     <div className="flex flex-row items-center">

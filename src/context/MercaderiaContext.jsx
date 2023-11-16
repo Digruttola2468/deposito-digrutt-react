@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const MercaderiaContext = createContext();
 
@@ -25,8 +25,10 @@ import {
 
 import { toast } from "react-toastify";
 import { useReadLocalStorage } from "usehooks-ts";
+import { InventarioContext } from "./InventarioContext";
 
 export function MercaderiaContextProvider(props) {
+  const { clientesList } = useContext(InventarioContext);
   //table search
   const [inputSearch, setInputSearch] = useState("");
 
@@ -51,7 +53,6 @@ export function MercaderiaContextProvider(props) {
   //grafica
   const [grafica, setGrafica] = useState([]);
 
-  const [clientesList, setClientesList] = useState([]);
   const [listFacturaNegro, setListFacturaNegro] = useState([]);
 
   //Loading to send factura Negro
@@ -94,14 +95,10 @@ export function MercaderiaContextProvider(props) {
     });
   };
 
-  const getClientesAPI = () => {
-    getClientes().then((result) => setClientesList(result));
-  };
 
   //
   useEffect(() => {
     getListMercaderiaAll();
-    getClientesAPI();
     getAllFacturasNegro();
   }, []);
 
@@ -130,13 +127,6 @@ export function MercaderiaContextProvider(props) {
     setPagina(1);
 
     setInputSearch("");
-  };
-
-  //get List inventario names from BBDD
-  const getProductosInventario = () => {
-    getNombresInventario(token)
-      .then((result) => setInventarioNombres(result))
-      .catch((error) => console.error(error));
   };
 
   //update table
@@ -305,7 +295,6 @@ export function MercaderiaContextProvider(props) {
         grafica,
         getEntradaApi,
         getSalidaApi,
-        getProductosInventario,
         getPrevius,
         createApi,
         updateApi,
@@ -317,8 +306,8 @@ export function MercaderiaContextProvider(props) {
         orderFechaDESC,
         orderCantidadASC,
         orderCantidadDESC,
-        clientesList,
         isDoneFacturaNegro,
+        clientesList,
         postAllFacturaNegro,
       }}
     >

@@ -9,7 +9,13 @@ export const InventarioContext = createContext();
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
 //Statefull
-import { post, get, update, eliminar } from "../services/api_inventario";
+import {
+  post,
+  get,
+  update,
+  eliminar,
+  getNombresInventario,
+} from "../services/api_inventario";
 
 import { getClientes, postCliente } from "../services/api_otherTables";
 
@@ -36,6 +42,8 @@ export function InventarioContextProvider(props) {
 
   const [clientesList, setClientesList] = useState([]);
 
+  const [inventarioNombres, setInventarioNombres] = useState([]);
+
   const getClientesAPI = () => {
     getClientes().then((result) => setClientesList(result));
   };
@@ -55,8 +63,18 @@ export function InventarioContextProvider(props) {
         setDone(true);
       })
       .catch((error) => console.error(error));
+
+    getInventarioNombres();
     getClientesAPI();
   }, []);
+
+  const getInventarioNombres = () => {
+    getNombresInventario(token)
+      .then((result) => {
+        setInventarioNombres(result);
+      })
+      .catch((error) => console.error(error));
+  };
 
   const createApi = (json) => {
     post(json, token)
@@ -67,7 +85,7 @@ export function InventarioContextProvider(props) {
         setApiOriginal([{ ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
       })
       .catch((e) => {
-        toast.error(e.response.data.message); 
+        toast.error(e.response.data.message);
       });
   };
 
@@ -90,7 +108,7 @@ export function InventarioContextProvider(props) {
         toast.success("Se actualizo Correctamente");
       })
       .catch((e) => {
-        toast.error(e.response.data.message); 
+        toast.error(e.response.data.message);
       });
     get(token)
       .then((result) => {
@@ -109,7 +127,7 @@ export function InventarioContextProvider(props) {
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
       })
       .catch((e) => {
-        toast.error(e.response.data.message); 
+        toast.error(e.response.data.message);
       });
   };
 
@@ -123,7 +141,7 @@ export function InventarioContextProvider(props) {
         toast.success("Se creo con exito");
       })
       .catch((e) => {
-        toast.error(e.response.data.message); 
+        toast.error(e.response.data.message);
       });
   };
 
@@ -183,6 +201,7 @@ export function InventarioContextProvider(props) {
         createCliente,
         showDialogNewCliente,
         setShowDialogNewCliente,
+        inventarioNombres,
       }}
     >
       {props.children}

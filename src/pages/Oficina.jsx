@@ -83,7 +83,6 @@ export default function Oficina() {
     let valorDeclarado = 0;
     for (let i = 0; i < pedidos.length; i++) {
       const codProductoArray = pedidos[i];
-      console.log(codProductoArray);
 
       let idProduct = codProductoArray.id;
 
