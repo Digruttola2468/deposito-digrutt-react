@@ -13,29 +13,6 @@ export default function MenuList() {
 
   const [showMenu, setShowMenu] = useState(false);
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isMercaderia, setIsMercaderia] = useState(false);
-  const [isOficina, setIsOficina] = useState(false);
-  const [isProduccion, setIsProduccion] = useState(false);
-  const [isMatriceria, setIsMatriceria] = useState(false);
-
-  useEffect(() => {
-    if (userSupabase) {
-      const {
-        is_admin,
-        is_mercaderia,
-        is_oficina,
-        is_produccion,
-        is_matriceria,
-      } = userSupabase;
-      setIsAdmin(is_admin);
-      setIsMercaderia(is_mercaderia);
-      setIsOficina(is_oficina);
-      setIsProduccion(is_produccion);
-      setIsMatriceria(is_matriceria);
-    }
-  });
-
   return (
     <>
       <ul
@@ -43,48 +20,36 @@ export default function MenuList() {
           showMenu ? "translate-y-[84px]" : "-translate-y-40"
         }  transition-all duration-500 sm:relative sm:flex-row sm:translate-y-0 sm:justify-end `}
       >
-        {isAdmin || isMercaderia || isOficina ? (
-          <li onClick={() => navegate("/")} className="p-2 sm:ml-2">
-            <a className="text-white flex flex-row items-center cursor-pointer ">
-              <FaTable />
-              Mercaderia
-            </a>
-          </li>
-        ) : (
-          <></>
-        )}
-        {isAdmin || isMercaderia || isOficina ? (
-          <li onClick={() => navegate("/inventario")} className="p-2 sm:ml-2">
-            <a
-              style={{ cursor: "pointer" }}
-              className="text-white flex flex-row items-center cursor-pointer"
-            >
-              <FaTable />
-              Inventario
-            </a>
-          </li>
-        ) : (
-          <></>
-        )}
-        {isAdmin || isOficina ? (
-          <li onClick={() => navegate("/oficina")} className="p-2 sm:ml-2">
-            <a
-              style={{ cursor: "pointer" }}
-              className="text-white flex flex-row items-center cursor-pointer"
-            >
-              <FaTable />
-              Oficina
-            </a>
-          </li>
-        ) : (
-          <></>
-        )}
+        <li onClick={() => navegate("/")} className="p-2 sm:ml-2">
+          <a className="text-white flex flex-row items-center cursor-pointer ">
+            <FaTable />
+            Mercaderia
+          </a>
+        </li>
+        <li onClick={() => navegate("/inventario")} className="p-2 sm:ml-2">
+          <a
+            style={{ cursor: "pointer" }}
+            className="text-white flex flex-row items-center cursor-pointer"
+          >
+            <FaTable />
+            Inventario
+          </a>
+        </li>
+        <li onClick={() => navegate("/oficina")} className="p-2 sm:ml-2">
+          <a
+            style={{ cursor: "pointer" }}
+            className="text-white flex flex-row items-center cursor-pointer"
+          >
+            <FaTable />
+            Oficina
+          </a>
+        </li>
         <li className="p-2 sm:ml-2">
           <button
             className="uppercase text-white"
             onClick={() => setOpen(true)}
           >
-            Export
+            Export  
           </button>
         </li>
         <DialogMenu show={open} close={setOpen} />

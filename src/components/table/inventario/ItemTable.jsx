@@ -22,8 +22,6 @@ export default function SelectItemInventario() {
     useContext(InventarioContext);
   const index = useReadLocalStorage("selectIndexInventario");
 
-  const token = useReadLocalStorage("token");
-
   const [openActualizar, setOpenActualizar] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
@@ -58,15 +56,14 @@ export default function SelectItemInventario() {
         descripcion,
         pesoUnidad: parseFloat(pesoUnidad),
         idCliente: codCliente.id,
-      },
-      token
+      }
     );
     empty();
     setOpenActualizar(false);
   };
 
   const handleDelete = () => {
-    deleteApi(apiOne.id, token);
+    deleteApi(apiOne.id);
     empty();
     setOpenDelete(false);
   };

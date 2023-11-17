@@ -1,32 +1,37 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
 
 import { getNombresInventario } from "../services/api_inventario";
 import { getClientes } from "../services/api_otherTables";
 import { useReadLocalStorage } from "usehooks-ts";
 
-import {postRemito} from '../services/api_remitos'
+import { postRemito } from "../services/api_remitos";
 import { toast } from "react-toastify";
+import { UserContext } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 export const OficinaContext = createContext();
 
 export const OficinaProvider = (props) => {
+  const { userSupabase } = useContext(UserContext);
+
   const [inventarioNombres, setInventarioNombres] = useState([]);
-  const token = useReadLocalStorage('token');
   const [clientesList, setClientesList] = useState([]);
 
   const [loadingSend, setLoadingSend] = useState(false);
 
   useEffect(() => {
-    getInventarioNombres();
-    getClientesAPI();
+    if (userSupabase != null) {
+      getInventarioNombres();
+      getClientesAPI();
+    }
   }, []);
 
   const getClientesAPI = () => {
-    getClientes().then(result => setClientesList(result))
-  }
+    getClientes().then((result) => setClientesList(result));
+  };
 
   const getInventarioNombres = () => {
-    getNombresInventario(token)
+    getNombresInventario(userSupabase.token)
       .then((result) => setInventarioNombres(result))
       .catch((error) => console.error(error));
   };
@@ -34,17 +39,24 @@ export const OficinaProvider = (props) => {
   const sendRemito = async (jsonData) => {
     setLoadingSend(true);
     try {
-      const result = await postRemito(token, jsonData)
+      const result = await postRemito(userSupabase.token, jsonData);
       toast.success(result.message);
     } catch (error) {
       console.log(error);
     }
     setLoadingSend(false);
-  }
+  };
 
   return (
     <OficinaContext.Provider
-      value={{ inventarioNombres, getInventarioNombres,clientesList,getClientesAPI,sendRemito,loadingSend }}
+      value={{
+        inventarioNombres,
+        getInventarioNombres,
+        clientesList,
+        getClientesAPI,
+        sendRemito,
+        loadingSend,
+      }}
     >
       {props.children}
     </OficinaContext.Provider>

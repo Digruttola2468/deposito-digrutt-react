@@ -10,57 +10,22 @@ export const UserContext = createContext();
 
 export const UserProvider = (props) => {
   const navegate = useNavigate();
-
-  const [token, setToken] = useLocalStorage("token", "");
-  const [userTk, setUserTk] = useLocalStorage("userTk", {});
-
-  const [userSupabase, setUserSupabase] = useState(null);
+  const [userSupabase, setUserSupabase] = useLocalStorage("user",null);
 
   const [isDone, setIsDone] = useState(false);
 
   const [loading, setLoading] = useState(false);
-
-  // permission
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isMercaderia, setIsMercaderia] = useState(false);
-  const [isOficina, setIsOficina] = useState(false);
-  const [isProduccion, setIsProduccion] = useState(false);
-  const [isMatriceria, setIsMatriceria] = useState(false);
 
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
         const user = await getUserSupabase();
 
+        
         if (user != null) {
-          await addBBDD(user.email);
-
-          if (token) {
-            try {
-              const result = await getToken(user.email);
-
-              const {
-                is_admin,
-                is_mercaderia,
-                is_oficina,
-                is_produccion,
-                is_matriceria,
-              } = result;
-              setIsAdmin(is_admin);
-              setIsMercaderia(is_mercaderia);
-              setIsOficina(is_oficina);
-              setIsProduccion(is_produccion);
-              setIsMatriceria(is_matriceria);
-
-              setUserSupabase(result);
-              setToken(result.token);
-              console.log("NAVEGATE");
-              navegate("/");
-            } catch (error) {
-              navegate("/notVerificed");
-            }
-          }
-        }
+          if (userSupabase != null) navegate("/");
+          else navegate("/notVerificed");
+        } else navegate("/login");
       } else navegate("/login");
     });
   }, []);
@@ -76,43 +41,29 @@ export const UserProvider = (props) => {
       if (error) throw new Error("Error al momento de verificar Gmail");
 
       if (data.length === 0) {
-        const { nombre, apellido } = userTk;
         try {
-          const { error } = await db_supabase
-            .from("users")
-            .insert({ nombre, apellido, gmail });
+          const { error } = await db_supabase.from("users").insert({ gmail });
           if (error) {
-            console.log(error);
+            console.log("ADD BBDD", error);
             throw new Error("Ocurrio un error al agregar a la base de datos");
           }
         } catch (error) {
           console.log(error);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const signOut = async () => {
     try {
       const { error } = await db_supabase.auth.signOut();
       if (error) throw new Error("Error al momento de cerrar sesion");
-      setToken("");
+      setUserSupabase(null);
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const getDataGmail = async (gmail) => {
-    try {
-      const { data, error } = await db_supabase
-        .from("users")
-        .select()
-        .eq("gmail", gmail);
-
-      if (error) throw new Error("Error al momento de verificar Gmail");
-
-      return data;
-    } catch (error) {}
   };
 
   const getUserSupabase = async () => {
@@ -138,13 +89,16 @@ export const UserProvider = (props) => {
       return error;
     }
 
+    //GMAIL ESTA CONFIRMADO
+    await addBBDD(email);
+
     try {
       const result = await getToken(email);
 
       setUserSupabase(result);
-      setToken(result.token);
       navegate("/");
     } catch (error) {
+      console.log(error);
       navegate("/notVerificed");
     }
     setLoading(false);
@@ -163,12 +117,10 @@ export const UserProvider = (props) => {
         setIsDone(false);
         throw new Error("Error al momento de registrarse");
       }
-      setUserTk({ nombre, apellido });
 
       toast.success("Se creo correctamente");
       navegate("/sendGmail");
     } else toast.error("La contraseña es corta");
-
     setIsDone(false);
   };
 
@@ -178,18 +130,22 @@ export const UserProvider = (props) => {
     });
 
     if (error) {
+      console.log(error);
       toast.error("A ocurrido un error");
       throw new Error("A ocurrido un error durante la autenticacion");
     }
 
     const user = await getUserSupabase();
 
+    //GMAIL ESTA CONFIRMADO
+    await addBBDD(user.email);
+
     try {
       const result = await getToken(user.email);
       setUserSupabase(result);
-      setToken(result.token);
       navegate("/");
     } catch (error) {
+      console.log(error);
       navegate("/notVerificed");
     }
   };
@@ -197,21 +153,13 @@ export const UserProvider = (props) => {
   return (
     <UserContext.Provider
       value={{
-        token,
         signInWithGoogle,
         signOut,
         logIn,
         signUp,
-        getDataGmail,
-        getUserSupabase,
         userSupabase,
         isDone,
         loading,
-        isAdmin,
-        isMercaderia,
-        isOficina,
-        isProduccion,
-        isMatriceria,
       }}
     >
       {props.children}

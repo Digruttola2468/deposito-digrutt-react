@@ -1,12 +1,9 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 
 //toastify
 import { toast } from "react-toastify";
 
 export const InventarioContext = createContext();
-
-//Hook
-import { useReadLocalStorage } from "usehooks-ts";
 
 //Statefull
 import {
@@ -18,9 +15,12 @@ import {
 } from "../services/api_inventario";
 
 import { getClientes, postCliente } from "../services/api_otherTables";
+import { UserContext } from "./UserContext";
 
 export function InventarioContextProvider(props) {
-  const token = useReadLocalStorage("token");
+  const { userSupabase } = useContext(UserContext);
+
+  
   const { index, setIndex } = useState(null);
 
   //Table data
@@ -48,24 +48,26 @@ export function InventarioContextProvider(props) {
   const [clientesList, setClientesList] = useState([]);
 
   useEffect(() => {
-    getAllInventario();
-    getInventarioNombres();
-    getClientesAPI();
+    if (userSupabase != null) {
+      getAllInventario();
+      getInventarioNombres();
+      getClientesAPI();
+    } 
   }, []);
 
   const getAllInventario = () => {
-    get(token)
-    .then((result) => {
-      setTableList(result);
-      setApiOriginal(result);
-      setDone(true);
-    })
-    .catch((e) => toast.error(e.response.data.message));
-  }
+    get(userSupabase.token)
+      .then((result) => {
+        setTableList(result);
+        setApiOriginal(result);
+        setDone(true);
+      })
+      .catch((e) => toast.error(e.response.data.message));
+  };
 
   //Get API for search
   const getInventarioNombres = () => {
-    getNombresInventario(token)
+    getNombresInventario(userSupabase.token)
       .then((result) => {
         setInventarioNombres(result);
       })
@@ -74,7 +76,7 @@ export function InventarioContextProvider(props) {
 
   //Create API inventario
   const createApi = (json) => {
-    post(json, token)
+    post(json, userSupabase.token)
       .then((result) => {
         toast.success("Creado Correctamente");
         setTableList([{ ...result }, ...tableList]);
@@ -86,8 +88,8 @@ export function InventarioContextProvider(props) {
   };
 
   //Update API Inventario
-  const updateApi = (id, json, token) => {
-    update(id, json, token)
+  const updateApi = (id, json) => {
+    update(id, json, userSupabase.token)
       .then((result) => {
         const mapListInventario = apiOriginal.map((elem) => {
           if (elem.id == id) return { ...result };
@@ -96,7 +98,7 @@ export function InventarioContextProvider(props) {
 
         setApiOriginal(mapListInventario);
         setTableList(mapListInventario);
-        
+
         toast.success("Se actualizo Correctamente");
       })
       .catch((e) => {
@@ -105,21 +107,19 @@ export function InventarioContextProvider(props) {
   };
 
   //Update API entrada salida
-  const updateEntradaSalida = (idInventario,idCategoria,stock) => {
+  const updateEntradaSalida = (idInventario, idCategoria, stock) => {
     const enviar = {};
 
-    const findById = apiOriginal.find((elem) => {return elem.id == idInventario});
+    const findById = apiOriginal.find((elem) => {
+      return elem.id == idInventario;
+    });
 
     enviar.entrada = findById.entrada;
     enviar.salida = findById.salida;
 
-    if (idCategoria == "Salida") 
-      enviar.salida += stock;
-    
-    else if (idCategoria == "Entrada") 
-      enviar.entrada += stock;
-
-    else return toast.error("Ocurrio un error al actualizar en el inventario")
+    if (idCategoria == "Salida") enviar.salida += stock;
+    else if (idCategoria == "Entrada") enviar.entrada += stock;
+    else return toast.error("Ocurrio un error al actualizar en el inventario");
 
     const mapListInventario = apiOriginal.map((elem) => {
       if (elem.id == idInventario) return { ...elem, ...enviar };
@@ -128,23 +128,25 @@ export function InventarioContextProvider(props) {
 
     setApiOriginal(mapListInventario);
     setTableList(mapListInventario);
-  }
+  };
 
-  const updateEntradaSalidaFromDeleteMercaderia = (idInventario,idCategoria,stock) => {
+  const updateEntradaSalidaFromDeleteMercaderia = (
+    idInventario,
+    idCategoria,
+    stock
+  ) => {
     const enviar = {};
 
-    const findById = apiOriginal.find((elem) => {return elem.id == idInventario});
+    const findById = apiOriginal.find((elem) => {
+      return elem.id == idInventario;
+    });
 
     enviar.entrada = findById.entrada;
     enviar.salida = findById.salida;
 
-    if (idCategoria == "Salida") 
-      enviar.salida -= stock;
-    
-    else if (idCategoria == "Entrada") 
-      enviar.entrada -= stock;
-
-    else return toast.error("Ocurrio un error al actualizar en el inventario")
+    if (idCategoria == "Salida") enviar.salida -= stock;
+    else if (idCategoria == "Entrada") enviar.entrada -= stock;
+    else return toast.error("Ocurrio un error al actualizar en el inventario");
 
     const mapListInventario = apiOriginal.map((elem) => {
       if (elem.id == idInventario) return { ...elem, ...enviar };
@@ -153,11 +155,11 @@ export function InventarioContextProvider(props) {
 
     setApiOriginal(mapListInventario);
     setTableList(mapListInventario);
-  }
+  };
 
   //Delete API inventario
-  const deleteApi = (id, token) => {
-    eliminar(id, token)
+  const deleteApi = (id) => {
+    eliminar(id, userSupabase.token)
       .then((data) => {
         toast.success(data.message);
         setTableList(tableList.filter((elem) => elem.id != id));
@@ -173,7 +175,7 @@ export function InventarioContextProvider(props) {
 
   //Create Cliente
   const createCliente = (json) => {
-    postCliente(json, token)
+    postCliente(json, userSupabase.token)
       .then((result) => {
         clientesList.push(result);
         setClientesList(clientesList);
@@ -258,7 +260,7 @@ export function InventarioContextProvider(props) {
         inventarioNombres,
         updateEntradaSalida,
         getAllInventario,
-        updateEntradaSalidaFromDeleteMercaderia
+        updateEntradaSalidaFromDeleteMercaderia,
       }}
     >
       {props.children}

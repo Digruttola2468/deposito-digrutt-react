@@ -26,13 +26,19 @@ import {
 import { toast } from "react-toastify";
 import { useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "./InventarioContext";
+import { UserContext } from "./UserContext";
+import { useNavigate } from "react-router-dom";
 
 export function MercaderiaContextProvider(props) {
-  const { clientesList, updateEntradaSalida, getAllInventario, updateEntradaSalidaFromDeleteMercaderia } = useContext(InventarioContext);
+  const { userSupabase } = useContext(UserContext);
+  const {
+    clientesList,
+    updateEntradaSalida,
+    getAllInventario,
+    updateEntradaSalidaFromDeleteMercaderia,
+  } = useContext(InventarioContext);
   //table search
   const [inputSearch, setInputSearch] = useState("");
-
-  const token = useReadLocalStorage("token");
 
   //table data
   const [tableList, setTableList] = useState([]);
@@ -59,7 +65,7 @@ export function MercaderiaContextProvider(props) {
   const [isDoneFacturaNegro, setIsDoneFacturaNegro] = useState(false);
 
   const getAllFacturasNegro = () => {
-    getFacturaNegro(token)
+    getFacturaNegro(userSupabase.token)
       .then((result) => {
         setListFacturaNegro(result);
       })
@@ -68,7 +74,7 @@ export function MercaderiaContextProvider(props) {
 
   const postAllFacturaNegro = (json) => {
     setIsDoneFacturaNegro(true);
-    postFacturaNegro(json, token)
+    postFacturaNegro(json, userSupabase.token)
       .then((result) => {
         toast.success(result.message);
       })
@@ -80,7 +86,7 @@ export function MercaderiaContextProvider(props) {
 
   //Get List mercaderia from BBDD
   const getListMercaderiaAll = () => {
-    getAllMercaderia(token)
+    getAllMercaderia(userSupabase.token)
       .then((result) => {
         setApiOriginal(result);
         setTableList(result.filter((e) => e.categoria == "Entrada"));
@@ -90,15 +96,17 @@ export function MercaderiaContextProvider(props) {
   };
 
   const getGraficaMercaderia = (idinventario) => {
-    getGrafica(idinventario, token).then((result) => {
+    getGrafica(idinventario, userSupabase.token).then((result) => {
       setGrafica(result);
     });
   };
 
   //
   useEffect(() => {
-    getListMercaderiaAll();
-    getAllFacturasNegro();
+    if (userSupabase != null) {
+      getListMercaderiaAll();
+      getAllFacturasNegro();
+    } 
   }, []);
 
   //filtramos list Mercaderia BBDD
@@ -136,10 +144,9 @@ export function MercaderiaContextProvider(props) {
   };
 
   //update BBDD
-  const updateApi = (id, json, token) => {
-    update(id, json, token)
+  const updateApi = (id, json) => {
+    update(id, json, userSupabase.token)
       .then((result) => {
-        
         const mapListInventario = apiOriginal.map((elem) => {
           if (elem.id == id) return { ...result };
           else return elem;
@@ -157,8 +164,8 @@ export function MercaderiaContextProvider(props) {
   };
 
   //create BBDD
-  const createApi = (json, token) => {
-    post(json, token)
+  const createApi = (json) => {
+    post(json, userSupabase.token)
       .then((data2) => {
         setApiOriginal([
           {
@@ -181,7 +188,7 @@ export function MercaderiaContextProvider(props) {
 
   //create inventario BBDD
   const createInventario = (json) => {
-    postInventario(json, token)
+    postInventario(json, userSupabase.token)
       .then((result) => {
         toast.success("Creado Correctamente");
         inventarioNombres.push({ ...result });
@@ -190,13 +197,19 @@ export function MercaderiaContextProvider(props) {
   };
 
   //delete BBDD
-  const deleteApi = (id, token) => {
-    eliminar(id, token)
+  const deleteApi = (id) => {
+    eliminar(id, userSupabase.token)
       .then((data) => {
         toast.success(data.message);
 
-        const findById = apiOriginal.find(elem => {return elem.id == id});
-        updateEntradaSalidaFromDeleteMercaderia(findById.idinventario, findById.categoria, findById.stock);
+        const findById = apiOriginal.find((elem) => {
+          return elem.id == id;
+        });
+        updateEntradaSalidaFromDeleteMercaderia(
+          findById.idinventario,
+          findById.categoria,
+          findById.stock
+        );
 
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
         setTableList(tableList.filter((elem) => elem.id != id));

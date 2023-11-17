@@ -34,8 +34,6 @@ export default function PutMercaderia() {
     useContext(MercaderiaContext);
   const { inventarioNombres } = useContext(InventarioContext);
 
-  const token = useReadLocalStorage("token");
-
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
     cod: "",
@@ -92,8 +90,7 @@ export default function PutMercaderia() {
         stock,
         idinventario: filter[0].id,
         idcategoria: idCategoria,
-      },
-      token
+      }
     );
 
     empty();

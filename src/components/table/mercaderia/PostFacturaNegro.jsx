@@ -19,10 +19,11 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getSendEnvio } from "../../../services/api_otherTables";
 import dayjs from "dayjs";
+import { InventarioContext } from "../../../context/InventarioContext";
 
 export default function PostFacturaNegro() {
-  const { inventarioNombres, clientesList, postAllFacturaNegro } =
-    useContext(MercaderiaContext);
+  const { clientesList, postAllFacturaNegro } = useContext(MercaderiaContext);
+  const { inventarioNombres } = useContext(InventarioContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);

@@ -15,6 +15,7 @@ import {
 import BarsComponent from "../components/grafic/BarChart";
 
 import { useLocalStorage } from "usehooks-ts";
+import { InventarioContext } from "../context/InventarioContext";
 
 const meses = [
   "Enero",
@@ -32,8 +33,8 @@ const meses = [
 ];
 
 export default function GraficaInventario() {
-  const { inventarioNombres, grafica, getGraficaMercaderia } =
-    useContext(MercaderiaContext);
+  const { grafica, getGraficaMercaderia } = useContext(MercaderiaContext);
+  const { inventarioNombres } = useContext(InventarioContext);
 
   //to select what year do you want to show in the grafic
   const [listYear, setListYear] = useState([]);
@@ -83,7 +84,7 @@ export default function GraficaInventario() {
     setListYear([]);
     setInfoEntrada([]);
     setInfoSalida([]);
-    setcodProducto('');
+    setcodProducto("");
   };
 
   return (

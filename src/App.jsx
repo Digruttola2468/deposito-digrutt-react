@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 
-import Inventario from "./pages/Inventario";
-import Mercaderia from "./pages/Mercaderia";
-
 import { useContext } from "react";
 
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
-import { InventarioContextProvider } from "./context/InventarioContext";
 import { OficinaProvider } from "./context/OficinaContext";
+
+
+import Inventario from "./pages/Inventario";
+import Mercaderia from "./pages/Mercaderia";
 
 import Produccion from "./pages/Produccion";
 import Oficina from "./pages/Oficina";
@@ -21,50 +21,26 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NotHavePermission from "./pages/NotHavePermission";
 
 export default function App() {
-  const {
-    userSupabase,
-    isAdmin,
-    isMercaderia,
-    isOficina,
-    isProduccion,
-    isMatriceria,
-  } = useContext(UserContext);
+  const { userSupabase } = useContext(UserContext);
 
   return (
     <Routes>
       <Route
         path="/"
         element={
-          isAdmin || isMercaderia || isOficina ? (
-            <MercaderiaContextProvider>
-              <Mercaderia />
-            </MercaderiaContextProvider>
-          ) : (
-            <NotHavePermission />
-          )
+          <MercaderiaContextProvider>
+            <Mercaderia />
+          </MercaderiaContextProvider>
         }
       />
-      <Route
-        path="/inventario"
-        element={
-          isAdmin || isMercaderia || isOficina ? (
-            <Inventario />
-          ) : (
-            <NotHavePermission />
-          )
-        }
-      />
+      <Route path="/inventario" element={<Inventario />} />
       <Route path="/produccion" element={<Produccion />} />
       <Route
         path="/oficina"
         element={
-          isAdmin || isOficina ? (
-            <OficinaProvider>
-              <Oficina />
-            </OficinaProvider>
-          ) : (
-            <NotHavePermission />
-          )
+          <OficinaProvider>
+            <Oficina />
+          </OficinaProvider>
         }
       />
       <Route path="/logIn" element={<LogIn />} />
