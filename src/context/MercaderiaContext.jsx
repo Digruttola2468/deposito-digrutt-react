@@ -28,7 +28,7 @@ import { useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "./InventarioContext";
 
 export function MercaderiaContextProvider(props) {
-  const { clientesList } = useContext(InventarioContext);
+  const { clientesList, updateEntradaSalida, getAllInventario, updateEntradaSalidaFromDeleteMercaderia } = useContext(InventarioContext);
   //table search
   const [inputSearch, setInputSearch] = useState("");
 
@@ -95,7 +95,6 @@ export function MercaderiaContextProvider(props) {
     });
   };
 
-
   //
   useEffect(() => {
     getListMercaderiaAll();
@@ -140,17 +139,17 @@ export function MercaderiaContextProvider(props) {
   const updateApi = (id, json, token) => {
     update(id, json, token)
       .then((result) => {
-        const newUserForeignInfo = [...tableList];
-        let index = newUserForeignInfo.findIndex(
-          (elem) => elem.id == result.id
-        );
-
-        newUserForeignInfo.splice(index, 1, {
-          ...result
+        
+        const mapListInventario = apiOriginal.map((elem) => {
+          if (elem.id == id) return { ...result };
+          else return elem;
         });
 
-        setTableList(newUserForeignInfo);
-        //getListMercaderiaAll();
+        setTableList(mapListInventario);
+        setApiOriginal(mapListInventario);
+
+        //Refresh Inventario
+        getAllInventario();
 
         toast.success("Se actualizo Correctamente");
       })
@@ -174,6 +173,7 @@ export function MercaderiaContextProvider(props) {
           ...tableList,
         ]);
 
+        updateEntradaSalida(data2.idinventario, data2.categoria, data2.stock);
         toast.success("Se agrego correctamente");
       })
       .catch((e) => toast.error(e.response.data.message));
@@ -194,6 +194,9 @@ export function MercaderiaContextProvider(props) {
     eliminar(id, token)
       .then((data) => {
         toast.success(data.message);
+
+        const findById = apiOriginal.find(elem => {return elem.id == id});
+        updateEntradaSalidaFromDeleteMercaderia(findById.idinventario, findById.categoria, findById.stock);
 
         setApiOriginal(apiOriginal.filter((elem) => elem.id != id));
         setTableList(tableList.filter((elem) => elem.id != id));

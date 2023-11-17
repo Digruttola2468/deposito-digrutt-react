@@ -59,7 +59,6 @@ export default function SelectItemInventario() {
         pesoUnidad: parseFloat(pesoUnidad),
         idCliente: codCliente.id,
       },
-      { entrada: apiOne.entrada, salida: apiOne.salida },
       token
     );
     empty();

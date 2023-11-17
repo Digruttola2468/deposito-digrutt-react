@@ -19,6 +19,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
+import { InventarioContext } from "../../../context/InventarioContext";
 
 const getDateWithNameMonth = (fechaString) => {
   const monthNames = [
@@ -44,8 +45,10 @@ const getDateWithNameMonth = (fechaString) => {
 
 
 export default function InfoItem() {
-  const { tableList, deleteApi, updateApi, inventarioNombres, idCategoria } =
+  const { tableList, deleteApi, updateApi, idCategoria } =
     useContext(MercaderiaContext);
+  
+  const { inventarioNombres } = useContext(InventarioContext)
 
   const token = useReadLocalStorage('token')
 
@@ -73,7 +76,7 @@ export default function InfoItem() {
 
   const handleUpdate = () => {
     const filter = inventarioNombres.filter(
-      (elem) => elem.nombre == codProducto.nombre
+      (elem) => elem.nombre.toLowerCase() == codProducto.nombre.toLowerCase()
     );
     updateApi(apiOne.id, {
       proveedor: factura,

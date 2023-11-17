@@ -67,7 +67,7 @@ const BodyTable = () => {
               <td className="py-4 px-1"> {elem.descripcion}</td>
               <td className="py-4 px-1">{elem.entrada}</td>
               <td className="py-4 px-1">{elem.salida}</td>
-              <td className={`py-4 px-1 ${stockActual <= 0 ? "text-red-500" : "text-green-500"}`}>{stockActual}</td>
+              <td className={`py-4 px-1 font-bold ${stockActual <= 0 ? "text-red-500" : "text-green-500"}`}>{stockActual}</td>
               <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
               <td className="py-4 px-1">{getClienteName(elem.idCliente)}</td>
             </tr>

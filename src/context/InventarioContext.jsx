@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 export const InventarioContext = createContext();
 
 //Hook
-import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { useReadLocalStorage } from "usehooks-ts";
 
 //Statefull
 import {
@@ -21,10 +21,14 @@ import { getClientes, postCliente } from "../services/api_otherTables";
 
 export function InventarioContextProvider(props) {
   const token = useReadLocalStorage("token");
+  const { index, setIndex } = useState(null);
 
   //Table data
   const [tableList, setTableList] = useState([]);
   const [apiOriginal, setApiOriginal] = useState([]);
+
+  //Search Data
+  const [inventarioNombres, setInventarioNombres] = useState([]);
 
   //if the progress to get data is done
   const [isdone, setDone] = useState(false);
@@ -40,85 +44,118 @@ export function InventarioContextProvider(props) {
   //show dialog to create Cliente
   const [showDialogNewCliente, setShowDialogNewCliente] = useState(false);
 
+  //Clientes
   const [clientesList, setClientesList] = useState([]);
 
-  const [inventarioNombres, setInventarioNombres] = useState([]);
-
-  const getClientesAPI = () => {
-    getClientes().then((result) => setClientesList(result));
-  };
-
-  const getClienteName = (idCliente) => {
-    const filterList = clientesList.filter((result) => result.id === idCliente);
-    if (filterList.length != 0) return filterList[0].cliente;
-
-    return "";
-  };
-
   useEffect(() => {
-    get(token)
-      .then((result) => {
-        setTableList(result);
-        setApiOriginal(result);
-        setDone(true);
-      })
-      .catch((error) => console.error(error));
-
+    getAllInventario();
     getInventarioNombres();
     getClientesAPI();
   }, []);
 
+  const getAllInventario = () => {
+    get(token)
+    .then((result) => {
+      setTableList(result);
+      setApiOriginal(result);
+      setDone(true);
+    })
+    .catch((e) => toast.error(e.response.data.message));
+  }
+
+  //Get API for search
   const getInventarioNombres = () => {
     getNombresInventario(token)
       .then((result) => {
         setInventarioNombres(result);
       })
-      .catch((error) => console.error(error));
+      .catch((e) => toast.error(e.response.data.message));
   };
 
+  //Create API inventario
   const createApi = (json) => {
     post(json, token)
       .then((result) => {
         toast.success("Creado Correctamente");
-        console.log("al crear inventario", result);
-        setTableList([{ ...result, entrada: 0, salida: 0 }, ...tableList]);
-        setApiOriginal([{ ...result, entrada: 0, salida: 0 }, ...apiOriginal]);
+        setTableList([{ ...result }, ...tableList]);
+        setApiOriginal([{ ...result }, ...apiOriginal]);
       })
       .catch((e) => {
         toast.error(e.response.data.message);
       });
   };
 
-  const updateApi = (id, json, jsonEntradaSalida, token) => {
+  //Update API Inventario
+  const updateApi = (id, json, token) => {
     update(id, json, token)
       .then((result) => {
-        const newUserForeignInfo = [...tableList];
-        let index = newUserForeignInfo.findIndex(
-          (elem) => elem.id == result.id
-        );
-
-        newUserForeignInfo.splice(index, 1, {
-          ...result,
-          ...jsonEntradaSalida,
+        const mapListInventario = apiOriginal.map((elem) => {
+          if (elem.id == id) return { ...result };
+          else return elem;
         });
 
-        setTableList(newUserForeignInfo);
-        setApiOriginal(newUserForeignInfo);
-
+        setApiOriginal(mapListInventario);
+        setTableList(mapListInventario);
+        
         toast.success("Se actualizo Correctamente");
       })
       .catch((e) => {
         toast.error(e.response.data.message);
       });
-    get(token)
-      .then((result) => {
-        setTableList(result);
-        setApiOriginal(result);
-        setDone(true);
-      })
-      .catch((error) => console.error(error));
   };
 
+  //Update API entrada salida
+  const updateEntradaSalida = (idInventario,idCategoria,stock) => {
+    const enviar = {};
+
+    const findById = apiOriginal.find((elem) => {return elem.id == idInventario});
+
+    enviar.entrada = findById.entrada;
+    enviar.salida = findById.salida;
+
+    if (idCategoria == "Salida") 
+      enviar.salida += stock;
+    
+    else if (idCategoria == "Entrada") 
+      enviar.entrada += stock;
+
+    else return toast.error("Ocurrio un error al actualizar en el inventario")
+
+    const mapListInventario = apiOriginal.map((elem) => {
+      if (elem.id == idInventario) return { ...elem, ...enviar };
+      else return elem;
+    });
+
+    setApiOriginal(mapListInventario);
+    setTableList(mapListInventario);
+  }
+
+  const updateEntradaSalidaFromDeleteMercaderia = (idInventario,idCategoria,stock) => {
+    const enviar = {};
+
+    const findById = apiOriginal.find((elem) => {return elem.id == idInventario});
+
+    enviar.entrada = findById.entrada;
+    enviar.salida = findById.salida;
+
+    if (idCategoria == "Salida") 
+      enviar.salida -= stock;
+    
+    else if (idCategoria == "Entrada") 
+      enviar.entrada -= stock;
+
+    else return toast.error("Ocurrio un error al actualizar en el inventario")
+
+    const mapListInventario = apiOriginal.map((elem) => {
+      if (elem.id == idInventario) return { ...elem, ...enviar };
+      else return elem;
+    });
+
+    setApiOriginal(mapListInventario);
+    setTableList(mapListInventario);
+  }
+
+  //Delete API inventario
   const deleteApi = (id, token) => {
     eliminar(id, token)
       .then((data) => {
@@ -131,8 +168,10 @@ export function InventarioContextProvider(props) {
       });
   };
 
+  //Get old api
   const getPrevius = () => setTableList(apiOriginal);
 
+  //Create Cliente
   const createCliente = (json) => {
     postCliente(json, token)
       .then((result) => {
@@ -143,6 +182,21 @@ export function InventarioContextProvider(props) {
       .catch((e) => {
         toast.error(e.response.data.message);
       });
+  };
+
+  //Get all list clientes
+  const getClientesAPI = () => {
+    getClientes()
+      .then((result) => setClientesList(result))
+      .catch((e) => toast.error(e.response.data.message));
+  };
+
+  //Get nombres at idCliente
+  const getClienteName = (idCliente) => {
+    const filterList = clientesList.filter((result) => result.id === idCliente);
+    if (filterList.length != 0) return filterList[0].cliente;
+
+    return "";
   };
 
   //ORDER BY
@@ -202,6 +256,9 @@ export function InventarioContextProvider(props) {
         showDialogNewCliente,
         setShowDialogNewCliente,
         inventarioNombres,
+        updateEntradaSalida,
+        getAllInventario,
+        updateEntradaSalidaFromDeleteMercaderia
       }}
     >
       {props.children}

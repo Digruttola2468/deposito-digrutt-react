@@ -25,12 +25,14 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useReadLocalStorage } from "usehooks-ts";
+import { InventarioContext } from "../../../context/InventarioContext";
 
 const filter = createFilterOptions();
 
 export default function PutMercaderia() {
-  const { createApi, inventarioNombres, idCategoria, createInventario } =
+  const { createApi, idCategoria, createInventario } =
     useContext(MercaderiaContext);
+  const { inventarioNombres } = useContext(InventarioContext);
 
   const token = useReadLocalStorage("token");
 
