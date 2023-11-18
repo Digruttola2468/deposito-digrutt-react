@@ -10,7 +10,7 @@ export const UserContext = createContext();
 
 export const UserProvider = (props) => {
   const navegate = useNavigate();
-  const [userSupabase, setUserSupabase] = useLocalStorage("user",null);
+  const [userSupabase, setUserSupabase] = useLocalStorage("user", null);
 
   const [isDone, setIsDone] = useState(false);
 
@@ -18,14 +18,28 @@ export const UserProvider = (props) => {
 
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(session);
       if (session != null) {
-        const user = await getUserSupabase();
+        //Si se inicio sesion con google
+        if (session.user.app_metadata.provider === "google") {
+          //GMAIL ESTA CONFIRMADO
+          await addBBDD(session.user.email);
 
-        
-        if (user != null) {
-          if (userSupabase != null) navegate("/");
-          else navegate("/notVerificed");
-        } else navegate("/login");
+          try {
+            const result = await getToken(session.user.email);
+            setUserSupabase(result);
+            navegate("/");
+          } catch (error) {
+            navegate("/notVerificed");
+          }
+        } else {
+          const user = await getUserSupabase();
+
+          if (user != null) {
+            if (userSupabase != null) navegate("/");
+            else navegate("/notVerificed");
+          } else navegate("/login");
+        }
       } else navegate("/login");
     });
   }, []);
@@ -128,25 +142,10 @@ export const UserProvider = (props) => {
     const { data, error } = await db_supabase.auth.signInWithOAuth({
       provider: "google",
     });
-
     if (error) {
       console.log(error);
       toast.error("A ocurrido un error");
       throw new Error("A ocurrido un error durante la autenticacion");
-    }
-
-    const user = await getUserSupabase();
-
-    //GMAIL ESTA CONFIRMADO
-    await addBBDD(user.email);
-
-    try {
-      const result = await getToken(user.email);
-      setUserSupabase(result);
-      navegate("/");
-    } catch (error) {
-      console.log(error);
-      navegate("/notVerificed");
     }
   };
 
