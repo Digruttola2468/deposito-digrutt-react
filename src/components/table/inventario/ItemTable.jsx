@@ -3,19 +3,10 @@ import { InventarioContext } from "../../../context/InventarioContext";
 
 import { useReadLocalStorage } from "usehooks-ts";
 
-import PostInventario from "./PostInventario";
 import DialogUpdate from "../../dialog/DialogUpdate";
-import BodyCardItem from "../../card/CardBodyItem";
-
-import {
-  Autocomplete,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import DialogDelete from "../../dialog/DialogDelete";
+import CardItemInventario from "../../card/CardItemInventario";
 
 export default function SelectItemInventario() {
   const { tableList, updateApi, deleteApi, clientesList } =
@@ -25,7 +16,7 @@ export default function SelectItemInventario() {
   const [openActualizar, setOpenActualizar] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
-  const [apiOne, setapiOne] = useState([]);
+  const [apiOne, setapiOne] = useState(null);
 
   const [articulo, setArticulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -48,16 +39,13 @@ export default function SelectItemInventario() {
   };
 
   const handleUpdate = () => {
-    updateApi(
-      apiOne.id,
-      {
-        articulo,
-        nombre,
-        descripcion,
-        pesoUnidad: parseFloat(pesoUnidad),
-        idCliente: codCliente.id,
-      }
-    );
+    updateApi(apiOne.id, {
+      articulo,
+      nombre,
+      descripcion,
+      pesoUnidad: parseFloat(pesoUnidad),
+      idCliente: codCliente.id,
+    });
     empty();
     setOpenActualizar(false);
   };
@@ -69,14 +57,14 @@ export default function SelectItemInventario() {
   };
 
   useEffect(() => {
-    const data = tableList.find((elem) => elem.id == index);
-    setapiOne(data);
+    if (index != null) setapiOne(tableList.find((elem) => elem.id == index));
+    else setapiOne(null);
   }, [index]);
 
   const empty = () => {
     setOpenActualizar(false);
     setOpenDelete(false);
-    setapiOne([]);
+    setapiOne({});
     setArticulo("");
     setDescripcion("");
     setNombre("");
@@ -86,10 +74,11 @@ export default function SelectItemInventario() {
 
   return (
     <div>
-      <BodyCardItem
+      {apiOne ? <CardItemInventario
+        data={apiOne}
         handleDelete={() => setOpenDelete(true)}
         handleUpdate={handleOpenUpdate}
-      />
+      /> : <></>}
 
       <DialogUpdate
         show={openActualizar}

@@ -5,18 +5,15 @@ import { DialogTitle, Button, DialogContentText } from "@mui/material";
 
 export default function DialogDelete({
   title = "Eliminar",
-  eliminar,
+  handleDelete,
   show,
-  close,
+  close
 }) {
-  const handleClose = () => close();
-
-  const handleDelete = () => eliminar();
 
   return (
     <Dialog
       open={show}
-      onClose={handleClose}
+      onClose={close}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -27,7 +24,7 @@ export default function DialogDelete({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
+        <Button onClick={close}>Cancelar</Button>
         <Button onClick={handleDelete} autoFocus>
           Eliminar
         </Button>

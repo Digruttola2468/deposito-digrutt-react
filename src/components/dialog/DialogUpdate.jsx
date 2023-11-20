@@ -8,19 +8,16 @@ import {
 
 export default function DialogUpdate({
   title = "Actualizar",
-  update,
+  handleUpdate,
   children,
   show,
-  close,
+  close
 }) {
-
-  const handleClose = () => close();
-  const handleUpdate = () => update();
 
   return (
     <Dialog
       open={show}
-      onClose={handleClose}
+      onClose={close}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -31,7 +28,7 @@ export default function DialogUpdate({
         {children}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} variant="text">
+        <Button onClick={close} variant="text">
           Cancelar
         </Button>
         <Button onClick={handleUpdate} autoFocus variant="outlined">

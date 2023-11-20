@@ -18,7 +18,6 @@ export const UserProvider = (props) => {
 
   useEffect(() => {
     db_supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(session);
       if (session != null) {
         //Si se inicio sesion con google
         if (session.user.app_metadata.provider === "google") {
