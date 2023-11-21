@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MercaderiaContext } from "../../context/MercaderiaContext";
 import { InventarioContext } from "../../context/InventarioContext";
 
@@ -12,45 +12,34 @@ export default function SearchMercaderia() {
     setEnd,
     limit,
     idCategoria,
-    inputSearch, 
-    setInputSearch
+    inputSearch,
+    setInputSearch,
   } = useContext(MercaderiaContext);
 
-  const {inventarioNombres} = useContext(InventarioContext); 
+  const { inventarioNombres } = useContext(InventarioContext);
+
+  const [searchDescripcion, setSearchDescripcion] = useState("");
 
   return (
     <div className="flex flex-row items-center">
-      <Autocomplete
-        disablePortal
-        freeSolo
-        options={inventarioNombres}
-        getOptionLabel={(elem) => elem.nombre}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        sx={{ width: 140, marginLeft: 1 }}
-        inputValue={inputSearch}
-        onInputChange={(event, newInputValue) => {
-          setInputSearch(newInputValue);
+      <TextField
+        sx={{ width: 200, margin: 1 }}
+        label="Buscar Descripcion"
+        value={searchDescripcion}
+        onChange={(evt) => {
+          const newValue = evt.target.value;
+          setSearchDescripcion(newValue);
 
-          let listMercaderia = [];
-          if (idCategoria === 1) {
-            listMercaderia = apiOriginal.filter((e) => e.categoria == "Salida");
-          }else if (idCategoria === 2) {
-            listMercaderia = apiOriginal.filter((e) => e.categoria == "Entrada");
-          }else return console.error("ERROR: No es ni 1 ni 2 el idcategoria");
-          
-          const resultado =  listMercaderia.filter((elem) => {
-            return elem.nombre.toLowerCase().includes(newInputValue);
-          });
-
-          if (newInputValue !== "") {
-            setTableList(resultado);
-            setPagina(1);
-            setEnd(limit);
-          } else getPrevius();
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label="Buscar" variant="standard" />
-        )}
+            const resultado = apiOriginal.filter((elem) => {
+              return elem.descripcion.toLowerCase().includes(newValue);
+            });
+            if (newValue !== "") {
+              setTableList(resultado);
+              setPagina(1);
+              setEnd(limit);
+            } else getPrevius();
+          }
+        }
       />
     </div>
   );
