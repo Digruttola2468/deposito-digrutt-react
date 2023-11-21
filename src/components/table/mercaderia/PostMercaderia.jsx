@@ -127,7 +127,7 @@ export default function PutMercaderia() {
                 }}
                 inputValue={inputValue}
                 onInputChange={(_, newInputValue) =>
-                  setInputValue(newInputValue)
+                  setInputValue(newInputValue.toLowerCase())
                 }
                 filterOptions={(options, params) => {
                   const filtered = filter(options, params);

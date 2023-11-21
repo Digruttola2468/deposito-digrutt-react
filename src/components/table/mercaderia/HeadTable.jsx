@@ -46,7 +46,6 @@ export default function HeadTable() {
         <th onClick={handleFecha} className="cursor-pointer py-4 px-1">
           fecha
         </th>
-        <th className="py-4 px-1">proveedor</th>
       </tr>
     </thead>
   );

@@ -32,7 +32,7 @@ export default function SearchCodProducto() {
         label="Buscar Descripcion"
         value={searchDescripcion}
         onChange={(evt) => {
-          const newValue = evt.target.value;
+          const newValue = evt.target.value.toLowerCase();
           setSearchDescripcion(newValue);
 
           if (cliente) {
