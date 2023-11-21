@@ -1,40 +1,41 @@
-import { useState, createContext, useEffect, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
-import { getNombresInventario } from "../services/api_inventario";
-import { getClientes } from "../services/api_otherTables";
-import { useReadLocalStorage } from "usehooks-ts";
-
-import { postRemito } from "../services/api_remitos";
+import { getOneRemito, getRemitos, postRemito } from "../services/api_remitos";
 import { toast } from "react-toastify";
 import { UserContext } from "./UserContext";
-import { useNavigate } from "react-router-dom";
+import { InventarioContext } from "./InventarioContext";
 
 export const OficinaContext = createContext();
 
-export const OficinaProvider = (props) => {
-  const { userSupabase } = useContext(UserContext);
+import { useTable } from "../hooks/useTableHook";
 
-  const [inventarioNombres, setInventarioNombres] = useState([]);
-  const [clientesList, setClientesList] = useState([]);
+export const OficinaProvider = (props) => {
+  const {
+    add,
+    deletet,
+    getOne,
+    getPrevius,
+    setApi,
+    showTable,
+    update,
+    setIndex,
+    getLengthTableList,
+    limit,
+    setEnd,
+  } = useTable();
+
+  const { inventarioNombres, clientesList } = useContext(InventarioContext);
+  const { userSupabase } = useContext(UserContext);
 
   const [loadingSend, setLoadingSend] = useState(false);
 
+  const [apiOne, setApiOne] = useState([]);
+
   useEffect(() => {
     if (userSupabase != null) {
-      getInventarioNombres();
-      getClientesAPI();
+      getApiFetch();
     }
   }, []);
-
-  const getClientesAPI = () => {
-    getClientes().then((result) => setClientesList(result));
-  };
-
-  const getInventarioNombres = () => {
-    getNombresInventario(userSupabase.token)
-      .then((result) => setInventarioNombres(result))
-      .catch((error) => console.error(error));
-  };
 
   const sendRemito = async (jsonData) => {
     setLoadingSend(true);
@@ -46,16 +47,41 @@ export const OficinaProvider = (props) => {
     }
     setLoadingSend(false);
   };
+  const getOneRemitoBBDD = (id) => {
+    getOneRemito(userSupabase.token, id)
+      .then((result) => {
+        if (result.error != null) 
+          toast.error(result.error.message)
+        else setApiOne(result);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const getApiFetch = () => {
+    setLoadingSend(true);
+    getRemitos(userSupabase.token)
+      .then((result) => {
+        setApi(result);
+        console.log(result);
+      })
+      .catch((e) => console.error(e));
+    setLoadingSend(false);
+  };
 
   return (
     <OficinaContext.Provider
       value={{
+        getLengthTableList,
+        showTable,
         inventarioNombres,
-        getInventarioNombres,
         clientesList,
-        getClientesAPI,
         sendRemito,
         loadingSend,
+        setIndex,
+        limit,
+        setEnd,
+        getOneRemitoBBDD,
+        apiOne
       }}
     >
       {props.children}

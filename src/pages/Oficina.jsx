@@ -9,8 +9,10 @@ import {
   Button,
   FormControl,
   IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   TextField,
 } from "@mui/material";
@@ -22,16 +24,11 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import DocRemitoPdf from "./views/Remito";
 
 import ProgressComponent from "../components/progress/ProgressComponent";
+import OficinaTable from "../components/table/oficina/OficinaTable";
 
 export default function Oficina() {
-  const {
-    inventarioNombres,
-    getInventarioNombres,
-    getClientesAPI,
-    clientesList,
-    sendRemito,
-    loadingSend,
-  } = useContext(OficinaContext);
+  const { inventarioNombres, clientesList, sendRemito, loadingSend } =
+    useContext(OficinaContext);
 
   //Campos fundamental Remito
   const [numRemito, setNumRemito] = useState("");
@@ -132,6 +129,8 @@ export default function Oficina() {
         `#precio-${codProductoArray.id}`
       ).value;
 
+      if (precio == "") precio = 0;
+      
       valorDeclarado += parseFloat(precio);
       enviar.products.push({ stock, ordenDeCompra, idProduct, precio });
     }
@@ -156,6 +155,7 @@ export default function Oficina() {
         <NavMenu />
       </header>
       <main>
+        <OficinaTable />
         <section className="flex flex-col justify-around items-center lg:flex-row">
           <section className="grid place-content-center ">
             <h1 className="mt-3 font-bold">REMITO N°{numRemito}</h1>
@@ -313,6 +313,14 @@ export default function Oficina() {
                         id={`precio-${elem.id}`}
                         className="ml-4"
                         sx={{ width: 150 }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              $
+                            </InputAdornment>
+                          ),
+                        }}
+                
                       />
                     </div>
                     <div className="mr-4">
