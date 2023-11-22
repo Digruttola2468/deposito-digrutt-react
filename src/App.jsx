@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { MercaderiaContextProvider } from "./context/MercaderiaContext";
 import { OficinaProvider } from "./context/OficinaContext";
 
-
 import Inventario from "./pages/Inventario";
 import Mercaderia from "./pages/Mercaderia";
 
@@ -19,6 +18,8 @@ import WaitValidation from "./pages/WaitForValidation";
 import { UserContext } from "./context/UserContext";
 import ForgotPassword from "./pages/ForgotPassword";
 import NotHavePermission from "./pages/NotHavePermission";
+import { FacturaNegroProvider } from "./context/FacturaNegroContext";
+import NotaEnvio from "./pages/NotaEnvio";
 
 export default function App() {
   const { userSupabase } = useContext(UserContext);
@@ -48,6 +49,14 @@ export default function App() {
       <Route path="/sendGmail" element={<SendEmail />} />
       <Route path="/notVerificed" element={<WaitValidation />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
+      <Route
+        path="/facturaNegro"
+        element={
+          <FacturaNegroProvider>
+            <NotaEnvio />
+          </FacturaNegroProvider>
+        }
+      />
     </Routes>
   );
 }

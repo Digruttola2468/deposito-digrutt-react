@@ -102,16 +102,3 @@ export const postCliente = async (json, token) => {
   return await request.data;
 }
 
-export const postFacturaNegro = async (json, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const request = await axios.post(`${BASE_URL}/facturaNegro`, json, config);
-
-  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
-
-  return await request.data;
-}

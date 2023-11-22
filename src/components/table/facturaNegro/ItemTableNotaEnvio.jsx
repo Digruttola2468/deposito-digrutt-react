@@ -1,8 +1,9 @@
+
 import { useContext, useEffect, useState } from "react";
-import { OficinaContext } from "../../../context/OficinaContext";
 import { InventarioContext } from "../../../context/InventarioContext";
 
 import { TbPdf } from "react-icons/tb";
+import { FacturaNegroContext } from "../../../context/FacturaNegroContext";
 
 const monthNames = [
   "Ene",
@@ -19,12 +20,13 @@ const monthNames = [
   "Dec",
 ];
 
-export default function ItemTableOficina() {
-  const { apiOne } = useContext(OficinaContext);
+export default function ItemTableNotaEnvio() {
+  const { apiOne } = useContext(FacturaNegroContext);
   const { getClienteName } = useContext(InventarioContext);
 
   const [listMercaderia, setListMercaderia] = useState([]);
-  const [numRemito, setNumRemito] = useState("");
+
+  const [nro_envio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState("");
   const [cliente, setCliente] = useState("");
   const [totalDeclarado, setTotalDeclarado] = useState("");
@@ -37,11 +39,11 @@ export default function ItemTableOficina() {
   };
 
   useEffect(() => {
-    if (apiOne.remito != null) {
-      setNumRemito(apiOne.remito.num_remito);
-      setFecha(formatDate(apiOne.remito.fecha));
-      setCliente(getClienteName(apiOne.remito.idCliente));
-      setTotalDeclarado(apiOne.remito.total);
+    if (apiOne.notaEnvio != null) {
+      setNroEnvio(apiOne.notaEnvio.nro_envio);
+      setFecha(formatDate(apiOne.notaEnvio.fecha));
+      setCliente(getClienteName(apiOne.notaEnvio.idCliente));
+      setTotalDeclarado(apiOne.notaEnvio.valorDeclarado);
     }
     if (apiOne.mercaderia != null) {
       setListMercaderia(apiOne.mercaderia);
@@ -50,10 +52,10 @@ export default function ItemTableOficina() {
 
   return (
     <>
-      {apiOne.remito != null ? (
+      {apiOne.notaEnvio != null ? (
         <div className="block rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 border lg:mx-5 mx-1 mt-2">
           <h5 className="relative text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
-            {numRemito}
+            {nro_envio}
             <span className="absolute right-1">
               <TbPdf className="hover:text-red-500 cursor-pointer transition-all duration-300" />
             </span>

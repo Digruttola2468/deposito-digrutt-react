@@ -44,6 +44,15 @@ export default function MenuList() {
             Oficina
           </a>
         </li>
+        <li onClick={() => navegate("/facturaNegro")} className="p-2 sm:ml-2">
+          <a
+            style={{ cursor: "pointer" }}
+            className="text-white flex flex-row items-center cursor-pointer"
+          >
+            <FaTable />
+            Nota Envio
+          </a>
+        </li>
         <li className="p-2 sm:ml-2">
           <button
             className="uppercase text-white"

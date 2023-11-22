@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
-import { MercaderiaContext } from "../../../context/MercaderiaContext";
+import { FacturaNegroContext } from "../../../context/FacturaNegroContext";
+import { InventarioContext } from "../../../context/InventarioContext";
+
 import {
   Autocomplete,
   Box,
@@ -7,6 +9,7 @@ import {
   FormControl,
   FormControlLabel,
   IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -19,11 +22,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getSendEnvio } from "../../../services/api_otherTables";
 import dayjs from "dayjs";
-import { InventarioContext } from "../../../context/InventarioContext";
+
+import { toast } from "react-toastify";
 
 export default function PostFacturaNegro() {
-  const { clientesList, postAllFacturaNegro } = useContext(MercaderiaContext);
-  const { inventarioNombres } = useContext(InventarioContext);
+  const {} = useContext(FacturaNegroContext);
+  const { inventarioNombres, clientesList } = useContext(InventarioContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);
@@ -43,6 +47,10 @@ export default function PostFacturaNegro() {
 
   const handleClickNew = (evt) => {
     evt.preventDefault();
+
+    setSearchinventario(
+      searchInventario.filter((elem) => elem.id != codProducto.id)
+    );
 
     if (codProducto != null) {
       setCodProducto(null);
@@ -72,6 +80,7 @@ export default function PostFacturaNegro() {
       ).value;
 
       if (stock == "") stock = 0;
+      
       if (precio == "") precio = 0;
       else valorDeclarado += parseFloat(precio);
 
@@ -108,14 +117,14 @@ export default function PostFacturaNegro() {
   };
 
   return (
-    <>
+    <section>
       <h1 className="text-center font-bold text-2xl mt-2">
         Crear Nota de Envio
       </h1>
       <div className="mb-5">
         <section className="flex flex-col justify-around items-center lg:flex-row">
           <section className="grid place-content-center ">
-            <div className="mt-4 flex flex-row">
+            <div className="mx-4 flex flex-row">
               <TextField
                 label="Nota Envio"
                 value={nroEnvio}
@@ -129,7 +138,7 @@ export default function PostFacturaNegro() {
               </Button>
             </div>
 
-            <div className="mt-2 flex flex-col justify-around items-center lg:flex-row">
+            <div className="mx-4 my-2 flex flex-row ">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DatePicker"]}>
                   <DatePicker
@@ -150,7 +159,7 @@ export default function PostFacturaNegro() {
               <Button onClick={handleClickFechaActual}>Fecha Actual</Button>
             </div>
 
-            <div className="mt-3 flex flex-col justify-between lg:flex-row">
+            <div className="mx-4 my-2 flex flex-col lg:flex-row">
               <Box className="w-full mr-2">
                 <FormControl fullWidth>
                   <InputLabel>Cliente</InputLabel>
@@ -216,8 +225,8 @@ export default function PostFacturaNegro() {
                 label="Digrutt"
               />
             </div>
-            <form action="" className="flex flex-col mt-5">
-              <div className="flex flex-row">
+            <form action="" className="flex flex-col mx-4 my-2">
+              <div className="flex flex-row w-[350px]">
                 <Autocomplete
                   options={searchInventario}
                   getOptionLabel={(elem) => elem.nombre}
@@ -252,59 +261,73 @@ export default function PostFacturaNegro() {
           </section>
           <section className="grid place-content-center">
             <form action="">
-              {pedidos.map((elem) => {
-                return (
-                  <div
-                    key={elem.id}
-                    className="my-4 flex flex-row items-center justify-around"
-                  >
-                    <div className="mr-4">
-                      <TextField
-                        label="Cod Producto"
-                        type="text"
-                        variant="standard"
-                        defaultValue={elem.nombre}
-                        id={`input-${elem.id}`}
-                        sx={{ width: 150 }}
-                        disabled
-                      />
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ">
+                {pedidos.map((elem) => {
+                  return (
+                    <div
+                      key={elem.id}
+                      className="block relative rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 border lg:mx-5 mx-1 my-2"
+                    >
+                      <div className="my-2">
+                        <TextField
+                          label="Cod Producto"
+                          type="text"
+                          variant="standard"
+                          defaultValue={elem.nombre}
+                          id={`input-${elem.id}`}
+                          sx={{ width: 150 }}
+                          disabled
+                        />
+                      </div>
+                      <div className="my-2">
+                        <TextField
+                          label="Stock"
+                          type="number"
+                          variant="standard"
+                          id={`stock-${elem.id}`}
+                          className="ml-4"
+                          sx={{ width: 150 }}
+                        />
+                      </div>
+                      <div className="my-2">
+                        <TextField
+                          label="Precio"
+                          type="number"
+                          variant="standard"
+                          id={`precio-${elem.id}`}
+                          className="ml-4"
+                          sx={{ width: 150 }}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                $
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </div>
+                      <div className="absolute top-0 right-0">
+                        <IconButton
+                          onClick={() => {
+                            const findPedidoDelete = pedidos.find(
+                              (elm) => elm.id == elem.id
+                            );
+                            const filterDelete = pedidos.filter(
+                              (elm) => elm.id !== elem.id
+                            );
+
+                            setSearchinventario([findPedidoDelete, ...searchInventario]);
+                            setPedidos(filterDelete);
+                          }}
+                        >
+                          <AiFillDelete />
+                        </IconButton>
+                      </div>
                     </div>
-                    <div className="mr-4">
-                      <TextField
-                        label="Stock"
-                        type="number"
-                        variant="standard"
-                        id={`stock-${elem.id}`}
-                        className="ml-4"
-                        sx={{ width: 100 }}
-                      />
-                    </div>
-                    <div className="mr-4">
-                      <TextField
-                        label="Precio"
-                        type="number"
-                        variant="standard"
-                        id={`precio-${elem.id}`}
-                        className="ml-4"
-                        sx={{ width: 150 }}
-                      />
-                    </div>
-                    <div>
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => {
-                          const filterDelete = pedidos.filter(
-                            (elm) => elm.id !== elem.id
-                          );
-                          setPedidos(filterDelete);
-                        }}
-                      >
-                        <AiFillDelete />
-                      </IconButton>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
               {pedidos.length != 0 ? (
                 <>
                   <button
@@ -321,6 +344,6 @@ export default function PostFacturaNegro() {
           </section>
         </section>
       </div>
-    </>
+    </section>
   );
 }

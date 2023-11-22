@@ -12,22 +12,17 @@ import {
 } from "../services/api_mercaderia";
 
 import {
-  getOneInventario,
-  getNombresInventario,
   post as postInventario,
 } from "../services/api_inventario";
 
 import {
-  getClientes,
   getFacturaNegro,
   postFacturaNegro,
-} from "../services/api_otherTables";
+} from "../services/api_facturaNegro";
 
 import { toast } from "react-toastify";
-import { useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "./InventarioContext";
 import { UserContext } from "./UserContext";
-import { useNavigate } from "react-router-dom";
 
 export function MercaderiaContextProvider(props) {
   const { userSupabase } = useContext(UserContext);
