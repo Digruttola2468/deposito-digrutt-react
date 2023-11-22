@@ -55,8 +55,8 @@ export const OficinaProvider = (props) => {
       add(enviar);
       toast.success(result.message);
     } catch (error) {
-      
-      console.log(error.response.data.message);
+      console.log(error);
+      toast.error(error.response.data.message);
     }
     setLoadingSend(false);
   };
