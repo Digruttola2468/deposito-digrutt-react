@@ -61,6 +61,10 @@ export default function Oficina() {
   const handleClickNew = (evt) => {
     evt.preventDefault();
 
+    setSearchinventario(
+      searchInventario.filter((elem) => elem.id != codProducto.id)
+    );
+
     if (codProducto != null) {
       setCodProducto(null);
       setPedidos([...pedidos, codProducto]);
@@ -130,7 +134,7 @@ export default function Oficina() {
       ).value;
 
       if (precio == "") precio = 0;
-      
+
       valorDeclarado += parseFloat(precio);
       enviar.products.push({ stock, ordenDeCompra, idProduct, precio });
     }
@@ -315,12 +319,9 @@ export default function Oficina() {
                         sx={{ width: 150 }}
                         InputProps={{
                           startAdornment: (
-                            <InputAdornment position="start">
-                              $
-                            </InputAdornment>
+                            <InputAdornment position="start">$</InputAdornment>
                           ),
                         }}
-                
                       />
                     </div>
                     <div className="mr-4">
@@ -338,9 +339,14 @@ export default function Oficina() {
                       <IconButton
                         aria-label="delete"
                         onClick={() => {
+                          const findPedidoDelete = pedidos.find(
+                            (elm) => elm.id == elem.id
+                          );
                           const filterDelete = pedidos.filter(
                             (elm) => elm.id !== elem.id
                           );
+
+                          setSearchinventario([findPedidoDelete, ...searchInventario]);
                           setPedidos(filterDelete);
                         }}
                       >

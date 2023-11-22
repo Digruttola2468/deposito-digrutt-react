@@ -26,7 +26,7 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 
 export default function PostFacturaNegro() {
-  const {} = useContext(FacturaNegroContext);
+  const {postFacturaNegroBBDD} = useContext(FacturaNegroContext);
   const { inventarioNombres, clientesList } = useContext(InventarioContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
@@ -88,7 +88,7 @@ export default function PostFacturaNegro() {
     }
     enviar.valorDeclarado = valorDeclarado;
 
-    postAllFacturaNegro(enviar);
+    postFacturaNegroBBDD(enviar);
     empty();
   };
 

@@ -1,19 +1,14 @@
 import { Document, Page, Text } from "@react-pdf/renderer";
 
-export default function DocRemitoPdf({
+export default function DocRemitoPdfItemTable({
   fecha = "",
-  cliente,
-  domicilio,
-  CUIT,
+  cliente = "",
+  domicilio = "",
+  CUIT = "",
   nroOrden = "",
   products = [],
-  listAllProducts = [],
+  totalDeclarado = 0,
 }) {
-  const getDataInventario = (id) => {
-    const objetcInventario = listAllProducts.find((elem) => elem.id == id);
-    if (objetcInventario) return objetcInventario;
-    else return "";
-  };
 
   const formatDate = (fecha) => {
     if(fecha != "") {
@@ -26,15 +21,6 @@ export default function DocRemitoPdf({
     }else return ` ${0}   ${0}   ${2023}`;
     
   };
-
-  const getTotal = () => {
-    let total = 0;
-    for (let i = 0; i < products.length; i++) {
-      const elem = products[i];
-      total += parseInt(elem.precio);
-    }
-    return total;
-  }
 
   return (
     <>
@@ -83,7 +69,7 @@ export default function DocRemitoPdf({
                 {products.length > 0 ? (
                   products.map((elem) => (
                     <tr
-                      key={elem.idProduct}
+                      key={elem.id}
                       style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}
                     >
                       <td>
@@ -91,7 +77,7 @@ export default function DocRemitoPdf({
                       </td>
                       <td>
                         <Text style={{ fontSize: "14px" }}>
-                          {getDataInventario(elem.idProduct).descripcion}
+                          {elem.descripcion}
                         </Text>
                       </td>
                     </tr>
@@ -103,7 +89,7 @@ export default function DocRemitoPdf({
               </tbody>
             </table>
             <div style={{position: 'absolute', top: 450, left: 250}}>
-              <Text>Valor Declarado: AR${getTotal()}</Text>
+              <Text>Valor Declarado: AR${totalDeclarado}</Text>
             </div>
           </div>
         </Page>

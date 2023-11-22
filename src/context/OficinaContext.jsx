@@ -62,7 +62,6 @@ export const OficinaProvider = (props) => {
     getRemitos(userSupabase.token)
       .then((result) => {
         setApi(result);
-        console.log(result);
       })
       .catch((e) => console.error(e));
     setLoadingSend(false);

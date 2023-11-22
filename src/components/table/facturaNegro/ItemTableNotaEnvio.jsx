@@ -50,6 +50,10 @@ export default function ItemTableNotaEnvio() {
     }
   }, [apiOne]);
 
+  const handleClickPdf = () => {
+    
+  }
+
   return (
     <>
       {apiOne.notaEnvio != null ? (
@@ -57,7 +61,7 @@ export default function ItemTableNotaEnvio() {
           <h5 className="relative text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
             {nro_envio}
             <span className="absolute right-1">
-              <TbPdf className="hover:text-red-500 cursor-pointer transition-all duration-300" />
+              <TbPdf className="hover:text-red-500 cursor-pointer transition-all duration-300" onClick={handleClickPdf} />
             </span>
           </h5>
           <p className="mb-4  text-neutral-600 dark:text-neutral-200 text-sm">
@@ -67,7 +71,7 @@ export default function ItemTableNotaEnvio() {
             return (
               <div key={elem.id}>
                 <p>
-                  {elem.nombre} - {elem.descripcion} -{" "}
+                 ✔️{elem.nombre} - {elem.descripcion} -{" "}
                   <span className="text-red-400">{elem.stock}</span>
                 </p>{" "}
                 <p></p>
