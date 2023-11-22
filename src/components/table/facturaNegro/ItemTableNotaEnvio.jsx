@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { InventarioContext } from "../../../context/InventarioContext";
 
-import { TbPdf } from "react-icons/tb";
+import { FaFileExcel } from "react-icons/fa";
 import { FacturaNegroContext } from "../../../context/FacturaNegroContext";
 
 const monthNames = [
@@ -50,7 +50,7 @@ export default function ItemTableNotaEnvio() {
     }
   }, [apiOne]);
 
-  const handleClickPdf = () => {
+  const handleClickExcel = () => {
     
   }
 
@@ -61,7 +61,7 @@ export default function ItemTableNotaEnvio() {
           <h5 className="relative text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
             {nro_envio}
             <span className="absolute right-1">
-              <TbPdf className="hover:text-red-500 cursor-pointer transition-all duration-300" onClick={handleClickPdf} />
+              <FaFileExcel className="hover:text-green-700 cursor-pointer transition-all duration-300" onClick={handleClickExcel} />
             </span>
           </h5>
           <p className="mb-4  text-neutral-600 dark:text-neutral-200 text-sm">

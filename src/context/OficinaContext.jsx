@@ -24,7 +24,7 @@ export const OficinaProvider = (props) => {
     setEnd,
   } = useTable();
 
-  const { inventarioNombres, clientesList } = useContext(InventarioContext);
+  const { inventarioNombres, clientesList, getAllInventario } = useContext(InventarioContext);
   const { userSupabase } = useContext(UserContext);
 
   const [loadingSend, setLoadingSend] = useState(false);
@@ -41,9 +41,22 @@ export const OficinaProvider = (props) => {
     setLoadingSend(true);
     try {
       const result = await postRemito(userSupabase.token, jsonData);
+
+      const enviar = {};
+      enviar.fecha = jsonData.fecha;
+      enviar.idCliente = jsonData.idCliente;
+      enviar.num_remito = jsonData.numRemito;
+      enviar.num_orden = jsonData.nroOrden;
+      enviar.total = jsonData.valorDeclarado;
+      enviar.id = result.insertId;
+
+      getAllInventario();
+
+      add(enviar);
       toast.success(result.message);
     } catch (error) {
-      console.log(error);
+      
+      console.log(error.response.data.message);
     }
     setLoadingSend(false);
   };

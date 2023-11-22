@@ -202,6 +202,7 @@ export default function PostFacturaNegro() {
                       setAddClientDigrutt(checked);
 
                       if (checked) {
+                        setCliente(9);
                         const filterClienteFromDigrutt =
                           inventarioNombres.filter((elm) => {
                             return elm.idCliente === 9;

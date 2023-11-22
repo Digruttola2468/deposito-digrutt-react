@@ -9,6 +9,8 @@ import {
   getFacturaNegro,
   postFacturaNegro,
 } from "../services/api_facturaNegro.js";
+import { InventarioContext } from "./InventarioContext.jsx";
+import { toast } from "react-toastify";
 
 export const FacturaNegroProvider = (props) => {
   const {
@@ -25,6 +27,8 @@ export const FacturaNegroProvider = (props) => {
     setEnd,
   } = useTable();
 
+  const { getAllInventario } = useContext(InventarioContext);
+
   const { userSupabase } = useContext(UserContext);
 
   const [apiOne, setApiOne] = useState([]);
@@ -37,13 +41,25 @@ export const FacturaNegroProvider = (props) => {
 
   const postFacturaNegroBBDD = (json) => {
     postFacturaNegro(json, userSupabase.token)
-      .then((result) => add(result))
+      .then((result) => {
+        const enviar = {};
+        enviar.id = result.insertId;
+        enviar.nro_envio = json.nro_envio;
+        enviar.idCliente = json.idCliente;
+        enviar.valorDeclarado = json.valorDeclarado;
+        enviar.fecha = json.fecha;
+
+        add(enviar);
+        getAllInventario();
+        toast.success(result.message)
+      })
       .catch((e) => console.log(e));
   };
 
   const getFacturaNegroBBDD = () => {
     getFacturaNegro(userSupabase.token)
       .then((result) => {
+        
         setApi(result);
       })
       .catch((e) => console.log(e));
@@ -68,7 +84,7 @@ export const FacturaNegroProvider = (props) => {
         limit,
         setEnd,
         getOneFacturaNegroBBDD,
-        apiOne
+        apiOne,
       }}
     >
       {props.children}
