@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 export default function PostInventario() {
   const { createApi } = useContext(InventarioContext);
-
+  
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [pesoUnidad, setPesoUnidad] = useState("");
@@ -27,10 +27,12 @@ export default function PostInventario() {
     if (descripcion.length === 0 )
       return toast.error("Campo Descripcion Vacio");
     
-    createApi({
+ 
+
+    /*createApi({
       nombre,
       descripcion
-    }, token);
+    }, token);*/
     
     empty();
   };

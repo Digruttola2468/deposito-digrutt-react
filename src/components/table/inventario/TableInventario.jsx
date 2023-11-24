@@ -55,6 +55,9 @@ const BodyTable = () => {
     <tbody>
       {tableList.length != 0 ? (
         tableList.slice(start, end).map((elem) => {
+          if (elem.entrada == null) elem.entrada = 0;
+          if (elem.salida == null) elem.salida = 0;
+          
           let stockActual = elem.entrada - elem.salida;
           return (
             <tr

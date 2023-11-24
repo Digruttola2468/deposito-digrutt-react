@@ -40,9 +40,9 @@ export default function SelectItemInventario() {
 
   const handleUpdate = () => {
     updateApi(apiOne.id, {
-      articulo,
-      nombre,
-      descripcion,
+      articulo: articulo,
+      nombre: nombre,
+      descripcion: descripcion,
       pesoUnidad: parseFloat(pesoUnidad),
       idCliente: codCliente.id,
     });
@@ -83,7 +83,7 @@ export default function SelectItemInventario() {
       <DialogUpdate
         show={openActualizar}
         title="Actualizar Inventario"
-        update={handleUpdate}
+        handleUpdate={handleUpdate}
         close={() => setOpenActualizar(false)}
       >
         <TextField

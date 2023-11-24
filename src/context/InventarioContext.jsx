@@ -58,6 +58,7 @@ export function InventarioContextProvider(props) {
   const getAllInventario = () => {
     get(userSupabase.token)
       .then((result) => {
+        console.log(result);
         setTableList(result);
         setApiOriginal(result);
         setDone(true);
@@ -81,6 +82,7 @@ export function InventarioContextProvider(props) {
         toast.success("Creado Correctamente");
         setTableList([{ ...result }, ...tableList]);
         setApiOriginal([{ ...result }, ...apiOriginal]);
+        getInventarioNombres();
       })
       .catch((e) => {
         toast.error(e.response.data.message);
@@ -102,6 +104,7 @@ export function InventarioContextProvider(props) {
         toast.success("Se actualizo Correctamente");
       })
       .catch((e) => {
+        console.log(e);
         toast.error(e.response.data.message);
       });
   };
