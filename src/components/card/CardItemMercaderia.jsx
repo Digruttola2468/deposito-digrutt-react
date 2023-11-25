@@ -22,7 +22,8 @@ const getDateWithNameMonth = (fechaString) => {
     "Noviembre",
     "Diciembre",
   ];
-  const fDate = new Date(fechaString);
+  let info = fechaString.split('-').join('/');
+  const fDate = new Date(info);
   return `${fDate.getDate()} ${
     monthNames[fDate.getMonth() + 1]
   } ${fDate.getFullYear()}`;
@@ -33,7 +34,7 @@ export default function CardItemMercaderia({
   handleUpdate,
   handleDelete,
 }) {
-  const { fecha, descripcion, nombre, stock, proveedor } = data;
+  const { fecha, descripcion, nombre, stock } = data;
 
   return (
     <>
@@ -52,9 +53,6 @@ export default function CardItemMercaderia({
             </p>
             <p>
               <b>Cantidad</b>: {stock}
-            </p>
-            <p>
-              <b>Proveedor</b>: {proveedor}
             </p>
           </div>
         </CardContent>

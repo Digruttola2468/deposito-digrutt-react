@@ -11,15 +11,13 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { InventarioContext } from "../../../context/InventarioContext";
 import CardItemMercaderia from "../../card/CardItemMercaderia";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function InfoItem() {
   const { tableList, deleteApi, updateApi, idCategoria } =
     useContext(MercaderiaContext);
-
-  const { inventarioNombres } = useContext(InventarioContext);
 
   const index = useReadLocalStorage("selectIndexMercaderia");
   const [openDelete, setOpenDelete] = useState(false);
@@ -27,33 +25,30 @@ export default function InfoItem() {
 
   const [apiOne, setapiOne] = useState(null);
 
-  const [factura, setFactura] = useState("");
-  const [codProducto, setcodProducto] = useState();
-
   //2 - Entrada
   //1 - Salida
   const [idcategoria, setIdCategoria] = useState(idCategoria);
 
   const [stock, setStock] = useState("");
-  const [fecha, setFecha] = useState();
+  const [fecha, setFecha] = useState(null);
 
   //Handle
   const handleDelete = () => {
     deleteApi(apiOne.id);
-    handleClose();
+    setOpenDelete(false);
   };
 
   const handleUpdate = () => {
-    const filter = inventarioNombres.filter(
-      (elem) => elem.nombre.toLowerCase() == codProducto.nombre.toLowerCase()
-    );
     updateApi(apiOne.id, {
-      proveedor: factura,
-      idinventario: filter[0].id,
       stock,
       fecha,
       idcategoria,
     });
+    setFecha(null);
+    setStock("");
+    setIdCategoria(idCategoria);
+    setapiOne({});
+    setOpenUpdate(false);
   };
 
   useEffect(() => {
@@ -82,59 +77,51 @@ export default function InfoItem() {
 
       <DialogUpdate
         title="Actualizar Mercaderia"
-        update={handleUpdate}
+        handleUpdate={handleUpdate}
         show={openUpdate}
         close={() => setOpenUpdate(false)}
       >
-        <FormControl sx={{ width: 300, marginLeft: 1, marginTop: 2 }}>
-          <InputLabel>Categoria</InputLabel>
-          <Select
-            value={idcategoria}
-            label="Categoria"
-            onChange={(evt, value) => {
-              setIdCategoria(value.props.value);
-            }}
-          >
-            <MenuItem value={1}>Salida</MenuItem>
-            <MenuItem value={2}>Entrada</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Autocomplete
-          disablePortal
-          options={inventarioNombres}
-          getOptionLabel={(elem) => elem.nombre}
-          isOptionEqualToValue={(option, value) =>
-            option.nombre === value.nombre
-          }
-          sx={{ width: 300, marginLeft: 1, marginTop: 2 }}
-          value={codProducto || null}
-          onChange={(evt, newValue) => setcodProducto(newValue)}
-          renderInput={(params) => (
-            <TextField {...params} value={"Hola"} label="Cod Producto" />
-          )}
-        />
-        <TextField
-          sx={{ marginTop: 1, marginLeft: 1 }}
-          label="Cantidad"
-          placeholder="Cantidad"
-          value={stock}
-          onChange={(evt) => setStock(evt.target.value)}
-        />
-        <TextField
-          sx={{ marginTop: 1, marginLeft: 1 }}
-          label="Fecha"
-          placeholder="Fecha"
-          value={fecha}
-          onChange={(evt) => setFecha(evt.target.value)}
-        />
-        <TextField
-          sx={{ marginTop: 2, marginLeft: 1 }}
-          label="Factura"
-          placeholder="Factura"
-          value={factura}
-          onChange={(evt) => setFactura(evt.target.value)}
-        />
+        <div className="flex flex-col">
+          <div className="my-2">
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel>Categoria</InputLabel>
+              <Select
+                value={idcategoria}
+                label="Categoria"
+                onChange={(evt, value) => {
+                  setIdCategoria(value.props.value);
+                }}
+              >
+                <MenuItem value={1}>Salida</MenuItem>
+                <MenuItem value={2}>Entrada</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="my-2">
+            <TextField
+              sx={{ width: "100%" }}
+              label="Cantidad"
+              placeholder="Cantidad"
+              value={stock}
+              type="number"
+              onChange={(evt) => setStock(evt.target.value)}
+            />
+          </div>
+          <div className="my-2">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Fecha"
+                value={fecha}
+                onChange={(evt, value) => {
+                  if (evt != null)
+                    setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+                  else setFecha(null);
+                }}
+                format="DD/MM/YYYY"
+              />
+            </LocalizationProvider>
+          </div>
+        </div>
       </DialogUpdate>
     </div>
   );

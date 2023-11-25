@@ -3,11 +3,6 @@ import { useLocalStorage } from "usehooks-ts";
 
 import { MercaderiaContext } from "../../../context/MercaderiaContext";
 
-const getDateWithNameMonth = (fechaString) => {
-  const fDate = new Date(fechaString);
-  return `${fDate.getDate()}/${fDate.getMonth() + 1}/${fDate.getFullYear()}`;
-};
-
 export default function BodyTable() {
   const { tableList, end, limit } = useContext(MercaderiaContext);
 
@@ -29,7 +24,7 @@ export default function BodyTable() {
               <td className="py-4 px-1">{elem.nombre}</td>
               <td className="py-4 px-1">{elem.descripcion}</td>
               <td className="py-4 px-1">{elem.stock}</td>
-              <td className="py-4 px-1">{getDateWithNameMonth(elem.fecha)}</td>
+              <td className="py-4 px-1">{elem.fecha}</td>
               <td className="py-4 px-1">{elem.proveedor}</td>
             </tr>
           );

@@ -27,7 +27,10 @@ export default function SelectItemInventario() {
 
   //Handle
   const handleOpenUpdate = () => {
+    setArticulo(apiOne.articulo);
+    setNombre(apiOne.nombre);
     setDescripcion(apiOne.descripcion);
+    setPesoUnidad(apiOne.pesoUnidad);
     if (apiOne.idCliente != null) {
       const filterCliente = clientesList.filter(
         (elem) => elem.id === apiOne.idCliente
@@ -47,6 +50,7 @@ export default function SelectItemInventario() {
       idCliente: codCliente.id,
     });
     empty();
+    setapiOne({});
     setOpenActualizar(false);
   };
 
@@ -64,7 +68,6 @@ export default function SelectItemInventario() {
   const empty = () => {
     setOpenActualizar(false);
     setOpenDelete(false);
-    setapiOne({});
     setArticulo("");
     setDescripcion("");
     setNombre("");
@@ -84,7 +87,7 @@ export default function SelectItemInventario() {
         show={openActualizar}
         title="Actualizar Inventario"
         handleUpdate={handleUpdate}
-        close={() => setOpenActualizar(false)}
+        close={() => {setOpenActualizar(false);empty()}}
       >
         <TextField
           sx={{ marginTop: 1, marginLeft: 1 }}
@@ -104,6 +107,8 @@ export default function SelectItemInventario() {
           sx={{ marginTop: 3, marginLeft: 1 }}
           label="Descripcion"
           placeholder="Descripcion"
+          multiline
+          rows={2}
           value={descripcion}
           onChange={(evt) => setDescripcion(evt.target.value)}
         />

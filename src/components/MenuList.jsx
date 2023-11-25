@@ -17,7 +17,7 @@ export default function MenuList() {
     <>
       <ul
         className={`absolute flex flex-col items-center p-1 w-full bg-celeste-oscuro z-30 m-0 left-0 ${
-          showMenu ? "translate-y-[84px]" : "-translate-y-40"
+          showMenu ? "translate-y-[124px]" : "-translate-y-40"
         }  transition-all duration-500 sm:relative sm:flex-row sm:translate-y-0 sm:justify-end `}
       >
         <li onClick={() => navegate("/")} className="p-2 sm:ml-2">

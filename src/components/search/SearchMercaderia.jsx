@@ -12,11 +12,7 @@ export default function SearchMercaderia() {
     setEnd,
     limit,
     idCategoria,
-    inputSearch,
-    setInputSearch,
   } = useContext(MercaderiaContext);
-
-  const { inventarioNombres } = useContext(InventarioContext);
 
   const [searchDescripcion, setSearchDescripcion] = useState("");
 
@@ -30,16 +26,19 @@ export default function SearchMercaderia() {
           const newValue = evt.target.value.toLowerCase();
           setSearchDescripcion(newValue);
 
-            const resultado = apiOriginal.filter((elem) => {
-              return elem.descripcion.toLowerCase().includes(newValue);
-            });
-            if (newValue !== "") {
-              setTableList(resultado);
-              setPagina(1);
-              setEnd(limit);
-            } else getPrevius();
-          }
-        }
+          const nameCategoria = idCategoria == 1 ? "Salida" : "Entrada";
+
+          const filterCategoria = apiOriginal.filter(elem => elem.categoria == nameCategoria)
+
+          const resultado = filterCategoria.filter((elem) => {
+            return elem.descripcion.toLowerCase().includes(newValue);
+          });
+          if (newValue !== "") {
+            setTableList(resultado);
+            setPagina(1);
+            setEnd(limit);
+          } else getPrevius();
+        }}
       />
     </div>
   );

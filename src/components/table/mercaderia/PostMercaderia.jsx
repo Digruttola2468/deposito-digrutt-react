@@ -26,6 +26,7 @@ import {
 } from "@mui/material";
 import { useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "../../../context/InventarioContext";
+import dayjs from "dayjs";
 
 const filter = createFilterOptions();
 
@@ -62,13 +63,15 @@ export default function PutMercaderia() {
 
   const [stock, setStock] = useState("");
 
-  const [fecha, setFecha] = useState();
+  const [fecha, setFecha] = useState(null);
+  const [inputFecha, setInputFecha] = useState(null);
 
   const empty = () => {
     setFecha();
     setStock("");
     setInputValue("");
     setcodProducto("");
+    setInputFecha(null);
   };
 
   const handleClickPost = () => {
@@ -84,16 +87,23 @@ export default function PutMercaderia() {
     const filter = inventarioNombres.filter(
       (elem) => elem.nombre == codProducto.nombre
     );
-    createApi(
-      {
-        fecha,
-        stock,
-        idinventario: filter[0].id,
-        idcategoria: idCategoria,
-      }
-    );
-
+    createApi({
+      fecha,
+      stock,
+      idinventario: filter[0].id,
+      idcategoria: idCategoria,
+    });
     empty();
+  };
+
+  const handleClickDateNow = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const mounth = date.getMonth() + 1;
+    const day = date.getDate();
+
+    setInputFecha(dayjs(`${year}-${mounth}-${day}`));
+    setFecha(`${year}-${mounth}-${day}`);
   };
 
   return (
@@ -109,7 +119,7 @@ export default function PutMercaderia() {
                 {codProducto != undefined ? codProducto.descripcion : ""}
               </p>
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-row mb-4">
               <Autocomplete
                 disablePortal
                 options={inventarioNombres}
@@ -143,14 +153,12 @@ export default function PutMercaderia() {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    helperText="Required"
                     value={"Hola"}
                     label="Cod Producto"
                   />
                 )}
               />
               <TextField
-                helperText="Required"
                 label="Cantidad"
                 value={stock}
                 type="number"
@@ -159,32 +167,25 @@ export default function PutMercaderia() {
                 sx={{ width: 150, marginLeft: 1, marginTop: 1 }}
               />
             </div>
-            <div className="flex flex-row items-center ">
+            <div className="flex flex-row items-center">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker"]} sx={{ width: 200 }}>
-                  <DatePicker
-                    label="Fecha"
-                    value={fecha || null}
-                    onChange={(evt, value) => {
-                      if (value.validationError != null)
-                        return toast.error(value.validationError);
-                      else if (evt != null)
-                        setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
-                      else setFecha(undefined);
-                    }}
-                    slotProps={{
-                      textField: {
-                        helperText: "Required",
-                      },
-                    }}
-                    format="DD/MM/YYYY"
-                  />
-                </DemoContainer>
+                <DatePicker
+                  label="Fecha"
+                  value={inputFecha}
+                  onChange={(evt, value) => {
+                    if (evt != null) {
+                      setFecha(`${evt.$y}-${evt.$M + 1}-${evt.$D}`);
+                      setInputFecha(dayjs(`${evt.$y}-${evt.$M}-${evt.$D}`));
+                    } else setFecha(null);
+                  }}
+                  format="DD/MM/YYYY"
+                />
               </LocalizationProvider>
+              <Button onClick={handleClickDateNow}>Hoy</Button>
             </div>
-            <div className="flex flex-row justify-end">
+            <div className="flex flex-row justify-end mt-4">
               <Button onClick={empty}>Limpiar</Button>
-              <Button onClick={handleClickPost}>Agregar</Button>
+              <Button onClick={handleClickPost} variant="contained">Agregar</Button>
             </div>
           </form>
         ) : (

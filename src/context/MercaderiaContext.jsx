@@ -142,13 +142,18 @@ export function MercaderiaContextProvider(props) {
   const updateApi = (id, json) => {
     update(id, json, userSupabase.token)
       .then((result) => {
-        const mapListInventario = apiOriginal.map((elem) => {
+        const mapListMercaderiaOriginal = apiOriginal.map((elem) => {
           if (elem.id == id) return { ...result };
           else return elem;
         });
 
-        setTableList(mapListInventario);
-        setApiOriginal(mapListInventario);
+        const mapList = tableList.map((elem) => {
+          if (elem.id == id) return { ...result };
+          else return elem;
+        });
+
+        setTableList(mapList);
+        setApiOriginal(mapListMercaderiaOriginal);
 
         //Refresh Inventario
         getAllInventario();
