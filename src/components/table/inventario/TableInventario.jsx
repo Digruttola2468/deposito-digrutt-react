@@ -25,9 +25,7 @@ const HeadTable = () => {
   return (
     <thead className="tableHeader">
       <tr>
-        <th>
-          Articulo
-        </th>
+        <th>Articulo</th>
         <th onClick={handleNombre} className="cursor-pointer py-4 px-1">
           nombre
         </th>
@@ -43,7 +41,7 @@ const HeadTable = () => {
 };
 
 const BodyTable = () => {
-  const { tableList, end, limit, getClienteName } =
+  const { tableList, end, limit, getClienteName, listToMercaderia } =
     useContext(InventarioContext);
 
   const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
@@ -57,20 +55,27 @@ const BodyTable = () => {
         tableList.slice(start, end).map((elem) => {
           if (elem.entrada == null) elem.entrada = 0;
           if (elem.salida == null) elem.salida = 0;
-          
+
           let stockActual = elem.entrada - elem.salida;
+
           return (
             <tr
               key={elem.id}
               onClick={() => setIndex(elem.id)}
-              className="hover:bg-celeste-claro cursor-pointer"
+              className={`hover:bg-celeste-claro cursor-pointer ${listToMercaderia.find(ass => ass.id == elem.id) ? "bg-yellow-200" : ""}`}
             >
               <td className="py-4 px-1">{elem.articulo}</td>
               <td className="py-4 px-1">{elem.nombre}</td>
               <td className="py-4 px-1"> {elem.descripcion}</td>
               <td className="py-4 px-1">{elem.entrada}</td>
               <td className="py-4 px-1">{elem.salida}</td>
-              <td className={`py-4 px-1 font-bold ${stockActual <= 0 ? "text-red-500" : "text-green-500"}`}>{stockActual}</td>
+              <td
+                className={`py-4 px-1 font-bold ${
+                  stockActual <= 0 ? "text-red-500" : "text-green-500"
+                }`}
+              >
+                {stockActual}
+              </td>
               <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
               <td className="py-4 px-1">{getClienteName(elem.idCliente)}</td>
             </tr>
@@ -99,24 +104,27 @@ export default function TableComponent() {
     pagina,
     setPagina,
     setEnd,
+    setListToMercaderia
   } = useContext(InventarioContext);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center ">
       <div className="p-3 shadow-xl">
-        <div className="flex flex-row justify-between items-end">
+        <div className="flex flex-col-reverse md:flex-row justify-between items-end">
           <SearchCodProducto />
           <div>
-          <Button onClick={() => setShowDialogNewCliente(true)}>
-            New Cliente
-          </Button>
-          <Button onClick={() => setShowDialogNewInventario(true)}>
-            New Inventario
-          </Button>
-          <DialogNewInventario />
-          <DialogNewCliente />
+            <Button onClick={() => setListToMercaderia([])}>
+              Limpiar Resaltadores
+            </Button>
+            <Button onClick={() => setShowDialogNewCliente(true)}>
+              New Cliente
+            </Button>
+            <Button onClick={() => setShowDialogNewInventario(true)}>
+              New Inventario
+            </Button>
+            <DialogNewInventario />
+            <DialogNewCliente />
           </div>
-          
         </div>
         <table className="table">
           <HeadTable />

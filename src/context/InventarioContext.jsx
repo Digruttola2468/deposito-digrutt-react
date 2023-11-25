@@ -16,6 +16,7 @@ import {
 
 import { getClientes, postCliente } from "../services/api_otherTables";
 import { UserContext } from "./UserContext";
+import { useLocalStorage } from "usehooks-ts";
 
 export function InventarioContextProvider(props) {
   const { userSupabase } = useContext(UserContext);
@@ -46,6 +47,10 @@ export function InventarioContextProvider(props) {
 
   //Clientes
   const [clientesList, setClientesList] = useState([]);
+
+
+  //Lista para agregar ya sea para agregar en mercaderia o para oficina - notas de envio
+  const [listToMercaderia, setListToMercaderia] = useLocalStorage("resaltadorInventario",[]);
 
   useEffect(() => {
     if (userSupabase != null) {
@@ -264,6 +269,8 @@ export function InventarioContextProvider(props) {
         updateEntradaSalida,
         getAllInventario,
         updateEntradaSalidaFromDeleteMercaderia,
+        setListToMercaderia,
+        listToMercaderia
       }}
     >
       {props.children}

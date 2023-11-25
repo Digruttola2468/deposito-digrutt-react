@@ -6,10 +6,17 @@ import Tooltip from "@mui/material/Tooltip";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { IconButton } from "@mui/material";
 import { InventarioContext } from "../../context/InventarioContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
-export default function CardItemInventario({ data, handleUpdate, handleDelete }) {
-  const { getClienteName } = useContext(InventarioContext);
+import { IoIosRefresh } from "react-icons/io";
+import { RxPlus } from "react-icons/rx";
+
+export default function CardItemInventario({
+  data,
+  handleUpdate,
+  handleDelete,
+}) {
+  const { getClienteName,setListToMercaderia,listToMercaderia } = useContext(InventarioContext);
   const {
     nombre,
     articulo,
@@ -18,14 +25,38 @@ export default function CardItemInventario({ data, handleUpdate, handleDelete })
     salida,
     idCliente,
     pesoUnidad,
+    id
   } = data;
 
   const stockActual = entrada - salida;
 
+  const [loading, setLoading] = useState(false);
+
+  const handleClickSumInventario = () => {
+    setLoading(!loading);
+  };
+
+  const handleClickNewMercaderia = () => {
+    listToMercaderia.push({id})
+    setListToMercaderia(listToMercaderia);
+    console.log(listToMercaderia);
+  }
+
   return (
     <>
       <Card className="ml-2 mt-4">
-        <CardContent>
+        <CardContent className="relative">
+          <div
+            className="absolute right-5 top-5 cursor-pointer"
+            onClick={handleClickSumInventario}
+          >
+            <Tooltip title="refresh" className=" hover:text-blue-400">
+              <IconButton size="small">
+                <IoIosRefresh className={`${loading ? "animate-spin" : ""}`} />
+              </IconButton>
+            </Tooltip>
+          </div>
+
           <div className="flex flex-col">
             <h2 className="text-lg font-semibold uppercase">{nombre}</h2>
             {articulo ? (
@@ -63,7 +94,7 @@ export default function CardItemInventario({ data, handleUpdate, handleDelete })
             )}
           </div>
         </CardContent>
-        <CardActions>
+        <CardActions className="relative">
           <Tooltip
             title="Eliminar"
             onClick={handleDelete}
@@ -82,6 +113,13 @@ export default function CardItemInventario({ data, handleUpdate, handleDelete })
               <FaPen />
             </IconButton>
           </Tooltip>
+          <div className="absolute bottom-2 right-5 cursor-pointer" onClick={handleClickNewMercaderia}>
+            <Tooltip title="para mercaderia" className=" hover:text-blue-400">
+              <IconButton size="small">
+                <RxPlus />
+              </IconButton>
+            </Tooltip>
+          </div>
         </CardActions>
       </Card>
     </>

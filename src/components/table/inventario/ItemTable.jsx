@@ -134,7 +134,7 @@ export default function SelectItemInventario() {
       <DialogDelete
         title="Eliminar Mercaderia"
         show={openDelete}
-        eliminar={handleDelete}
+        handleDelete={handleDelete}
         close={() => setOpenDelete(false)}
       />
     </div>
