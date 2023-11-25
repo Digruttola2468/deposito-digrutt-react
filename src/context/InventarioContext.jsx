@@ -12,6 +12,7 @@ import {
   update,
   eliminar,
   getNombresInventario,
+  getSumInventario,
 } from "../services/api_inventario";
 
 import { getClientes, postCliente } from "../services/api_otherTables";
@@ -21,7 +22,6 @@ import { useLocalStorage } from "usehooks-ts";
 export function InventarioContextProvider(props) {
   const { userSupabase } = useContext(UserContext);
 
-  
   const { index, setIndex } = useState(null);
 
   //Table data
@@ -48,16 +48,20 @@ export function InventarioContextProvider(props) {
   //Clientes
   const [clientesList, setClientesList] = useState([]);
 
-
   //Lista para agregar ya sea para agregar en mercaderia o para oficina - notas de envio
-  const [listToMercaderia, setListToMercaderia] = useLocalStorage("resaltadorInventario",[]);
+  const [listToMercaderia, setListToMercaderia] = useLocalStorage(
+    "resaltadorInventario",
+    []
+  );
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userSupabase != null) {
       getAllInventario();
       getInventarioNombres();
       getClientesAPI();
-    } 
+    }
   }, []);
 
   const getAllInventario = () => {
@@ -78,6 +82,21 @@ export function InventarioContextProvider(props) {
         setInventarioNombres(result);
       })
       .catch((e) => toast.error(e.response.data.message));
+  };
+
+  const sumInventario = (id) => {
+    setLoading(true);
+    getSumInventario(id, userSupabase.token)
+      .then((result) => {
+        const mapListInventario = apiOriginal.map((elem) => {
+          if (elem.id == id)
+            return { ...elem, entrada: result.entrada, salida: result.salida };
+          else return elem;
+        });
+        setApiOriginal(mapListInventario);
+        setTableList(mapListInventario);
+      })
+      .finally(() => setLoading(false));
   };
 
   //Create API inventario
@@ -270,7 +289,9 @@ export function InventarioContextProvider(props) {
         getAllInventario,
         updateEntradaSalidaFromDeleteMercaderia,
         setListToMercaderia,
-        listToMercaderia
+        listToMercaderia,
+        sumInventario,
+        loading,
       }}
     >
       {props.children}

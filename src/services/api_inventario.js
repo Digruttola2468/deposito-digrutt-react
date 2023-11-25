@@ -54,6 +54,22 @@ export const getNombresInventario = async (token) => {
   return await result.json();
 };
 
+//Get Sum Inventario
+export const getSumInventario = async (id,token) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${token}`);
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  const result = await fetch(`${BASE_URL}/inventario/sumInventario/${id}`, requestOptions);
+  if (!result.ok) throw Error(`HTTP status error ${result.status}`);
+  return await result.json();
+};
+
 export const post = async (json, token) => {
   const config = {
     headers: {

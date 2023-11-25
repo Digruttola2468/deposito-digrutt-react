@@ -17,7 +17,7 @@ export default function CardItemInventario({
   handleUpdate,
   handleDelete,
 }) {
-  const { getClienteName,setListToMercaderia,listToMercaderia } = useContext(InventarioContext);
+  const { getClienteName,setListToMercaderia,listToMercaderia,sumInventario,loading } = useContext(InventarioContext);
   const {
     nombre,
     articulo,
@@ -31,10 +31,8 @@ export default function CardItemInventario({
 
   const stockActual = entrada - salida;
 
-  const [loading, setLoading] = useState(false);
-
   const handleClickSumInventario = () => {
-    setLoading(!loading);
+    sumInventario(id);
   };
 
   const handleClickNewMercaderia = () => {
