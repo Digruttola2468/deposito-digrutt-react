@@ -10,6 +10,7 @@ import { useContext, useState } from "react";
 
 import { IoIosRefresh } from "react-icons/io";
 import { RxPlus } from "react-icons/rx";
+import { RiSubtractLine } from "react-icons/ri";
 
 export default function CardItemInventario({
   data,
@@ -39,7 +40,11 @@ export default function CardItemInventario({
   const handleClickNewMercaderia = () => {
     listToMercaderia.push({id})
     setListToMercaderia(listToMercaderia);
-    console.log(listToMercaderia);
+  }
+
+  const handleClickRestMercaderia = () => {
+    const filter = listToMercaderia.filter((elem) => elem.id != id);
+    setListToMercaderia(filter);
   }
 
   return (
@@ -113,12 +118,21 @@ export default function CardItemInventario({
               <FaPen />
             </IconButton>
           </Tooltip>
-          <div className="absolute bottom-2 right-5 cursor-pointer" onClick={handleClickNewMercaderia}>
-            <Tooltip title="para mercaderia" className=" hover:text-blue-400">
+          <div className="absolute bottom-2 right-5 flex flex-row">
+          <div className=" cursor-pointer" onClick={handleClickNewMercaderia}>
+            <Tooltip title="agregar resaltador" className=" hover:text-blue-400">
               <IconButton size="small">
                 <RxPlus />
               </IconButton>
             </Tooltip>
+          </div>
+          <div className=" cursor-pointer" onClick={handleClickRestMercaderia}>
+            <Tooltip title="borrar resaltador" className=" hover:text-blue-400">
+              <IconButton size="small">
+                <RiSubtractLine />
+              </IconButton>
+            </Tooltip>
+          </div>
           </div>
         </CardActions>
       </Card>
