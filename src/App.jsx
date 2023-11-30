@@ -20,6 +20,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import NotHavePermission from "./pages/NotHavePermission";
 import { FacturaNegroProvider } from "./context/FacturaNegroContext";
 import NotaEnvio from "./pages/NotaEnvio";
+import NewMercaderiaResaltadores from "./pages/newMercaderiaResaltadores";
 
 export default function App() {
   const { userSupabase } = useContext(UserContext);
@@ -31,6 +32,14 @@ export default function App() {
         element={
           <MercaderiaContextProvider>
             <Mercaderia />
+          </MercaderiaContextProvider>
+        }
+      />
+      <Route
+        path="/newMercaderia"
+        element={
+          <MercaderiaContextProvider>
+            <NewMercaderiaResaltadores />
           </MercaderiaContextProvider>
         }
       />

@@ -36,8 +36,16 @@ export default function CardItemInventario({
   };
 
   const handleClickNewMercaderia = () => {
-    listToMercaderia.push({id})
-    setListToMercaderia(listToMercaderia);
+    if (listToMercaderia.length != 0) {
+      const findSameId = listToMercaderia.find(elem => elem.id == id);
+      if (findSameId) return
+      listToMercaderia.push({id,nombre,articulo,descripcion,idCliente})
+      setListToMercaderia(listToMercaderia);
+    }else {
+      listToMercaderia.push({id,nombre,articulo,descripcion,idCliente})
+      setListToMercaderia(listToMercaderia);
+    }
+    
   }
 
   const handleClickRestMercaderia = () => {

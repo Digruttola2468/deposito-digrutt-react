@@ -30,6 +30,21 @@ export const post = async (json, token) => {
   return await request.data;
 };
 
+//New mercaderia
+export const listPost = async (json, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const request = await axios.post(`${BASE_URL}/mercaderia/list`, json, config);
+
+  if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
+
+  return await request.data;
+};
+
 //Update mercaderia
 export const update = async (id, json, token) => {
   const config = {

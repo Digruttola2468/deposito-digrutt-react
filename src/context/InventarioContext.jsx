@@ -67,7 +67,6 @@ export function InventarioContextProvider(props) {
   const getAllInventario = () => {
     get(userSupabase.token)
       .then((result) => {
-        console.log(result);
         setTableList(result);
         setApiOriginal(result);
         setDone(true);

@@ -27,10 +27,12 @@ import {
 import { useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "../../../context/InventarioContext";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 const filter = createFilterOptions();
 
 export default function PutMercaderia() {
+  const navegate = useNavigate();
   const { createApi, idCategoria, createInventario } =
     useContext(MercaderiaContext);
   const { inventarioNombres } = useContext(InventarioContext);
@@ -184,6 +186,7 @@ export default function PutMercaderia() {
               <Button onClick={handleClickDateNow}>Hoy</Button>
             </div>
             <div className="flex flex-row justify-end mt-4">
+              <Button onClick={() => navegate('/newMercaderia')}>Agregar Resaltados</Button>
               <Button onClick={empty}>Limpiar</Button>
               <Button onClick={handleClickPost} variant="contained">Agregar</Button>
             </div>

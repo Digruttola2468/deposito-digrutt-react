@@ -9,11 +9,10 @@ import {
   post,
   getAllMercaderia,
   getGrafica,
+  listPost,
 } from "../services/api_mercaderia";
 
-import {
-  post as postInventario,
-} from "../services/api_inventario";
+import { post as postInventario } from "../services/api_inventario";
 
 import {
   getFacturaNegro,
@@ -101,7 +100,7 @@ export function MercaderiaContextProvider(props) {
     if (userSupabase != null) {
       getListMercaderiaAll();
       getAllFacturasNegro();
-    } 
+    }
   }, []);
 
   //filtramos list Mercaderia BBDD
@@ -217,6 +216,15 @@ export function MercaderiaContextProvider(props) {
       .catch((e) => toast.error(e.response.data.message));
   };
 
+  const addListMercaderia = (json) => {
+    listPost(json, userSupabase.token).then((result) => {
+      console.log(result);
+
+      toast.success('Se agrego con exito');
+      getListMercaderiaAll();
+    });
+  };
+
   //ORDER BY
   const orderNombreASC = () => {
     setTableList(
@@ -325,6 +333,7 @@ export function MercaderiaContextProvider(props) {
         isDoneFacturaNegro,
         clientesList,
         postAllFacturaNegro,
+        addListMercaderia
       }}
     >
       {props.children}
