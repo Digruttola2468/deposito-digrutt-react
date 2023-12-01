@@ -6,7 +6,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { IconButton } from "@mui/material";
 
-const getDateWithNameMonth = (fechaString) => {
+const getDateWithNameMonth = (fechaString = "") => {
   const monthNames = [
     "NaN",
     "Enero",
@@ -24,6 +24,9 @@ const getDateWithNameMonth = (fechaString) => {
   ];
   let info = fechaString.split('-').join('/');
   const fDate = new Date(info);
+
+  if (Number.isNaN(fDate.getDate())) return ""
+  
   return `${fDate.getDate()} ${
     monthNames[fDate.getMonth() + 1]
   } ${fDate.getFullYear()}`;
