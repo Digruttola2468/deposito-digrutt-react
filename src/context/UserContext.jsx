@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
+  const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/api";
+
   const navegate = useNavigate();
   const [userSupabase, setUserSupabase] = useLocalStorage("user", null);
 
@@ -158,6 +160,7 @@ export const UserProvider = (props) => {
         userSupabase,
         isDone,
         loading,
+        BASE_URL
       }}
     >
       {props.children}

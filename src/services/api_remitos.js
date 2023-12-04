@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/api";
 
 export const postRemito = async (token, jsonData) => {
   const config = {

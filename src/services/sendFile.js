@@ -1,7 +1,7 @@
 import axios from "axios";
 import fileDownload from "js-file-download";
 
-const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/api";
 
 export const sendFile = (token, url, nameFile) => {
   axios({

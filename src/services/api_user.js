@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app";
+const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/api";
 
 export const getToken = async (gmail) => {
   const request = await axios.get(`${BASE_URL}/login?email=${gmail}`);

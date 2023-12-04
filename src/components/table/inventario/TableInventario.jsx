@@ -3,8 +3,6 @@ import { InventarioContext } from "../../../context/InventarioContext";
 
 import SelectItemInventario from "./ItemTable";
 
-import { useLocalStorage } from "usehooks-ts";
-
 import Pagination from "@mui/material/Pagination";
 import SearchCodProducto from "../../search/SearchInventario";
 import { Button } from "@mui/material";
@@ -13,22 +11,11 @@ import PesoUnidad from "./PesoUnidad";
 import DialogNewCliente from "../../dialog/DialogNewCliente";
 
 const HeadTable = () => {
-  const { orderNombreASC, orderNombreDES } = useContext(InventarioContext);
-  const [order, setOrder] = useState(false);
-
-  //Handle Button
-  const handleNombre = () => {
-    if (order) orderNombreASC();
-    else orderNombreDES();
-    setOrder(!order);
-  };
   return (
     <thead className="tableHeader">
       <tr>
         <th>Articulo</th>
-        <th onClick={handleNombre} className="cursor-pointer py-4 px-1">
-          nombre
-        </th>
+        <th>nombre</th>
         <th>descripcion</th>
         <th>entrada</th>
         <th>salida</th>
@@ -41,10 +28,9 @@ const HeadTable = () => {
 };
 
 const BodyTable = () => {
-  const { tableList, end, limit, getClienteName, listToMercaderia } =
+  const { tableList, end, limit, getClienteName, listToMercaderia, setIndex } =
     useContext(InventarioContext);
 
-  const [index, setIndex] = useLocalStorage("selectIndexInventario", 0);
   const [start, setStart] = useState(0);
 
   useEffect(() => setStart(end - limit));
@@ -62,7 +48,11 @@ const BodyTable = () => {
             <tr
               key={elem.id}
               onClick={() => setIndex(elem.id)}
-              className={`hover:bg-celeste-claro cursor-pointer ${listToMercaderia.find(ass => ass.id == elem.id) ? "bg-yellow-200" : ""}`}
+              className={`hover:bg-celeste-claro cursor-pointer ${
+                listToMercaderia.find((ass) => ass.id == elem.id)
+                  ? "bg-yellow-200"
+                  : ""
+              }`}
             >
               <td className="py-4 px-1">{elem.articulo}</td>
               <td className="py-4 px-1">{elem.nombre}</td>
@@ -96,16 +86,11 @@ const BodyTable = () => {
 };
 
 export default function TableComponent() {
-  const {
-    setShowDialogNewInventario,
-    setShowDialogNewCliente,
-    tableList,
-    limit,
-    pagina,
-    setPagina,
-    setEnd,
-    setListToMercaderia
-  } = useContext(InventarioContext);
+  const { tableList, limit, pagina, setPagina, setEnd, setListToMercaderia } =
+    useContext(InventarioContext);
+
+  const [openDialogNewCliente, setOpenDialogCliente] = useState(false);
+  const [oepnDialogNewInventario, setOpenDialogNewInventario] = useState(false);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center ">
@@ -116,14 +101,20 @@ export default function TableComponent() {
             <Button onClick={() => setListToMercaderia([])}>
               Limpiar Resaltadores
             </Button>
-            <Button onClick={() => setShowDialogNewCliente(true)}>
+            <Button onClick={() => setOpenDialogCliente(true)}>
               New Cliente
             </Button>
-            <Button onClick={() => setShowDialogNewInventario(true)}>
+            <Button onClick={() => setOpenDialogNewInventario(true)}>
               New Inventario
             </Button>
-            <DialogNewInventario />
-            <DialogNewCliente />
+            <DialogNewInventario
+              open={oepnDialogNewInventario}
+              close={setOpenDialogNewInventario}
+            />
+            <DialogNewCliente
+              open={openDialogNewCliente}
+              close={setOpenDialogCliente}
+            />
           </div>
         </div>
         <table className="table">

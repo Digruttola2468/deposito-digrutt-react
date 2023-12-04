@@ -11,8 +11,7 @@ import { useFetch, useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "../../../context/InventarioContext";
 
 export default function PesoUnidad() {
-  const { tableList } = useContext(InventarioContext);
-  const index = useReadLocalStorage("selectIndexInventario");
+  const { tableList,index } = useContext(InventarioContext);
 
   const [pesoUnidad, setPesoUnidad] = useState("");
   const [cantidad, setCantidad] = useState("");
@@ -24,7 +23,7 @@ export default function PesoUnidad() {
   }, [index]);
 
   return (
-    <Accordion className="mt-2 ml-2">
+    <Accordion className="my-2">
       <AccordionSummary expandIcon={<MdExpandMore />}>
         Peso Unidad
       </AccordionSummary>

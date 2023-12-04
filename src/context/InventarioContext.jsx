@@ -22,7 +22,7 @@ import { useLocalStorage } from "usehooks-ts";
 export function InventarioContextProvider(props) {
   const { userSupabase } = useContext(UserContext);
 
-  const { index, setIndex } = useState(null);
+  const [index, setIndex]  = useState(null);
 
   //Table data
   const [tableList, setTableList] = useState([]);
@@ -31,19 +31,10 @@ export function InventarioContextProvider(props) {
   //Search Data
   const [inventarioNombres, setInventarioNombres] = useState([]);
 
-  //if the progress to get data is done
-  const [isdone, setDone] = useState(false);
-
   //Page Table
   const [limit, setLimit] = useState(10);
   const [end, setEnd] = useState(limit);
   const [pagina, setPagina] = useState(1);
-
-  //show dialog to create inventario
-  const [showDialogNewInventario, setShowDialogNewInventario] = useState(false);
-
-  //show dialog to create Cliente
-  const [showDialogNewCliente, setShowDialogNewCliente] = useState(false);
 
   //Clientes
   const [clientesList, setClientesList] = useState([]);
@@ -69,9 +60,8 @@ export function InventarioContextProvider(props) {
       .then((result) => {
         setTableList(result);
         setApiOriginal(result);
-        setDone(true);
       })
-      .catch((e) => toast.error(e.response.data.message));
+      .catch((e) => {toast.error(e.data.message)});
   };
 
   //Get API for search
@@ -102,9 +92,9 @@ export function InventarioContextProvider(props) {
   const createApi = (json) => {
     post(json, userSupabase.token)
       .then((result) => {
-        toast.success("Creado Correctamente");
         setTableList([{ ...result }, ...tableList]);
         setApiOriginal([{ ...result }, ...apiOriginal]);
+        toast.success("Creado Correctamente");
         getInventarioNombres();
       })
       .catch((e) => {
@@ -203,8 +193,7 @@ export function InventarioContextProvider(props) {
   const createCliente = (json) => {
     postCliente(json, userSupabase.token)
       .then((result) => {
-        clientesList.push(result);
-        setClientesList(clientesList);
+        setClientesList(clientesList.push(result));
         toast.success("Se creo con exito");
       })
       .catch((e) => {
@@ -227,36 +216,6 @@ export function InventarioContextProvider(props) {
     return "";
   };
 
-  //ORDER BY
-  const orderNombreASC = () => {
-    setTableList(
-      tableList.sort((a, b) => {
-        if (a.nombre > b.nombre) {
-          return 1;
-        }
-        if (a.nombre < b.nombre) {
-          return -1;
-        }
-        return 0;
-      })
-    );
-    toast.info("Ordenado Nombre Ascendente");
-  };
-  const orderNombreDES = () => {
-    setTableList(
-      tableList.sort((a, b) => {
-        if (a.nombre < b.nombre) {
-          return 1;
-        }
-        if (a.nombre > b.nombre) {
-          return -1;
-        }
-        return 0;
-      })
-    );
-    toast.info("Ordenado Nombre Descendente");
-  };
-
   return (
     <InventarioContext.Provider
       value={{
@@ -272,17 +231,10 @@ export function InventarioContextProvider(props) {
         createApi,
         updateApi,
         deleteApi,
-        orderNombreASC,
-        orderNombreDES,
-        isdone,
         getPrevius,
-        showDialogNewInventario,
-        setShowDialogNewInventario,
         clientesList,
         getClienteName,
         createCliente,
-        showDialogNewCliente,
-        setShowDialogNewCliente,
         inventarioNombres,
         updateEntradaSalida,
         getAllInventario,
@@ -291,6 +243,8 @@ export function InventarioContextProvider(props) {
         listToMercaderia,
         sumInventario,
         loading,
+        index,
+        setIndex,
       }}
     >
       {props.children}

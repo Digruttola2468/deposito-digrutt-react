@@ -17,8 +17,8 @@ import {
 import { InventarioContext } from "../../context/InventarioContext";
 import { toast } from "react-toastify";
 
-export default function DialogNewInventario() {
-  const { showDialogNewInventario, setShowDialogNewInventario, createApi, clientesList } =
+export default function DialogNewInventario({open, close}) {
+  const { createApi, clientesList } =
     useContext(InventarioContext);
 
   const [codProducto, setCodProducto] = useState("");
@@ -45,7 +45,6 @@ export default function DialogNewInventario() {
     setDescripcion("");
     setPesoUnidad("");
     setCliente("");
-    setShowDialogNewInventario(false);
   };
 
   const handleCloseDialog = () => {
@@ -53,11 +52,11 @@ export default function DialogNewInventario() {
     setDescripcion("");
     setPesoUnidad("");
     setCliente("");
-    setShowDialogNewInventario(false);
+    close(false);
   };
 
   return (
-    <Dialog open={showDialogNewInventario} onClose={handleCloseDialog}>
+    <Dialog open={open} onClose={handleCloseDialog}>
       <form onSubmit={handleSubmit}>
         <DialogTitle>Nuevo Cod.Producto</DialogTitle>
         <DialogContent

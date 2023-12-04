@@ -28,11 +28,11 @@ export default function PostInventario() {
       return toast.error("Campo Descripcion Vacio");
     
  
-
-    /*createApi({
+/*
+    createApi({
       nombre,
       descripcion
-    }, token);*/
+    });*/
     
     empty();
   };

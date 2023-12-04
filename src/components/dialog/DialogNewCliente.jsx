@@ -15,22 +15,17 @@ import {
 } from "@mui/material";
 
 import { InventarioContext } from "../../context/InventarioContext";
-import { toast } from "react-toastify";
-import { getLocalidad } from "../../services/api_otherTables";
+import useSWR from "swr";
+import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 
-export default function DialogNewCliente() {
-  const { createCliente, setShowDialogNewCliente, showDialogNewCliente } =
-    useContext(InventarioContext);
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-  const [listLocalidad, setListLocalidad] = useState([]);
+export default function DialogNewCliente({ open = false, close }) {
+  const { createCliente } = useContext(InventarioContext);
+  const { BASE_URL } = useContext(UserContext);
 
-  useEffect(() => {
-    getLocalidad()
-      .then((result) => {
-        setListLocalidad(result);
-      })
-      .catch((e) => console.log(e));
-  }, []);
+  const { data, isLoading, error } = useSWR(`${BASE_URL}/localidad`, fetcher);
 
   const [codigo, setCodigo] = useState("");
   const [nombreCliente, setNombreCliente] = useState("");
@@ -51,27 +46,25 @@ export default function DialogNewCliente() {
       cuit,
     });
 
-    setCodigo("");
-    setNombreCliente("");
-    setDomicilio("");
-    setLocalidad("");
-    setGmail("");
-    setCuit("");
-    setShowDialogNewCliente(false);
+    empty();
   };
 
   const handleCloseDialog = () => {
+    empty();
+    close(false);
+  };
+
+  const empty = () => {
     setCodigo("");
     setNombreCliente("");
     setDomicilio("");
     setLocalidad("");
     setGmail("");
     setCuit("");
-    setShowDialogNewCliente(false);
   };
 
   return (
-    <Dialog open={showDialogNewCliente} onClose={handleCloseDialog}>
+    <Dialog open={open} onClose={handleCloseDialog}>
       <form onSubmit={handleSubmit}>
         <DialogTitle>Nuevo Cliente</DialogTitle>
         <DialogContent
@@ -133,13 +126,17 @@ export default function DialogNewCliente() {
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {listLocalidad.map((elem) => {
-                  return (
-                    <MenuItem key={elem.id} value={elem.id}>
-                      {elem.ciudad}
-                    </MenuItem>
-                  );
-                })}
+                {!isLoading ? (
+                  data.map((elem) => {
+                    return (
+                      <MenuItem key={elem.id} value={elem.id}>
+                        {elem.ciudad}
+                      </MenuItem>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
               </Select>
             </FormControl>
           </Box>
