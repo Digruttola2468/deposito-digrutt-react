@@ -18,6 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import DocRemitoPdf from '../../../pages/views/Remito'
+import { AiFillDelete } from 'react-icons/ai'
 
 export default function NewRemito() {
   const { inventarioNombres, clientesList, sendRemito, loadingSend } =
