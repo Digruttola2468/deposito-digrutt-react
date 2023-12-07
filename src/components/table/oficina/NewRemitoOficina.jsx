@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { OficinaContext } from "../../../context/OficinaContext";
 import {
   Autocomplete,
@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
   FormControl,
@@ -15,7 +14,6 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
-  Modal,
   Select,
   TextField,
   Tooltip,
@@ -26,10 +24,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import DocRemitoPdf from "../../../pages/views/Remito";
-import { AiFillDelete } from "react-icons/ai";
 import { InventarioContext } from "../../../context/InventarioContext";
 import { FiTrash } from "react-icons/fi";
-import { IoMdClose } from "react-icons/io";
 import dayjs from "dayjs";
 
 export default function NewRemito() {

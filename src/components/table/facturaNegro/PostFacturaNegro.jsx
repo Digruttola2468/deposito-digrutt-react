@@ -15,6 +15,7 @@ import {
   Select,
   Switch,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { AiFillDelete } from "react-icons/ai";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -24,10 +25,12 @@ import { getSendEnvio } from "../../../services/api_otherTables";
 import dayjs from "dayjs";
 
 import { toast } from "react-toastify";
+import { FiTrash } from "react-icons/fi";
 
 export default function PostFacturaNegro() {
-  const {postFacturaNegroBBDD} = useContext(FacturaNegroContext);
-  const { inventarioNombres, clientesList } = useContext(InventarioContext);
+  const { postFacturaNegroBBDD } = useContext(FacturaNegroContext);
+  const { inventarioNombres, clientesList, getClienteName } =
+    useContext(InventarioContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);
@@ -80,7 +83,7 @@ export default function PostFacturaNegro() {
       ).value;
 
       if (stock == "") stock = 0;
-      
+
       if (precio == "") precio = 0;
       else valorDeclarado += parseFloat(precio);
 
@@ -267,48 +270,63 @@ export default function PostFacturaNegro() {
                   return (
                     <div
                       key={elem.id}
-                      className="block relative rounded-lg bg-white p-6 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 border lg:mx-5 mx-1 my-2"
+                      className="relative flex flex-col justify-between border p-2 rounded-md max-w-[340px] hover:translate-x-1 hover:translate-y-1 transition-transform duration-300"
                     >
-                      <div className="my-2">
-                        <TextField
-                          label="Cod Producto"
-                          type="text"
-                          variant="standard"
-                          defaultValue={elem.nombre}
-                          id={`input-${elem.id}`}
-                          sx={{ width: 150 }}
-                          disabled
-                        />
+                      <div className="flex flex-row">
+                        {elem.urlImage ? (
+                          <div>
+                            <img
+                              src={elem.urlImage}
+                              alt="img"
+                              className="w-15 h-10 "
+                            />
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                        <div>
+                          <h2 className="font-bold uppercase">
+                            {elem.nombre}{" "}
+                            <span className="font-medium text-xs">
+                              {getClienteName(elem.idCliente)}
+                            </span>
+                          </h2>
+                          <p className="font-semibold text-sm text-gray-400">
+                            {elem.descripcion}
+                          </p>
+                        </div>
                       </div>
-                      <div className="my-2">
-                        <TextField
-                          label="Stock"
-                          type="number"
-                          variant="standard"
-                          id={`stock-${elem.id}`}
-                          className="ml-4"
-                          sx={{ width: 150 }}
-                        />
+                      <div className="flex flex-row">
+                        <div className="mr-4">
+                          <TextField
+                            label="Cantidad"
+                            type="number"
+                            variant="standard"
+                            id={`stock-${elem.id}`}
+                            sx={{ width: 100 }}
+                          />
+                        </div>
+                        <div className="mr-4">
+                          <TextField
+                            label="Precio"
+                            type="number"
+                            variant="standard"
+                            id={`precio-${elem.id}`}
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  $
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </div>
                       </div>
-                      <div className="my-2">
-                        <TextField
-                          label="Precio"
-                          type="number"
-                          variant="standard"
-                          id={`precio-${elem.id}`}
-                          className="ml-4"
-                          sx={{ width: 150 }}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                $
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </div>
-                      <div className="absolute top-0 right-0">
-                        <IconButton
+
+                      <div className="absolute right-2">
+                        <Tooltip
+                          title="borrar"
+                          className=" hover:text-red-400"
                           onClick={() => {
                             const findPedidoDelete = pedidos.find(
                               (elm) => elm.id == elem.id
@@ -317,12 +335,17 @@ export default function PostFacturaNegro() {
                               (elm) => elm.id !== elem.id
                             );
 
-                            setSearchinventario([findPedidoDelete, ...searchInventario]);
+                            setSearchinventario([
+                              findPedidoDelete,
+                              ...searchInventario,
+                            ]);
                             setPedidos(filterDelete);
                           }}
                         >
-                          <AiFillDelete />
-                        </IconButton>
+                          <IconButton size="small">
+                            <FiTrash />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     </div>
                   );
@@ -333,7 +356,7 @@ export default function PostFacturaNegro() {
                 <>
                   <button
                     onClick={handleClickSend}
-                    className="ml-2 px-6 py-3 rounded-lg bg-blue-500 text-white border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
+                    className="ml-2 px-6 py-3 my-2 rounded-lg bg-blue-500 text-white border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
                   >
                     Enviar
                   </button>

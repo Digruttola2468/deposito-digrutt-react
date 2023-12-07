@@ -18,7 +18,7 @@ export default function TableNotaEnvio() {
 
   const formatDate = (fecha) => {
     const date = new Date(fecha);
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
   const [start, setStart] = useState(0);

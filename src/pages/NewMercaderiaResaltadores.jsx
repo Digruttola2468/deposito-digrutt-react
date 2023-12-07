@@ -90,7 +90,7 @@ export default function NewMercaderiaResaltadores() {
             </span>
           </h1>
           <section className="flex flex-col  justify-center items-center">
-            <div className="grid grid-cols-1 gap-4  sm:grid-cols-2 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               {listMercaderia.map((elem) => (
                 <div
                   key={elem.id}
