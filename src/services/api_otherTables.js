@@ -99,6 +99,6 @@ export const postCliente = async (json, token) => {
 
   if (request.status >= 400) throw Error(`HTTP status error ${request.status}`);
 
-  return await request.data;
+  return request;
 }
 

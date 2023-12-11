@@ -70,7 +70,7 @@ export function InventarioContextProvider(props) {
       .then((result) => {
         setInventarioNombres(result);
       })
-      .catch((e) => toast.error(e.response.data.message));
+      .catch((e) => {console.log(e)})
   };
 
   const sumInventario = (id) => {
@@ -191,9 +191,14 @@ export function InventarioContextProvider(props) {
 
   //Create Cliente
   const createCliente = (json) => {
+    const {idLocalidad} = json;
+
+    if (idLocalidad == "") json.idLocalidad = null;
+
     postCliente(json, userSupabase.token)
       .then((result) => {
-        setClientesList(clientesList.push(result));
+        clientesList.push(result);
+        setClientesList(clientesList);
         toast.success("Se creo con exito");
       })
       .catch((e) => {

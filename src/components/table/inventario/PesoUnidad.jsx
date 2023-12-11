@@ -7,7 +7,6 @@ import {
 import { useContext, useEffect, useState } from "react";
 
 import { MdExpandMore } from "react-icons/md";
-import { useFetch, useReadLocalStorage } from "usehooks-ts";
 import { InventarioContext } from "../../../context/InventarioContext";
 
 export default function PesoUnidad() {
@@ -31,7 +30,6 @@ export default function PesoUnidad() {
         <TextField
           value={pesoUnidad}
           variant="outlined"
-          className="w-[100px]"
           label="Peso"
           type="number"
           onChange={(evt) => setPesoUnidad(evt.target.value)}
@@ -43,7 +41,6 @@ export default function PesoUnidad() {
           variant="outlined"
           type="number"
           label="Cantidad"
-          sx={{ minWidth: "100px" }}
           onChange={(evt) => setCantidad(evt.target.value)}
         />
         <span className="mx-1">=</span>

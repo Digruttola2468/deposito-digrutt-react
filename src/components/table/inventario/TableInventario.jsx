@@ -8,20 +8,35 @@ import SearchCodProducto from "../../search/SearchInventario";
 import { Button } from "@mui/material";
 import DialogNewInventario from "../../dialog/DialogNewInventario";
 import PesoUnidad from "./PesoUnidad";
-import DialogNewCliente from "../../dialog/DialogNewCliente";
 
 const HeadTable = () => {
   return (
-    <thead className="tableHeader">
+    <thead className="border-b font-medium dark:border-neutral-500">
       <tr>
-        <th>Articulo</th>
-        <th>nombre</th>
-        <th>descripcion</th>
-        <th>entrada</th>
-        <th>salida</th>
-        <th>stockActual</th>
-        <th>Peso x Unidad</th>
-        <th>Cliente</th>
+        <th scope="col" className="px-6 py-4">
+          Articulo
+        </th>
+        <th scope="col" className="px-6 py-4">
+          nombre
+        </th>
+        <th scope="col" className="px-6 py-4">
+          descripcion
+        </th>
+        <th scope="col" className="px-6 py-4">
+          entrada
+        </th>
+        <th scope="col" className="px-6 py-4">
+          salida
+        </th>
+        <th scope="col" className="px-6 py-4">
+          stockActual
+        </th>
+        <th scope="col" className="px-6 py-4">
+          Peso x Unidad
+        </th>
+        <th scope="col" className="px-6 py-4">
+          Cliente
+        </th>
       </tr>
     </thead>
   );
@@ -33,7 +48,7 @@ const BodyTable = () => {
 
   const [start, setStart] = useState(0);
 
-  useEffect(() => setStart(end - limit));
+  useEffect(() => setStart(end - limit), [end]);
 
   return (
     <tbody>
@@ -54,20 +69,35 @@ const BodyTable = () => {
                   : ""
               }`}
             >
-              <td className="py-4 px-1">{elem.articulo}</td>
-              <td className="py-4 px-1">{elem.nombre}</td>
-              <td className="py-4 px-1"> {elem.descripcion}</td>
-              <td className="py-4 px-1">{elem.entrada}</td>
-              <td className="py-4 px-1">{elem.salida}</td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {elem.articulo}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {elem.nombre}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {" "}
+                {elem.descripcion}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {elem.entrada}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {elem.salida}
+              </td>
               <td
-                className={`py-4 px-1 font-bold ${
+                className={`whitespace-nowrap px-6 py-4 font-medium ${
                   stockActual <= 0 ? "text-red-500" : "text-green-500"
                 }`}
               >
                 {stockActual}
               </td>
-              <td className="py-4 px-1">{elem.pesoUnidad}kg</td>
-              <td className="py-4 px-1">{getClienteName(elem.idCliente)}</td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {elem.pesoUnidad}kg
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 font-medium">
+                {getClienteName(elem.idCliente)}
+              </td>
             </tr>
           );
         })
@@ -89,48 +119,43 @@ export default function TableComponent() {
   const { tableList, limit, pagina, setPagina, setEnd, setListToMercaderia } =
     useContext(InventarioContext);
 
-  const [openDialogNewCliente, setOpenDialogCliente] = useState(false);
   const [oepnDialogNewInventario, setOpenDialogNewInventario] = useState(false);
 
   return (
-    <div className="flex flex-col lg:flex-row justify-center ">
-      <div className="p-3 shadow-xl">
-        <div className="flex flex-col-reverse md:flex-row justify-between items-end">
+    <div className="flex flex-col xl:flex-row justify-center ">
+      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="flex flex-row">
           <SearchCodProducto />
-          <div>
-            <Button onClick={() => setListToMercaderia([])}>
-              Limpiar Resaltadores
-            </Button>
-            <Button onClick={() => setOpenDialogCliente(true)}>
-              New Cliente
-            </Button>
-            <Button onClick={() => setOpenDialogNewInventario(true)}>
-              New Inventario
-            </Button>
-            <DialogNewInventario
-              open={oepnDialogNewInventario}
-              close={setOpenDialogNewInventario}
-            />
-            <DialogNewCliente
-              open={openDialogNewCliente}
-              close={setOpenDialogCliente}
-            />
+          <Button onClick={() => setListToMercaderia([])}>
+            Limpiar Resaltadores
+          </Button>
+          <Button onClick={() => setOpenDialogNewInventario(true)}>
+            New Inventario
+          </Button>
+          <DialogNewInventario
+            open={oepnDialogNewInventario}
+            close={setOpenDialogNewInventario}
+          />
+        </div>
+        <div className="inline-block min-w-full sm:max-w-[1300px] py-2 sm:px-6 lg:px-8">
+          <div className="overflow-hidden ">
+            <table className="text-center min-w-full text-sm font-light">
+              <HeadTable />
+              <BodyTable />
+            </table>
           </div>
         </div>
-        <table className="table">
-          <HeadTable />
-          <BodyTable />
-        </table>
-        <Pagination
-          count={Math.ceil(tableList.length / limit)}
-          onChange={(evt, newValue) => {
-            setEnd(limit * parseInt(newValue));
-            setPagina(newValue);
-          }}
-          page={pagina}
-        />
+        <div className="flex flex-row justify-center ">
+          <Pagination
+            count={Math.ceil(tableList.length / limit)}
+            onChange={(evt, newValue) => {
+              setEnd(limit * parseInt(newValue));
+              setPagina(newValue);
+            }}
+            page={pagina}
+          />
+        </div>
       </div>
-
       <div className="flex flex-col">
         <SelectItemInventario />
         <PesoUnidad />
