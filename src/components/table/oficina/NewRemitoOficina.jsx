@@ -29,9 +29,9 @@ import { FiTrash } from "react-icons/fi";
 import dayjs from "dayjs";
 
 export default function NewRemito() {
-  const { inventarioNombres, clientesList, sendRemito, loadingSend } =
+  const { inventarioNombres, clientesList, sendRemito } =
     useContext(OficinaContext);
-  const { getClienteName } = useContext(InventarioContext);
+  const { getClienteName, listToMercaderia } = useContext(InventarioContext);
 
   const [dialogConfirm, setDialogConfirm] = useState(false);
 
@@ -166,6 +166,22 @@ export default function NewRemito() {
     setViewPdf(false);
   };
 
+  const handleClickAgregarListInventario = () => {
+    if (listToMercaderia.length != 0) {
+      const filter = listToMercaderia.filter(
+        (elem) => elem.idCliente == cliente
+      );
+
+      for (let i = 0; i < filter.length; i++) {
+        const element = filter[i];
+        setSearchinventario(
+          searchInventario.filter((elem) => elem.id != element.id)
+        );
+      }
+      setPedidos(filter);
+    }
+  };
+
   return (
     <>
       <section className="flex flex-col justify-center items-center gap-5 lg:flex-row">
@@ -283,6 +299,19 @@ export default function NewRemito() {
               )}
             </div>
           </form>
+          {cliente ? (
+            <div className="my-5">
+              <Button
+                variant="outlined"
+                className="w-full"
+                onClick={handleClickAgregarListInventario}
+              >
+                Agregar por list inventario
+              </Button>
+            </div>
+          ) : (
+            <></>
+          )}
         </section>
         <section className="flex flex-col">
           <form action="" className="grid grid-cols-1 sm:grid-cols-2 gap-3">

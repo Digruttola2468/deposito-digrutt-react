@@ -59,6 +59,8 @@ export default function CardItemInventario({handleUpdate = ()=>{}, handleDelete 
       descripcion: data.data.descripcion,
       idCliente: data.data.idCliente,
       urlImage: data.data.url_image,
+      entrada: data.data.entrada,
+      salida: data.data.salida,
       stockActual,
     }
 

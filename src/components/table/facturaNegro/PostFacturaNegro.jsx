@@ -33,7 +33,7 @@ import { FiTrash } from "react-icons/fi";
 
 export default function PostFacturaNegro() {
   const { postFacturaNegroBBDD } = useContext(FacturaNegroContext);
-  const { inventarioNombres, clientesList, getClienteName } =
+  const { inventarioNombres, clientesList, getClienteName,listToMercaderia } =
     useContext(InventarioContext);
 
   const [nroEnvio, setNroEnvio] = useState("");
@@ -132,6 +132,22 @@ export default function PostFacturaNegro() {
 
     setFecha(`${year}-${mounth}-${day}`);
     setInputFecha(dayjs(`${year}-${mounth}-${day}`));
+  };
+
+  const handleClickAgregarListInventario = () => {
+    if (listToMercaderia.length != 0) {
+      const filter = listToMercaderia.filter(
+        (elem) => elem.idCliente == cliente
+      );
+
+      for (let i = 0; i < filter.length; i++) {
+        const element = filter[i];
+        setSearchinventario(
+          searchInventario.filter((elem) => elem.id != element.id)
+        );
+      }
+      setPedidos(filter);
+    }
   };
 
   return (
@@ -277,6 +293,19 @@ export default function PostFacturaNegro() {
                 )}
               </div>
             </form>
+            {cliente ? (
+            <div className="my-5">
+              <Button
+                variant="outlined"
+                className="w-full"
+                onClick={handleClickAgregarListInventario}
+              >
+                Agregar por list inventario
+              </Button>
+            </div>
+          ) : (
+            <></>
+          )}
           </section>
           <section className="grid place-content-center">
             <form action="">
