@@ -13,7 +13,7 @@ import { UserContext } from "../../context/UserContext";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
-export default function SearchCliente({ data = [], setData, onMutate }) {
+export default function SearchCliente({ data = [], setData, paginaInit }) {
   const { BASE_URL } = useContext(UserContext);
   const {
     data: localidadApi,
@@ -22,7 +22,6 @@ export default function SearchCliente({ data = [], setData, onMutate }) {
   } = useSWR(`${BASE_URL}/localidad`, fetcher);
 
   const [localidad, setLocalidad] = useState("");
-  const [searchCliente, setSearchCliente] = useState("");
 
   if (isLoading) {
     return <></>;
@@ -37,6 +36,7 @@ export default function SearchCliente({ data = [], setData, onMutate }) {
             value={localidad}
             label="Localidad"
             onChange={(evt) => {
+              paginaInit();
               const comboBoxLocalidad = evt.target.value;
               setLocalidad(comboBoxLocalidad);
               const resultado = data.filter((elem) => {
@@ -44,7 +44,7 @@ export default function SearchCliente({ data = [], setData, onMutate }) {
               });
               if (comboBoxLocalidad !== "") {
                 setData(resultado);
-              }else onMutate();
+              }else setData(data);
             }}
           >
             <MenuItem value="">

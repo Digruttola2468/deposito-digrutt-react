@@ -93,6 +93,7 @@ export default function PostFacturaNegro() {
 
       products.push({ stock, idProduct, precio, ...findProduct });
     }
+    console.log(products);
     setValorDeclarado(valorDeclarado);
     setListProducts(products);
 
@@ -310,6 +311,10 @@ export default function PostFacturaNegro() {
                           <p className="font-semibold text-sm text-gray-400">
                             {elem.descripcion}
                           </p>
+                          <p className="font-semibold text-sm text-gray-400">
+                            <b>Stock Actual</b> :{" "}
+                            <span className="text-green-400">500</span>
+                          </p>
                         </div>
                       </div>
                       <div className="flex flex-row">
@@ -417,6 +422,10 @@ export default function PostFacturaNegro() {
                       <h2 className="font-bold uppercase">{elem.nombre} </h2>
                       <p className="font-semibold text-sm text-gray-400">
                         {elem.descripcion}
+                      </p>
+                      <p className="font-semibold text-sm text-gray-400">
+                        <b>Stock Actual</b> :{" "}
+                        <span className="text-green-400">500</span>
                       </p>
                     </div>
                   </div>
