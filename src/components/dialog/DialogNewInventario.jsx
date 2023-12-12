@@ -41,10 +41,7 @@ export default function DialogNewInventario({open, close}) {
       idCliente: parseInt(cliente)
     });
 
-    setCodProducto("");
-    setDescripcion("");
-    setPesoUnidad("");
-    setCliente("");
+    handleCloseDialog();
   };
 
   const handleCloseDialog = () => {

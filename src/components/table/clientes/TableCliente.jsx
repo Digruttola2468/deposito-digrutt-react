@@ -4,14 +4,25 @@ import axios from "axios";
 import { Button, Divider, Pagination } from "@mui/material";
 import useSWR from "swr";
 import DialogNewCliente from "../../dialog/DialogNewCliente";
+import SearchCliente from "../../search/SearchCliente";
 
 export default function TableCliente() {
   const { BASE_URL } = useContext(UserContext);
 
   const [index, setIndex] = useState(0);
 
-  const { data, isLoading, error } = useSWR(`${BASE_URL}/clientes`, (url) =>
-    axios.get(url)
+  const [listCliente, setListCliente] = useState([]);
+  const [clienteOriginal, setClienteOriginal] = useState([]);
+
+  const { data, isLoading, mutate } = useSWR(
+    `${BASE_URL}/clientes`,
+    (url) => axios.get(url),
+    {
+      onSuccess: (data) => {
+        setListCliente(data.data);
+        setClienteOriginal(data.data);
+      },
+    }
   );
 
   const [start, setStart] = useState(0);
@@ -31,11 +42,18 @@ export default function TableCliente() {
       </Divider>
       <div className="flex flex-col lg:flex-row lg:justify-center lg:items-center ">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div className="flex flex-row items-center">
+            <SearchCliente
+              setData={setListCliente}
+              data={clienteOriginal}
+              onMutate={mutate}
+            />
+            <Button onClick={() => setOpenDialogCliente(true)}>
+              New Cliente
+            </Button>
+          </div>
           <div className="inline-block min-w-full sm:max-w-[1100px] py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden ">
-              <Button onClick={() => setOpenDialogCliente(true)}>
-                New Cliente
-              </Button>
               <table className="min-w-full text-left text-sm font-light ">
                 <thead className="border-b font-medium dark:border-neutral-500">
                   <tr>
@@ -60,7 +78,7 @@ export default function TableCliente() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.data.slice(start, end).map((elem) => {
+                  {listCliente.slice(start, end).map((elem) => {
                     return (
                       <tr
                         className={`border-b dark:border-neutral-500 hover:border-info-200 hover:bg-cyan-200 hover:text-neutral-800`}
@@ -94,7 +112,7 @@ export default function TableCliente() {
           </div>
           <div className="flex flex-row justify-center ">
             <Pagination
-              count={Math.ceil(data.data.length / 10)}
+              count={Math.ceil(listCliente.length / 10)}
               onChange={(evt, value) => {
                 setEnd(10 * parseInt(value));
               }}

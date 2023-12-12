@@ -24,7 +24,7 @@ const monthNames = [
 
 export default function ItemTableOficina() {
   const { apiOne } = useContext(OficinaContext);
-  const { getClienteName, inventarioNombres, clientesList } = useContext(InventarioContext);
+  const { getClienteName, clientesList } = useContext(InventarioContext);
 
   const [listMercaderia, setListMercaderia] = useState([]);
   const [numRemito, setNumRemito] = useState("");
@@ -33,7 +33,8 @@ export default function ItemTableOficina() {
   const [totalDeclarado, setTotalDeclarado] = useState("");
 
   const formatDate = (fecha) => {
-    const date = new Date(fecha);
+    let info = fecha.split('-').join('/');
+    const date = new Date(info);
     return `${date.getDate()} ${
       monthNames[date.getMonth()]
     } ${date.getFullYear()}`;

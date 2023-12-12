@@ -6,6 +6,11 @@ import {
   Autocomplete,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
   FormControl,
   FormControlLabel,
   IconButton,
@@ -35,6 +40,10 @@ export default function PostFacturaNegro() {
   const [nroEnvio, setNroEnvio] = useState("");
   const [fecha, setFecha] = useState(null);
   const [cliente, setCliente] = useState("");
+  const [valorDeclarado, setValorDeclarado] = useState("");
+  const [listProducts, setListProducts] = useState([]);
+
+  const [dialogConfirm, setDialogConfirm] = useState(false);
 
   const [addClientDigrutt, setAddClientDigrutt] = useState(false);
   const [inputFecha, setInputFecha] = useState(null);
@@ -61,15 +70,8 @@ export default function PostFacturaNegro() {
     } else toast.error("Completar el campo");
   };
 
-  const handleClickSend = (evt) => {
-    evt.preventDefault();
-
-    let enviar = {};
-    enviar.fecha = fecha;
-    enviar.nro_envio = nroEnvio;
-    enviar.idCliente = cliente;
-    enviar.products = [];
-
+  const getDataListProductos = () => {
+    let products = [];
     let valorDeclarado = 0;
     for (let i = 0; i < pedidos.length; i++) {
       const codProductoArray = pedidos[i];
@@ -87,9 +89,23 @@ export default function PostFacturaNegro() {
       if (precio == "") precio = 0;
       else valorDeclarado += parseFloat(precio);
 
-      enviar.products.push({ stock, idProduct, precio });
+      let findProduct = inventarioNombres.find((elem) => elem.id == idProduct);
+
+      products.push({ stock, idProduct, precio, ...findProduct });
     }
-    enviar.valorDeclarado = valorDeclarado;
+    setValorDeclarado(valorDeclarado);
+    setListProducts(products);
+
+    return products;
+  };
+
+  const handleClickSend = (evt) => {
+    let enviar = {};
+    enviar.fecha = fecha;
+    enviar.nro_envio = nroEnvio;
+    enviar.idCliente = cliente;
+    const data = getDataListProductos();
+    enviar.products = data;
 
     postFacturaNegroBBDD(enviar);
     empty();
@@ -265,7 +281,7 @@ export default function PostFacturaNegro() {
           </section>
           <section className="grid place-content-center">
             <form action="">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                 {pedidos.map((elem) => {
                   return (
                     <div
@@ -355,7 +371,11 @@ export default function PostFacturaNegro() {
               {pedidos.length != 0 ? (
                 <>
                   <button
-                    onClick={handleClickSend}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      getDataListProductos();
+                      setDialogConfirm(true);
+                    }}
                     className="ml-2 px-6 py-3 my-2 rounded-lg bg-blue-500 text-white border-2 border-gray-200 gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01] ease-in-out"
                   >
                     Enviar
@@ -368,6 +388,62 @@ export default function PostFacturaNegro() {
           </section>
         </section>
       </div>
+      <Dialog open={dialogConfirm} onClose={() => setDialogConfirm(false)}>
+        <DialogTitle>Confirmar Nota Envio</DialogTitle>
+        <DialogContent>
+          <div className="flex flex-col sm:flex-row">
+            <p className="px-1 font-semibold text-lg text-gray-400">
+              {nroEnvio}
+            </p>
+            <p className="px-1 font-semibold text-lg text-gray-400">{fecha}</p>
+            <p className="px-1 font-semibold text-lg uppercase text-gray-400">
+              {getClienteName(cliente)}
+            </p>
+          </div>
+          <Divider />
+          {listProducts.map((elem) => {
+            return (
+              <div key={elem.id}>
+                <div className="my-2">
+                  <div className="flex flex-row">
+                    {elem.urlImage ? (
+                      <div>
+                        <img src={elem.urlImage} alt="" className="w-15 h-10" />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    <div>
+                      <h2 className="font-bold uppercase">{elem.nombre} </h2>
+                      <p className="font-semibold text-sm text-gray-400">
+                        {elem.descripcion}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row justify-between">
+                    <p> stock:{" " + elem.stock} </p>
+                    <p> $ {elem.precio} </p>
+                  </div>
+                </div>
+                <Divider />
+              </div>
+            );
+          })}
+          <p className="font-semibold text-lg text-end">
+            <span className="font-semibold text-lg text-gray-400">
+              Total Declarado{" "}
+            </span>
+            ${valorDeclarado}
+          </p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogConfirm(false)}>Cancelar</Button>
+          <Button onClick={handleClickSend} variant="outlined">
+            Enviar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </section>
   );
 }

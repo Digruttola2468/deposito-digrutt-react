@@ -197,8 +197,7 @@ export function InventarioContextProvider(props) {
 
     postCliente(json, userSupabase.token)
       .then((result) => {
-        clientesList.push(result);
-        setClientesList(clientesList);
+        setClientesList([...clientesList, result.data]);
         toast.success("Se creo con exito");
       })
       .catch((e) => {

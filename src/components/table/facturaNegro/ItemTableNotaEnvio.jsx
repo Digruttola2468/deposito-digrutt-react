@@ -32,7 +32,8 @@ export default function ItemTableNotaEnvio() {
   const [totalDeclarado, setTotalDeclarado] = useState("");
 
   const formatDate = (fecha) => {
-    const date = new Date(fecha);
+    let info = fecha.split('-').join('/');
+    const date = new Date(info);
     return `${date.getDate()} ${
       monthNames[date.getMonth()]
     } ${date.getFullYear()}`;

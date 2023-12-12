@@ -46,6 +46,7 @@ export default function DialogNewCliente({ open = false, close }) {
       cuit,
     });
 
+    close(false);
     empty();
   };
 

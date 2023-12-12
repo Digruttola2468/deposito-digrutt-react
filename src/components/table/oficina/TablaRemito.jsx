@@ -25,11 +25,6 @@ export default function TableRemito() {
     error,
   } = useSWR([`${BASE_URL}/remito`, userSupabase.token], fetcher);
 
-  const formatDate = (fecha) => {
-    const date = new Date(fecha);
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-  };
-
   if (isLoading) {
     return (
       <Box sx={{ width: "100%" }}>
@@ -74,7 +69,7 @@ export default function TableRemito() {
                 {elem.num_remito}
               </td>
               <td className="whitespace-nowrap px-6 py-4">
-                {formatDate(elem.fecha)}
+                {elem.fecha}
               </td>
               <td className="whitespace-nowrap px-6 py-4">
                 {getClienteName(elem.idCliente)}

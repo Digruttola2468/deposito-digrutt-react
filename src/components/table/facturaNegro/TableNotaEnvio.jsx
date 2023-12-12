@@ -16,11 +16,6 @@ export default function TableNotaEnvio() {
 
   const { getClienteName } = useContext(InventarioContext);
 
-  const formatDate = (fecha) => {
-    const date = new Date(fecha);
-    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-  };
-
   const [start, setStart] = useState(0);
 
   return (
@@ -60,7 +55,7 @@ export default function TableNotaEnvio() {
                         {elem.nro_envio}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 font-medium">
-                        {formatDate(elem.fecha)}
+                        {elem.fecha}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {getClienteName(elem.idCliente)}
