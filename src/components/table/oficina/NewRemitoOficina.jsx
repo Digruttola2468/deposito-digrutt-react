@@ -287,6 +287,7 @@ export default function NewRemito() {
         <section className="flex flex-col">
           <form action="" className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {pedidos.map((elem) => {
+              const stockActual = elem.entrada - elem.salida;
               return (
                 <div
                   key={elem.id}
@@ -313,6 +314,16 @@ export default function NewRemito() {
                       </h2>
                       <p className="font-semibold text-sm text-gray-400">
                         {elem.descripcion}
+                      </p>
+                      <p className="font-semibold text-sm text-gray-400">
+                        <b>Stock Actual: </b>
+                        <span
+                          className={
+                            stockActual > 0 ? "text-green-400" : "text-red-400"
+                          }
+                        >
+                          {stockActual}
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -450,6 +461,7 @@ export default function NewRemito() {
             </div>
             <Divider />
             {listProducts.map((elem) => {
+              const stockActual = elem.entrada - elem.salida;
               return (
                 <div key={elem.id}>
                   <div className="my-2">
@@ -469,6 +481,18 @@ export default function NewRemito() {
                         <h2 className="font-bold uppercase">{elem.nombre} </h2>
                         <p className="font-semibold text-sm text-gray-400">
                           {elem.descripcion}
+                        </p>
+                        <p className="font-semibold text-sm text-gray-400">
+                          <b>Stock Actual: </b>
+                          <span
+                            className={
+                              stockActual > 0
+                                ? "text-green-400"
+                                : "text-red-400"
+                            }
+                          >
+                            {stockActual}
+                          </span>
                         </p>
                       </div>
                     </div>

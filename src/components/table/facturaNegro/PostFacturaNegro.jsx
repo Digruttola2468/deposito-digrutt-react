@@ -22,7 +22,6 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import { AiFillDelete } from "react-icons/ai";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -93,7 +92,6 @@ export default function PostFacturaNegro() {
 
       products.push({ stock, idProduct, precio, ...findProduct });
     }
-    console.log(products);
     setValorDeclarado(valorDeclarado);
     setListProducts(products);
 
@@ -284,6 +282,7 @@ export default function PostFacturaNegro() {
             <form action="">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                 {pedidos.map((elem) => {
+                  const stockActual = elem.entrada - elem.salida;
                   return (
                     <div
                       key={elem.id}
@@ -312,8 +311,16 @@ export default function PostFacturaNegro() {
                             {elem.descripcion}
                           </p>
                           <p className="font-semibold text-sm text-gray-400">
-                            <b>Stock Actual</b> :{" "}
-                            <span className="text-green-400">500</span>
+                            <b>Stock Actual: </b>
+                            <span
+                              className={
+                                stockActual > 0
+                                  ? "text-green-400"
+                                  : "text-red-400"
+                              }
+                            >
+                              {stockActual}
+                            </span>
                           </p>
                         </div>
                       </div>
@@ -407,6 +414,7 @@ export default function PostFacturaNegro() {
           </div>
           <Divider />
           {listProducts.map((elem) => {
+            const stockActual = elem.entrada - elem.salida;
             return (
               <div key={elem.id}>
                 <div className="my-2">
@@ -424,8 +432,14 @@ export default function PostFacturaNegro() {
                         {elem.descripcion}
                       </p>
                       <p className="font-semibold text-sm text-gray-400">
-                        <b>Stock Actual</b> :{" "}
-                        <span className="text-green-400">500</span>
+                        <b>Stock Actual: </b>
+                        <span
+                          className={
+                            stockActual > 0 ? "text-green-400" : "text-red-400"
+                          }
+                        >
+                          {stockActual}
+                        </span>
                       </p>
                     </div>
                   </div>
