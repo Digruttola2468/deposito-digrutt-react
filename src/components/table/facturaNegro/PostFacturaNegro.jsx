@@ -110,6 +110,7 @@ export default function PostFacturaNegro() {
     enviar.products = data;
 
     postFacturaNegroBBDD(enviar);
+    setDialogConfirm(false);
     empty();
   };
 

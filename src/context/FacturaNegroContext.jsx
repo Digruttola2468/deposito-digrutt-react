@@ -53,7 +53,7 @@ export const FacturaNegroProvider = (props) => {
         getAllInventario();
         toast.success(result.message)
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {console.log(e); toast.error(e.response.data.message);});
   };
 
   const getFacturaNegroBBDD = () => {
