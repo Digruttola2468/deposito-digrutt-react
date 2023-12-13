@@ -90,9 +90,12 @@ export default function NewRemito() {
         `#precio-${codProductoArray.id}`
       ).value;
 
-      if (stock == "") stock = 0;
+      if (stock == "") stock = 1;
+      if (stock <= 0) stock = 1;
 
       if (precio == "") precio = 0;
+      if (precio <= 0) precio = 0;
+      
       else valorDeclarado += parseFloat(precio);
 
       let findProduct = inventarioNombres.find((elem) => elem.id == idProduct);
@@ -142,12 +145,18 @@ export default function NewRemito() {
       let idProduct = codProductoArray.id;
 
       let stock = document.querySelector(`#stock-${codProductoArray.id}`).value;
+
+      
       let precio = document.querySelector(
         `#precio-${codProductoArray.id}`
       ).value;
 
-      if (precio == "") precio = 0;
+      if (stock == "") stock = 1;
+      if (stock <= 0) stock = 1;
 
+      if (precio == "") precio = 0;
+      if (precio <= 0) precio = 0;
+      
       valorDeclarado += parseFloat(precio);
       enviar.products.push({ stock, idProduct, precio });
     }

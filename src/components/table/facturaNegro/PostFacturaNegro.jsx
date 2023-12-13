@@ -83,9 +83,12 @@ export default function PostFacturaNegro() {
         `#precio-${codProductoArray.id}`
       ).value;
 
-      if (stock == "") stock = 0;
+      if (stock == "") stock = 1;
+      if (stock <= 0) stock = 1;
 
       if (precio == "") precio = 0;
+      if (precio <= 0) precio = 0;
+      
       else valorDeclarado += parseFloat(precio);
 
       let findProduct = inventarioNombres.find((elem) => elem.id == idProduct);
