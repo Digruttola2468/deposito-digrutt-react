@@ -5,6 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import Tooltip from "@mui/material/Tooltip";
 import { FaTrash, FaPen } from "react-icons/fa";
 import { IconButton } from "@mui/material";
+import useSWR from "swr";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import axios from "axios";
 
 const getDateWithNameMonth = (fechaString = "") => {
   const monthNames = [
@@ -22,22 +26,39 @@ const getDateWithNameMonth = (fechaString = "") => {
     "Noviembre",
     "Diciembre",
   ];
-  let info = fechaString.split('-').join('/');
+  let info = fechaString.split("-").join("/");
   const fDate = new Date(info);
 
-  if (Number.isNaN(fDate.getDate())) return ""
-  
+  if (Number.isNaN(fDate.getDate())) return "";
+
   return `${fDate.getDate()} ${
     monthNames[fDate.getMonth() + 1]
   } ${fDate.getFullYear()}`;
 };
 
+const fetcher = ([url, token]) => {
+  return axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((result) => result.data);
+};
+
 export default function CardItemMercaderia({
-  data,
+  index,
   handleUpdate,
   handleDelete,
 }) {
-  const { fecha, descripcion, nombre, stock } = data;
+  const { BASE_URL, userSupabase } = useContext(UserContext);
+
+  const { data, isLoading, error } = useSWR(
+    [`${BASE_URL}/mercaderia/${index}`, userSupabase.token],
+    fetcher
+  );
+
+  if (isLoading) return <></>;
 
   return (
     <>
@@ -46,17 +67,31 @@ export default function CardItemMercaderia({
           <div className="flex flex-col">
             <div className="w-full bg-slate-400 rounded-lg"></div>
 
-            <h2 className="text-lg font-semibold uppercase">{nombre}</h2>
+            <h2 className="text-lg font-semibold uppercase">{data.nombre}</h2>
 
             <p>
-              <b>Descripcion</b>: {descripcion}
+              <b>Descripcion</b>: {data.descripcion}
             </p>
             <p>
-              <b>Fecha</b>: {getDateWithNameMonth(fecha)}
+              <b>Fecha</b>: {getDateWithNameMonth(data.fecha)}
             </p>
             <p>
-              <b>Cantidad</b>: {stock}
+              <b>Cantidad</b>: {data.stock}
             </p>
+            {data.remito ? (
+              <p>
+                <b>Remito</b>: {data.remito}
+              </p>
+            ) : (
+              <></>
+            )}
+            {data.nroEnvio ? (
+              <p>
+                <b>Nota Envio</b>: {data.nroEnvio}
+              </p>
+            ) : (
+              <></>
+            )}
           </div>
         </CardContent>
         <CardActions>

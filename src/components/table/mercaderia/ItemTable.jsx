@@ -4,9 +4,7 @@ import { MercaderiaContext } from "../../../context/MercaderiaContext";
 import { useReadLocalStorage } from "usehooks-ts";
 import DialogUpdate from "../../dialog/DialogUpdate";
 import DialogDelete from "../../dialog/DialogDelete";
-import {
-  TextField,
-} from "@mui/material";
+import { TextField } from "@mui/material";
 import CardItemMercaderia from "../../card/CardItemMercaderia";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -48,15 +46,11 @@ export default function InfoItem() {
 
   return (
     <div className="mt-5">
-      {apiOne ? (
-        <CardItemMercaderia
-          data={apiOne}
-          handleDelete={() => setOpenDelete(true)}
-          handleUpdate={() => setOpenUpdate(true)}
-        />
-      ) : (
-        <></>
-      )}
+      <CardItemMercaderia
+        index={index}
+        handleDelete={() => setOpenDelete(true)}
+        handleUpdate={() => setOpenUpdate(true)}
+      />
 
       <DialogDelete
         show={openDelete}
