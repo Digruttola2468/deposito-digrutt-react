@@ -59,6 +59,9 @@ export default function CardItemMercaderia({
   );
 
   if (isLoading) return <></>;
+  
+  if (data.message) 
+    return <></>
 
   return (
     <>
