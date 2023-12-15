@@ -54,13 +54,13 @@ export default function CardItemMercaderia({
   const { BASE_URL, userSupabase } = useContext(UserContext);
 
   const { data, isLoading, error } = useSWR(
-    [`${BASE_URL}/mercaderia/${index}`, userSupabase.token],
+    [`${BASE_URL}/mercaderia/${297}`, userSupabase.token],
     fetcher
   );
 
   if (isLoading) return <></>;
   
-  if (data.message) 
+  if (error) 
     return <></>
 
   return (
