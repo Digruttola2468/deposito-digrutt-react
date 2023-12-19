@@ -81,7 +81,7 @@ export default function SelectItemInventario() {
           sx={{ marginTop: 1, marginLeft: 1 }}
           label="Articulo"
           value={articulo}
-          onChange={(evt) => setArticulo(evt.target.value)}
+          onChange={(evt) => setArticulo(evt.target.value.toUpperCase())}
         />
         <TextField
           sx={{ marginTop: 3, marginLeft: 1 }}

@@ -63,6 +63,7 @@ export const useTable = () => {
     setApi,
     setIndex,
     limit,
-    setEnd
+    setEnd,
+    index
   };
 };

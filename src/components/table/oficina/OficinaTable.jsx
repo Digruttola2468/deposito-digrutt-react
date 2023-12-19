@@ -11,10 +11,6 @@ export default function OficinaTable() {
         <div className="inline-block min-w-full sm:max-w-[800px] py-2 sm:px-6 lg:px-8">
           <div className="overflow-hidden ">
             <TableRemito />
-            <div className="flex flex-row justify-center ">
-              <Pagination
-              />
-            </div>
           </div>
         </div>
       </div>

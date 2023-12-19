@@ -18,8 +18,6 @@ export default function DialogUpdate({
     <Dialog
       open={show}
       onClose={close}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
     >
       <DialogTitle>{title}</DialogTitle>
       <DialogContent

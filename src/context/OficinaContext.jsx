@@ -22,6 +22,7 @@ export const OficinaProvider = (props) => {
     getLengthTableList,
     limit,
     setEnd,
+    index
   } = useTable();
 
   const { inventarioNombres, clientesList, getAllInventario } = useContext(InventarioContext);
@@ -93,7 +94,8 @@ export const OficinaProvider = (props) => {
         limit,
         setEnd,
         getOneRemitoBBDD,
-        apiOne
+        apiOne,
+        index
       }}
     >
       {props.children}
