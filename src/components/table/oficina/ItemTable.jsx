@@ -59,6 +59,7 @@ const fetcher = ([url, token]) => {
 export default function ItemTableOficina() {
   const { index } = useContext(OficinaContext);
   const { userSupabase } = useContext(UserContext);
+  const {sumInventario} = useContext(InventarioContext);
 
   const { data, isLoading, error, mutate } = useSWR(
     [
@@ -68,7 +69,7 @@ export default function ItemTableOficina() {
     fetcher
   );
 
-  const { getClienteName, clientesList } = useContext(InventarioContext);
+  const { clientesList } = useContext(InventarioContext);
 
   //Dialogs
   const [dialogNewMercaderia, setDialogNewMercaderia] = useState(false);
@@ -95,6 +96,11 @@ export default function ItemTableOficina() {
           },
         }
       );
+      for (let i = 0; i < data.mercaderia.length; i++) {
+        const element = data.mercaderia[i];
+        sumInventario(element.idinventario);
+        console.log(element.idinventario);
+      }
       toast.success(result.data.message);
       mutate();
     } catch (error) {

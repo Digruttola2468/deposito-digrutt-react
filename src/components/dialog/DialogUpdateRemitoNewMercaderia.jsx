@@ -14,6 +14,7 @@ import useSWR from "swr";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { InventarioContext } from "../../context/InventarioContext";
 
 const fetcher = ([url, token]) => {
   return axios
@@ -32,6 +33,8 @@ export default function DialogUpdateRemitoNewMercaderia({
   refresh,
 }) {
   const { BASE_URL, userSupabase } = useContext(UserContext);
+  const {sumInventario} = useContext(InventarioContext);
+
   const { data, isLoading } = useSWR(
     [
       `https://deposito-digrutt-express-production.up.railway.app/api/inventario/nombres`,
@@ -46,22 +49,15 @@ export default function DialogUpdateRemitoNewMercaderia({
 
   const handleUpdate = async () => {
     if (codProducto != null) {
-      console.log("SEND: ", [
-        {
-          stock,
-          price,
-          idInventario: codProducto.id,
-        },
-      ]);
-
       const idRemito = apiOne.remito.id;
       try {
+
         const result = await axios.put(
           `https://deposito-digrutt-express-production.up.railway.app/api/remito/newProduct/${idRemito}`,
           [
             {
-              stock,
-              price,
+              stock: stock == "" ? 1 : stock,
+              price: price == "" ? 0 : price,
               idInventario: codProducto.id,
             },
           ],
@@ -71,15 +67,17 @@ export default function DialogUpdateRemitoNewMercaderia({
             },
           }
         );
-        console.log(result);
+        close(false);
+        toast.success(result.data.message)
+        sumInventario(codProducto.id);
+        empty();
+        refresh();
       } catch (error) {
         console.log(error);
         toast.error(error.response.data.message)
       }
-
-      empty();
-      refresh();
-    }
+      
+    } else toast.error("Campo Cod Producto Vacio")
   };
 
   const empty = () => {
