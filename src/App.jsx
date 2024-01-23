@@ -25,47 +25,60 @@ import NewMercaderiaResaltadores from "./pages/NewMercaderiaResaltadores";
 export default function App() {
   const { userSupabase } = useContext(UserContext);
 
-  return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <MercaderiaContextProvider>
-            <Mercaderia />
-          </MercaderiaContextProvider>
-        }
-      />
-      <Route
-        path="/newMercaderia"
-        element={
-          <MercaderiaContextProvider>
-            <NewMercaderiaResaltadores />
-          </MercaderiaContextProvider>
-        }
-      />
-      <Route path="/inventario" element={<Inventario />} />
-      <Route path="/produccion" element={<Produccion />} />
-      <Route
-        path="/oficina"
-        element={
-          <OficinaProvider>
-            <Oficina />
-          </OficinaProvider>
-        }
-      />
-      <Route path="/logIn" element={<LogIn />} />
-      <Route path="/signUp" element={<SignUp />} />
-      <Route path="/sendGmail" element={<SendEmail />} />
-      <Route path="/notVerificed" element={<WaitValidation />} />
-      <Route path="/forgotPassword" element={<ForgotPassword />} />
-      <Route
-        path="/facturaNegro"
-        element={
-          <FacturaNegroProvider>
-            <NotaEnvio />
-          </FacturaNegroProvider>
-        }
-      />
-    </Routes>
-  );
+  console.log(userSupabase);
+
+  if (userSupabase != null) {
+    return (
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <MercaderiaContextProvider>
+              <Mercaderia />
+            </MercaderiaContextProvider>
+          }
+        />
+        <Route
+          path="/newMercaderia"
+          element={
+            <MercaderiaContextProvider>
+              <NewMercaderiaResaltadores />
+            </MercaderiaContextProvider>
+          }
+        />
+        <Route path="/inventario" element={<Inventario />} />
+        <Route path="/produccion" element={<Produccion />} />
+        <Route
+          path="/oficina"
+          element={
+            <OficinaProvider>
+              <Oficina />
+            </OficinaProvider>
+          }
+        />
+        <Route path="/logIn" element={<LogIn />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/sendGmail" element={<SendEmail />} />
+        <Route path="/notVerificed" element={<WaitValidation />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route
+          path="/facturaNegro"
+          element={
+            <FacturaNegroProvider>
+              <NotaEnvio />
+            </FacturaNegroProvider>
+          }
+        />
+      </Routes>
+    );
+  } else
+    return (
+      <Routes>
+        <Route path="/logIn" element={<LogIn />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/sendGmail" element={<SendEmail />} />
+        <Route path="/notVerificed" element={<WaitValidation />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+      </Routes>
+    );
 }

@@ -61,7 +61,9 @@ export function InventarioContextProvider(props) {
         setTableList(result);
         setApiOriginal(result);
       })
-      .catch((e) => {toast.error(e.data.message)});
+      .catch((e) => {
+        //toast.error(e.data.message)
+      });
   };
 
   //Get API for search

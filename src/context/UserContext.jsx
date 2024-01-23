@@ -5,11 +5,13 @@ import { db_supabase } from "../supabase/config";
 import { getToken } from "../services/api_user";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-  const BASE_URL = "https://deposito-digrutt-express-production.up.railway.app/api";
+  const BASE_URL =
+    "https://deposito-digrutt-express-production.up.railway.app/api";
 
   const navegate = useNavigate();
   const [userSupabase, setUserSupabase] = useLocalStorage("user", null);
@@ -19,7 +21,7 @@ export const UserProvider = (props) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    db_supabase.auth.onAuthStateChange(async (event, session) => {
+    /*db_supabase.auth.onAuthStateChange(async (event, session) => {
       if (session != null) {
         //Si se inicio sesion con google
         if (session.user.app_metadata.provider === "google") {
@@ -42,10 +44,10 @@ export const UserProvider = (props) => {
           } else navegate("/login");
         }
       } else navegate("/login");
-    });
+    });*/
   }, []);
 
-  const addBBDD = async (gmail) => {
+  /*const addBBDD = async (gmail) => {
     //Verificamos GMAIL
     try {
       const { data, error } = await db_supabase
@@ -69,7 +71,7 @@ export const UserProvider = (props) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  };*/
 
   const signOut = async () => {
     try {
@@ -81,46 +83,32 @@ export const UserProvider = (props) => {
     }
   };
 
-  const getUserSupabase = async () => {
+  /*const getUserSupabase = async () => {
     const {
       data: { user },
     } = await db_supabase.auth.getUser();
     return user;
-  };
+  };*/
 
   const logIn = async (email, password) => {
     setLoading(true);
-    const { data, error } = await db_supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
 
-    if (error != null) {
-      if (error.message === "Invalid login credentials")
-        toast.error("El Gmail o Contraseña son incorrectos");
-      if (error.message === "Email not confirmed")
-        toast.error("El Email no esta confirmado");
-      setLoading(false);
-      return error;
-    }
-
-    //GMAIL ESTA CONFIRMADO
-    await addBBDD(email);
-
-    try {
-      const result = await getToken(email);
-
-      setUserSupabase(result);
-      navegate("/");
-    } catch (error) {
-      console.log(error);
-      navegate("/notVerificed");
-    }
-    setLoading(false);
+    axios
+      .get(`${BASE_URL}/login?email=${email}&password=${password}`)
+      .then((result) => {
+        setUserSupabase(result.data);
+        navegate('/');
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+        toast.error("Something Wrong");
+      });
   };
 
   const signUp = async (nombre, apellido, email, password) => {
-    setIsDone(true);
+    /*setIsDone(true);
     if (password.length >= 6) {
       const { data, error } = await db_supabase.auth.signUp({
         email: email,
@@ -136,7 +124,8 @@ export const UserProvider = (props) => {
       toast.success("Se creo correctamente");
       navegate("/sendGmail");
     } else toast.error("La contraseña es corta");
-    setIsDone(false);
+    setIsDone(false);*/
+    toast.error('No esta habilitado')
   };
 
   const signInWithGoogle = async () => {
@@ -160,7 +149,7 @@ export const UserProvider = (props) => {
         userSupabase,
         isDone,
         loading,
-        BASE_URL
+        BASE_URL,
       }}
     >
       {props.children}
